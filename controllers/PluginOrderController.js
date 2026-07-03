@@ -1,0 +1,154 @@
+import asyncHandler from "express-async-handler";
+import { getDB } from "../config/db.js"; // adjust path to your db.js
+import { ObjectId } from "mongodb";
+import { notifyNewOrder } from "../utils/telegram.js";
+
+const COLLECTION = "pluginorders";
+const VALID_STATUSES = [
+  "pending",
+  "confirmed",
+  "shipped",
+  "delivered",
+  "cancelled",
+];
+
+// Authoritative config for the fixed landing product — the server, not the
+// client, decides the price. Keep in sync with PRODUCT in the landing form
+// (client/src/landing/PluginOrderForm.jsx).
+const PLUGIN_PRODUCT = { name: "Plug In Quran New V-2", price: 990, freeDelivery: true };
+const PAID_SHIPPING = [80, 120];
+
+// POST /api/pluginorder
+export const createPluginOrder = asyncHandler(async (req, res) => {
+  // NOTE: client-supplied `pricing`/`product.price` are intentionally ignored.
+  const { product, billing, shipping, payment, note } = req.body;
+
+  if (!product || !billing || !shipping || !payment) {
+    res.status(400);
+    throw new Error("Missing required order fields");
+  }
+
+  // Re-price server-side to prevent tampering (e.g. ordering for ৳1).
+  const quantity = Math.max(1, parseInt(product?.quantity, 10) || 1);
+  const subtotal = PLUGIN_PRODUCT.price * quantity;
+
+  let shippingCharge = 0;
+  if (!PLUGIN_PRODUCT.freeDelivery) {
+    shippingCharge = Number(shipping?.charge) || 0;
+    if (!PAID_SHIPPING.includes(shippingCharge)) shippingCharge = 120;
+  }
+  const total = subtotal + shippingCharge;
+
+  const safeProduct = {
+    name: PLUGIN_PRODUCT.name,
+    price: PLUGIN_PRODUCT.price,
+    quantity,
+    image: product?.image || null,
+  };
+  const safeShipping = PLUGIN_PRODUCT.freeDelivery
+    ? { zone: "free", charge: 0 }
+    : { zone: shipping?.zone || "outside_dhaka", charge: shippingCharge };
+  const pricing = { subtotal, total };
+
+  const db = getDB();
+  const result = await db.collection(COLLECTION).insertOne({
+    product: safeProduct,
+    billing,
+    shipping: safeShipping,
+    payment,
+    pricing,
+    note: note || null,
+    status: "pending",
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  });
+
+  // Telegram: instant new-order alert (non-blocking)
+  notifyNewOrder(
+    { product: safeProduct, billing, shipping: safeShipping, payment, pricing, note, _id: result.insertedId },
+    { source: "Plugin Order" },
+  );
+
+  res.status(201).json({ success: true, orderId: result.insertedId });
+});
+
+// GET /api/pluginorder
+export const getAllPluginOrders = asyncHandler(async (req, res) => {
+  const { status, page = 1, limit = 20 } = req.query;
+  const filter = {};
+  if (status) filter.status = status;
+
+  const skip = (Number(page) - 1) * Number(limit);
+  const db = getDB();
+
+  const [orders, total] = await Promise.all([
+    db
+      .collection(COLLECTION)
+      .find(filter)
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(Number(limit))
+      .toArray(),
+    db.collection(COLLECTION).countDocuments(filter),
+  ]);
+
+  res.json({
+    success: true,
+    orders,
+    pagination: {
+      total,
+      page: Number(page),
+      pages: Math.ceil(total / Number(limit)),
+    },
+  });
+});
+
+// GET /api/pluginorder/:id
+export const getPluginOrderById = asyncHandler(async (req, res) => {
+  const db = getDB();
+  const order = await db
+    .collection(COLLECTION)
+    .findOne({ _id: new ObjectId(req.params.id) });
+  if (!order) {
+    res.status(404);
+    throw new Error("Order not found");
+  }
+  res.json({ success: true, order });
+});
+
+// PATCH /api/pluginorder/:id/status
+export const updatePluginOrderStatus = asyncHandler(async (req, res) => {
+  const { status } = req.body;
+  if (!VALID_STATUSES.includes(status)) {
+    res.status(400);
+    throw new Error("Invalid status value");
+  }
+
+  const db = getDB();
+  const result = await db
+    .collection(COLLECTION)
+    .findOneAndUpdate(
+      { _id: new ObjectId(req.params.id) },
+      { $set: { status, updatedAt: new Date() } },
+      { returnDocument: "after" },
+    );
+
+  if (!result) {
+    res.status(404);
+    throw new Error("Order not found");
+  }
+  res.json({ success: true, order: result });
+});
+
+// DELETE /api/pluginorder/:id
+export const deletePluginOrder = asyncHandler(async (req, res) => {
+  const db = getDB();
+  const result = await db
+    .collection(COLLECTION)
+    .deleteOne({ _id: new ObjectId(req.params.id) });
+  if (result.deletedCount === 0) {
+    res.status(404);
+    throw new Error("Order not found");
+  }
+  res.json({ success: true, message: "Order deleted" });
+});

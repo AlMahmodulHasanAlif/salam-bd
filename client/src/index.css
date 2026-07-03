@@ -1,0 +1,30 @@
+@import url('https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@100..800&display=swap');
+@import "tailwindcss";
+
+
+
+@theme {
+    /* Brand Colors */
+    --color-primary: #0B6B3A;
+    --color-primary-dark: #065F35;
+    --color-accent: #E53935;
+
+    /* Neutral Colors */
+    --color-bg: #F5F7F6;
+    --color-text: #1F2937;
+    --color-white: #FFFFFF;
+  }
+
+  @font-face {
+  font-family: 'MyFont';
+  src: url('../src/assets/fonts/Li\ Ador\ Noirrit\ Regular.ttf') format('ttf');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+* {
+  font-family: 'Anek Bangla', sans-serif;
+  font-weight: 00;
+}
+ 
