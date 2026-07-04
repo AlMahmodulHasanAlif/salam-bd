@@ -1,9 +1,11 @@
 import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import img1 from "../../assets/Cover1.webp";
-import img3 from "../../assets/cover2.webp";
+import img3 from "../../assets/cover2.jpg";
 
-const SLIDES = [img1, img3];
+import codingbook2 from "../../assets/codingbook2.webp";
+
+const SLIDES = [img1, img3, codingbook2];
 const INTERVAL = 4000;
 const FADE = { duration: 0.9, ease: "easeInOut" };
 

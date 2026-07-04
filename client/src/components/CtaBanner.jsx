@@ -11,9 +11,6 @@ export default function CtaBanner() {
         backgroundPosition: "center",
       }}
     >
-      {/* Dark overlay for text readability */}
-      <div className="absolute inset-0 bg-black/55" />
-
       {/* Text */}
       <div className="relative z-10 max-w-4xl mx-auto px-6 py-16 sm:py-24 text-center">
         <h2 className="text-2xl sm:text-4xl font-extrabold text-white leading-snug drop-shadow-lg">

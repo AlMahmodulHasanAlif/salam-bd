@@ -6,8 +6,6 @@ import Footer from '../components/Footer';
 import CartProvider from '../context/CartProvider';
 import BottomNav from '../components/Bottomnav';
 import FloatingActions from '../components/FloatingActions';
-import FooterContactStrip from '../components/FooterContactStrip';
-import CtaBanner from '../components/CtaBanner';
 import { GTM } from '../utils/gtm';
 
 
@@ -35,7 +33,6 @@ const RootLayout = () => {
         </main>
 
         <Footer />
-        <CtaBanner />
         <FloatingActions />
       </div>
     </CartProvider>

@@ -1,9 +1,10 @@
-import { FaFacebookF, FaInstagram, FaYoutube, FaWhatsapp } from "react-icons/fa";
+import { FaFacebookF, FaInstagram, FaYoutube, FaWhatsapp, FaChevronRight } from "react-icons/fa";
 import { MdEmail, MdPhone, MdLocationOn } from "react-icons/md";
 import { Link } from "react-router";
 import FooterContactStrip from "./FooterContactStrip";
 import logo from "../assets/SalamBDLogo.png";
 import footerbg from "../assets/footerbg1.jpg";
+import footerline from "../assets/footerline.webp";
 
 const quickLinks = [
   { label: "Home", href: "/" },
@@ -49,22 +50,14 @@ const socialLinks = [
   },
 ];
 
-// Islamic star-crescent bullet icon (SVG inline)
+// Link bullet icon — chevron marker before footer links
 function IslamicBullet({ active }) {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 20 20"
-      className={`w-3.5 h-3.5 shrink-0 transition-colors duration-200 ${
+    <FaChevronRight
+      className={`w-2.5 h-2.5 shrink-0 transition-all duration-200 group-hover:translate-x-0.5 ${
         active ? "text-[#c9a84c]" : "text-[#c9a84c]/50"
       }`}
-      fill="currentColor"
-    >
-      {/* Crescent moon */}
-      <path d="M10 3a7 7 0 1 0 7 7 5.5 5.5 0 1 1-7-7z" />
-      {/* Small 4-pointed star beside it */}
-      <path d="M15.5 3.5 l.5 1.5 1.5.5-1.5.5-.5 1.5-.5-1.5-1.5-.5 1.5-.5z" />
-    </svg>
+    />
   );
 }
 
@@ -211,10 +204,15 @@ export default function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="border-t border-white/10 py-5 pb-10 px-6 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-gray-500 max-w-7xl mx-auto">
-          <p>© {new Date().getFullYear()} Salam BD. All rights reserved.</p>
-          <p>
-            Made with <span className="text-[#c9a84c]">♥</span> for the Muslim community
+        <div className="relative border-t border-white/10 w-full">
+          <img
+            src={footerline}
+            alt=""
+            aria-hidden="true"
+            className="w-full block"
+          />
+          <p className="absolute inset-0 flex items-center justify-center text-xs text-white">
+            © {new Date().getFullYear()} Salam BD. All rights reserved.
           </p>
         </div>
       </div>
