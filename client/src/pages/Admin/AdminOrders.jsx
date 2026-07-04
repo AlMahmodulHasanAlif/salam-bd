@@ -198,9 +198,10 @@ const InvoiceModal = ({ order, onClose }) => {
             </div>
             <div class="brand-name"> <img src={logo} alt="" /> </div>
             <div class="brand-sub">
-              Mohammadpur,Dhaka<br/>
-              01860989372<br/>
-              contact.salambd@gmail.com<br/>
+              37 Ma Amena Plaza, (6th floor of Sundarban Courier),<br/>
+              falpatti area, Mirpur-10, Dhaka-1216<br/>
+              01886699883<br/>
+              salambd.contact@gmail.com<br/>
               salambd.com
             </div>
           </div>
@@ -340,9 +341,10 @@ const InvoiceModal = ({ order, onClose }) => {
                     </div>
                   </div>
                   <p className="text-[11px] text-gray-400 leading-relaxed">
-                    Mohammadpur,Dhaka
+                    37 Ma Amena Plaza, (6th floor of Sundarban Courier), falpatti
+                    area, Mirpur-10, Dhaka-1216
                     <br />
-                    01860989372 · contact.salambd@gmail.com
+                    01886699883 · salambd.contact@gmail.com
                   </p>
                 </div>
               </div>

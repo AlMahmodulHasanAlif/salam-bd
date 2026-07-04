@@ -21,15 +21,6 @@ import toast from "react-hot-toast";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
-const CATEGORIES = [
-  { label: "WallFrame", value: "WallFrame" },
-  { label: "Hajj", value: "Hajj" },
-  { label: "Kids", value: "Kids" },
-  { label: "Attar", value: "Attar" },
-  { label: "Islamic-Products", value: "Islamic-Products" },
-  { label: "Other", value: "other" },
-];
-
 const LOW_STOCK = 5;
 
 const EMPTY_FORM = {
@@ -41,6 +32,7 @@ const EMPTY_FORM = {
   originalPrice: "",
   wholesalePrice: "",
   description: "",
+  videoUrl: "",
   stock: "",
   images: [],
   variants: [],
@@ -261,6 +253,7 @@ const AdminProducts = () => {
       originalPrice: p.originalPrice ?? "",
       wholesalePrice: p.wholesalePrice ?? "",
       description: p.description || "",
+      videoUrl: p.videoUrl || "",
       stock: p.stock ?? "",
       images: Array.isArray(p.images)
         ? p.images
@@ -387,6 +380,7 @@ const AdminProducts = () => {
         wholesalePrice:
           form.wholesalePrice !== "" ? +form.wholesalePrice : undefined,
         description: form.description || undefined,
+        videoUrl: form.videoUrl?.trim() || undefined,
         stock: computedStock,
         image: form.images[0]?.url,
         images: form.images,
@@ -913,7 +907,7 @@ const AdminProducts = () => {
                     type="text"
                     value={form.name}
                     onChange={field("name")}
-                    placeholder="e.g. Basmati Rice"
+                    placeholder="Add name in English"
                     className="input"
                   />
                 </div>
@@ -923,7 +917,7 @@ const AdminProducts = () => {
                     type="text"
                     value={form.nameBn}
                     onChange={field("nameBn")}
-                    placeholder="e.g. বাসমতি চাল"
+                    placeholder="Add naam in Bangla"
                     className="input"
                   />
                 </div>
@@ -932,18 +926,39 @@ const AdminProducts = () => {
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="label">Category</label>
-                  <select
+                  <input
+                    type="text"
+                    list="category-options"
                     value={form.category}
                     onChange={field("category")}
-                    className="input bg-white"
-                  >
-                    <option value="">— Select category —</option>
-                    {CATEGORIES.map((c) => (
-                      <option key={c.value} value={c.value}>
-                        {c.label}
-                      </option>
+                    placeholder="Type a category name"
+                    className="input"
+                  />
+                  <datalist id="category-options">
+                    {categoryOptions.map((c) => (
+                      <option key={c} value={c} />
                     ))}
-                  </select>
+                  </datalist>
+                  {categoryOptions.length > 0 && (
+                    <div className="flex flex-wrap gap-1.5 mt-2">
+                      {categoryOptions.map((c) => (
+                        <button
+                          type="button"
+                          key={c}
+                          onClick={() =>
+                            setForm((f) => ({ ...f, category: c }))
+                          }
+                          className={`text-xs px-2 py-1 rounded-full border transition ${
+                            form.category === c
+                              ? "bg-green-600 text-white border-green-600"
+                              : "bg-white text-gray-600 border-gray-200 hover:border-green-400 hover:text-green-700"
+                          }`}
+                        >
+                          {c}
+                        </button>
+                      ))}
+                    </div>
+                  )}
                 </div>
                 <div>
                   <label className="label">Subcategory</label>
@@ -951,7 +966,7 @@ const AdminProducts = () => {
                     type="text"
                     value={form.subcategory}
                     onChange={field("subcategory")}
-                    placeholder="e.g. Aromatic Rice"
+                    placeholder="Add subcategory"
                     className="input"
                   />
                 </div>
@@ -1039,6 +1054,22 @@ const AdminProducts = () => {
                   placeholder="Product details…"
                   className="input resize-none"
                 />
+              </div>
+
+              {/* Product Video */}
+              <div>
+                <label className="label">Product Video (YouTube link)</label>
+                <input
+                  type="url"
+                  value={form.videoUrl}
+                  onChange={field("videoUrl")}
+                  placeholder="e.g. https://www.youtube.com/watch?v=xxxxxxxxxxx"
+                  className="input"
+                />
+                <p className="text-xs text-gray-400 mt-1">
+                  Paste a YouTube link — it will show in the product’s “Product
+                  Video” tab.
+                </p>
               </div>
 
               {/* Free Delivery toggle */}

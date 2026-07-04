@@ -50,8 +50,8 @@ const PrivacyPolicy = () => (
     <Section title="যোগাযোগ">
       <p>
         গোপনীয়তা সংক্রান্ত যেকোনো প্রশ্নের জন্য আমাদের সাথে যোগাযোগ করুন:<br />
-        📧 info@salambd.com  <br />
-        📞 +880 1860-989372
+        📧 salambd.contact@gmail.com  <br />
+        📞 01886699883
       </p>
     </Section>
 

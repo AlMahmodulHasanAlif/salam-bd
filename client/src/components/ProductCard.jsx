@@ -103,8 +103,11 @@ const ProductCard = ({ product }) => {
     <>
       <div
         onClick={() => navigate(`/product/${slug}`)}
-        className="bg-white rounded p-1 shadow-sm hover:shadow-md transition-all duration-200
-                   cursor-pointer overflow-hidden group border border-gray-200 w-full md:w-[230px]
+        className="bg-white rounded-lg p-1 border border-gray-100
+                   shadow-[0_4px_16px_rgba(0,0,0,0.08)]
+                   hover:shadow-[0_12px_28px_rgba(0,0,0,0.16)] hover:-translate-y-0.5
+                   transition-all duration-200
+                   cursor-pointer overflow-hidden group w-full md:w-[230px]
                    flex flex-col"
       >
         {/* Image */}

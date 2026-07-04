@@ -1,104 +1,112 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router";
+import { ChevronDown } from "lucide-react";
+import logo from "../assets/logo-trim.png";
+
+const MEDIA_LINKS = [
+  { label: "Gallery", to: "/gallery" },
+  { label: "Video", to: "https://www.youtube.com/quraneralotv", external: true },
+];
 
 const Navbar = () => {
-  const [kidsOpen, setKidsOpen] = useState(false);
+  // which dropdown is open: "products" | "media" | null
+  const [openMenu, setOpenMenu] = useState(null);
 
   const linkStyle = ({ isActive }) =>
-    `px-4 py-2 rounded-md transition-all duration-200 ${
-      isActive ? "bg-white text-primary" : "hover:bg-white hover:text-primary"
+    `px-4 py-2 rounded-md text-[15px] font-medium uppercase tracking-wide transition-all duration-200 ${
+      isActive
+        ? "bg-[#00AB3D] text-white"
+        : "text-gray-700 hover:bg-[#00AB3D] hover:text-white"
     }`;
 
-  const kidsLinkStyle = ({ isActive }) =>
-    `flex items-center gap-1 px-4 py-2 rounded-md transition-all duration-200 ${
-      isActive ? "bg-white text-primary" : "hover:bg-white hover:text-primary"
+  const dropTrigger = (isOpen) =>
+    `flex items-center gap-1 px-4 py-2 rounded-md text-[15px] font-medium uppercase tracking-wide cursor-pointer transition-all duration-200 ${
+      isOpen
+        ? "bg-[#00AB3D] text-white"
+        : "text-gray-700 hover:bg-[#00AB3D] hover:text-white"
     }`;
+
+  const subBase =
+    "block px-4 py-2.5 text-sm font-medium uppercase tracking-wide text-gray-700 hover:bg-[#00AB3D] hover:text-white transition-colors";
 
   const subLinkStyle = ({ isActive }) =>
-    `block px-4 py-2 text-sm transition-all duration-200 ${
-      isActive
-        ? "bg-primary text-white"
-        : "text-gray-800 hover:bg-primary hover:text-white"
+    isActive
+      ? "block px-4 py-2.5 text-sm font-medium uppercase tracking-wide bg-[#00AB3D] text-white"
+      : subBase;
+
+  const dropdownPanel = (isOpen) =>
+    `absolute right-0 top-full w-48 bg-white rounded-md shadow-lg border border-gray-100 z-50 overflow-hidden transition-all duration-200 ${
+      isOpen
+        ? "opacity-100 visible translate-y-0"
+        : "opacity-0 invisible -translate-y-1"
     }`;
 
   return (
-    // 👇 Hidden on mobile, visible on md and larger screens
-    <div className="hidden md:block bg-primary-dark text-white">
-      <div className="flex justify-center">
-        <div className="px-6 py-3 flex items-center gap-3 text-[1rem] font-medium">
+    // 👇 Hidden on mobile (handled by Topbar drawer), visible on md and up
+    <div className="hidden md:block bg-white border-b border-gray-200 shadow-md">
+      <div className="max-w-7xl mx-auto px-6 flex items-center justify-between py-5">
+        {/* Logo — left */}
+        <NavLink to="/" className="shrink-0">
+          <img src={logo} alt="Salam BD" className="h-14" />
+        </NavLink>
+
+        {/* Nav — right */}
+        <nav className="flex items-center gap-1 py-3">
           <NavLink to="/" end className={linkStyle}>
             Home
           </NavLink>
 
-          <NavLink to="/books" className={linkStyle}>
-            Islamic Books
+          {/* All Products */}
+          <NavLink to="/products" className={linkStyle}>
+            All Products
           </NavLink>
 
-          <NavLink to="/wallframe" className={linkStyle}>
-            WallFrame
-          </NavLink>
-          <NavLink to="/Islamic-Products" className={linkStyle}>
-            Islamic Products
-          </NavLink>
-
-          <NavLink to="/attar" className={linkStyle}>
-            Attar/Perfume
-          </NavLink>
-          {/* <NavLink to="/gallery" className={linkStyle}>
-            Gallery
-          </NavLink> */}
-
-          {/* Kids Dropdown */}
+          {/* Media dropdown */}
           <div
             className="relative"
-            onMouseEnter={() => setKidsOpen(true)}
-            onMouseLeave={() => setKidsOpen(false)}
+            onMouseEnter={() => setOpenMenu("media")}
+            onMouseLeave={() => setOpenMenu(null)}
           >
-            {/* <NavLink to="/kids" className={kidsLinkStyle}>
-              Kids Item
-              <svg
-                className={`w-3 h-3 mt-0.5 transition-transform duration-200 ${
-                  kidsOpen ? "rotate-180" : ""
+            <div className={dropTrigger(openMenu === "media")}>
+              Media
+              <ChevronDown
+                size={15}
+                className={`transition-transform duration-200 ${
+                  openMenu === "media" ? "rotate-180" : ""
                 }`}
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M19 9l-7 7-7-7"
-                />
-              </svg>
-            </NavLink> */}
-
-            {/* <div
-              className={`absolute left-0 top-full mt-1 w-40 bg-white text-gray-800 rounded-md shadow-lg z-50 transition-all duration-200 ${
-                kidsOpen
-                  ? "opacity-100 visible translate-y-0"
-                  : "opacity-0 invisible -translate-y-1"
-              }`}
-            >
-              <NavLink to="/kids/toys" className={subLinkStyle}>
-                Toys
-              </NavLink>
-              <NavLink to="/kids/clothes" className={subLinkStyle}>
-                Clothes
-              </NavLink>
-              <NavLink to="/kids/books" className={subLinkStyle}>
-                Books
-              </NavLink>
-            </div> */}
+              />
+            </div>
+            <div className={dropdownPanel(openMenu === "media")}>
+              {MEDIA_LINKS.map(({ label, to, external }) =>
+                external ? (
+                  <a
+                    key={label}
+                    href={to}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={subBase}
+                  >
+                    {label}
+                  </a>
+                ) : (
+                  <NavLink key={label} to={to} className={subLinkStyle}>
+                    {label}
+                  </NavLink>
+                ),
+              )}
+            </div>
           </div>
 
-          {/* <NavLink to="/hajj-item" className={linkStyle}>
-            Hajj Item
-          </NavLink> */}
           <NavLink to="/blog" className={linkStyle}>
             Blog
           </NavLink>
-        </div>
+          <NavLink to="/about" className={linkStyle}>
+            About Us
+          </NavLink>
+          <NavLink to="/contact" className={linkStyle}>
+            Contacts
+          </NavLink>
+        </nav>
       </div>
     </div>
   );

@@ -58,7 +58,7 @@ const ReturnPolicy = () => (
     <Section title="যোগাযোগ">
       <p>
         রিটার্ন সংক্রান্ত যেকোনো সহায়তার জন্য:<br />
-        📧 info@salambd.com <br /> 📞 +880 1860-989372
+        📧 salambd.contact@gmail.com <br /> 📞 01886699883
       </p>
     </Section>
 

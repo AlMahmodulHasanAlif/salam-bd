@@ -11,6 +11,7 @@ import Attar from "../pages/Products/Attar/Attar";
 import HajjItem from "../pages/Products/HajjItem/HajjItem";
 import Kids from "../pages/Products/Kids/Kids";
 import ProductListPage from "../pages/Products/ProductListPage";
+import AllProductsGrid from "../pages/Home/AllProductsGrid";
 import ProductDetails from "../pages/Products/ProductDetails/ProducDetails";
 import SearchResults from "../pages/Products/SearchResults";
 import Cart from "../pages/Cart/Cart";
@@ -52,6 +53,7 @@ const router = createBrowserRouter([
     Component: RootLayout,
     children: [
       { index: true, Component: Home },
+      { path: "products", Component: AllProductsGrid },
       { path: "books", Component: IslamicBooks },
       { path: "wallframe", Component: WallFrame },
       { path: "attar", Component: Attar },

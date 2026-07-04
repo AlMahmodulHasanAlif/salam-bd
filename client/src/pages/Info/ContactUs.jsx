@@ -2,34 +2,38 @@
 import React, { useState } from "react";
 import InfoPageLayout from "./InfoPageLayout";
 import { MapPin, Phone, Mail, Clock, ArrowRight } from "lucide-react";
+import contactBg from "../../assets/Cont.webp";
 
-/* icon wrapper */
+/* ring icon wrapper */
 const CardIcon = ({ children }) => (
-  <div className="w-16 h-16 rounded-full bg-gradient-to-br from-green-50 to-green-100 border-2 border-green-200 flex items-center justify-center mx-auto mb-3 shadow-md shadow-green-500/20">
+  <div className="w-16 h-16 rounded-full border border-white/40 flex items-center justify-center mx-auto mb-4">
     {children}
   </div>
 );
 
 const infoCards = [
   {
-    icon: <Phone size={26} className="text-green-700" strokeWidth={1.8} />,
+    icon: <Phone size={24} className="text-white" strokeWidth={1.8} />,
     label: "ফোন নম্বর",
-    lines: ["+880 1860-989372", "+880 1780-875766"],
-    href: "tel:+880 1860-989372",
+    lines: ["01886699883"],
+    href: "tel:+8801886699883",
   },
   {
-    icon: <Mail size={26} className="text-green-700" strokeWidth={1.8} />,
+    icon: <Mail size={24} className="text-white" strokeWidth={1.8} />,
     label: "ইমেইল ঠিকানা",
-    lines: ["info@salambd.com", "support@salambd.com"],
-    href: "mailto:info@salambd.com",
+    lines: ["salambd.contact@gmail.com"],
+    href: "mailto:salambd.contact@gmail.com",
   },
   {
-    icon: <MapPin size={26} className="text-green-700" strokeWidth={1.8} />,
+    icon: <MapPin size={24} className="text-white" strokeWidth={1.8} />,
     label: "আমাদের ঠিকানা",
-    lines: ["মোহাম্মাদপুর,", "ঢাকা, বাংলাদেশ"],
+    lines: [
+      "37 Ma Amena Plaza, (6th floor of Sundarban Courier),",
+      "falpatti area, Mirpur-10, Dhaka-1216",
+    ],
   },
   {
-    icon: <Clock size={26} className="text-green-700" strokeWidth={1.8} />,
+    icon: <Clock size={24} className="text-white" strokeWidth={1.8} />,
     label: "সেবার সময়",
     lines: ["24/7"],
   },
@@ -105,34 +109,55 @@ const ContactUs = () => {
   return (
     <InfoPageLayout title="যোগাযোগ করুন" icon="📞">
       
-      {/* Info cards */}
-      <div className="grid gap-4 mb-8  md:grid-cols-4">
-        {infoCards.map(({ icon, label, lines, href }) => (
-          <div
-            key={label}
-            className="bg-white border border-gray-200 rounded-2xl p-6 text-center shadow-sm hover:-translate-y-1 hover:shadow-lg hover:shadow-green-500/20 transition"
-          >
-            <CardIcon>{icon}</CardIcon>
+      {/* Info strip */}
+      <div
+        className="relative rounded-3xl overflow-hidden shadow-2xl mb-8 border border-white/20"
+        style={{
+          backgroundImage: `url(${contactBg})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      >
+        {/* Green glass overlay */}
+        <div className="absolute inset-0 bg-[#1a6b3a]/75 backdrop-blur-[1.5px]" />
 
-            <p className="font-bold text-[20px] text-gray-900 mb-2">{label}</p>
+        {/* Columns */}
+        <div className="relative grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4">
+          {infoCards.map(({ icon, label, lines, href }, i) => (
+            <div
+              key={label}
+              className={`relative flex flex-col items-center text-center px-6 py-10 md:py-14 ${
+                i > 0
+                  ? "md:before:content-[''] md:before:absolute md:before:left-0 md:before:top-1/2 md:before:-translate-y-1/2 md:before:h-40 md:before:w-px md:before:bg-white/25"
+                  : ""
+              }`}
+            >
+              <CardIcon>{icon}</CardIcon>
 
-            {lines.map((ln, i) =>
-              href && i === 0 ? (
-                <a
-                  key={i}
-                  href={href}
-                  className="block text-[15px] text-green-700 hover:underline leading-relaxed"
-                >
-                  {ln}
-                </a>
-              ) : (
-                <p key={i} className="text-[15px] text-gray-500 leading-relaxed">
-                  {ln}
-                </p>
-              )
-            )}
-          </div>
-        ))}
+              <h3 className="font-serif text-xl font-semibold text-white mb-3">
+                {label}
+              </h3>
+
+              <div className="space-y-1">
+                {lines.map((ln, j) =>
+                  href && j === 0 ? (
+                    <a
+                      key={j}
+                      href={href}
+                      className="block text-sm text-white/80 hover:text-white hover:underline"
+                    >
+                      {ln}
+                    </a>
+                  ) : (
+                    <p key={j} className="text-sm text-white/70">
+                      {ln}
+                    </p>
+                  ),
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* Form section */}

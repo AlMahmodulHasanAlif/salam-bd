@@ -21,24 +21,46 @@ import {
   Star,
   Shirt,
   Blocks,
+  Youtube,
+  Info,
+  Phone,
+  Package,
 } from "lucide-react";
+import {
+  FaFacebookF,
+  FaYoutube,
+  FaInstagram,
+  FaWhatsapp,
+} from "react-icons/fa";
 import { NavLink, useNavigate } from "react-router";
 import { searchProducts } from "../api/productApi";
 import useAuth from "../hooks/useAuth";
 import useCart from "../hooks/useCart";
 import logo from "../assets/SalamBDLogo.png";
+import logoTrim from "../assets/logo-trim.png";
 import toast from "react-hot-toast";
 import { GTM } from "../utils/gtm";
 
+const SOCIAL_LINKS = [
+  { label: "Facebook", href: "https://www.facebook.com/salam.com3", icon: FaFacebookF },
+  { label: "YouTube", href: "https://www.youtube.com/@Salambdofficial", icon: FaYoutube },
+  { label: "Instagram", href: "https://www.instagram.com/", icon: FaInstagram },
+  { label: "WhatsApp", href: "https://wa.me/+8801886699883", icon: FaWhatsapp },
+];
+
 const NAV_LINKS = [
   { label: "Home", to: "/", end: true, icon: Home },
-  { label: "Islamic Books", to: "/books", icon: BookOpen },
-  { label: "WallFrame", to: "/wallframe", icon: Image },
-  { label: "Attar/Perfume", to: "/attar", icon: Sparkles },
-  { label: "Islamic Products", to: "/islamic-products", icon: Star },
-  // { label: "Hajj Item",     to: "/hajj-item",             icon: Star      },
-  // { label: "Gallery",       to: "/gallery",               icon: Image     },
+  { label: "All Products", to: "/products", icon: Package },
+  { label: "Gallery", to: "/gallery", icon: Image },
+  {
+    label: "Video",
+    to: "https://www.youtube.com/quraneralotv",
+    icon: Youtube,
+    external: true,
+  },
   { label: "Blog", to: "/blog", icon: BookOpen },
+  { label: "About Us", to: "/about", icon: Info },
+  { label: "Contacts", to: "/contact", icon: Phone },
 ];
 
 // const KIDS_SUB = [
@@ -172,187 +194,145 @@ const Topbar = () => {
   return (
     <>
       <div className="bg-white shadow-sm sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 py-3 flex items-center gap-4">
-          {/* Hamburger — mobile only, left */}
+        {/* ══ MOBILE top strip ══ */}
+        <div className="md:hidden bg-gradient-to-r from-green-600 via-green-800 to-green-900 text-white px-4 py-2">
+          <p className="text-center text-[13px] font-semibold tracking-wide">
+            Welcome To Salam BD
+          </p>
+        </div>
+
+        {/* ══ MOBILE navbar: logo + hamburger ══ */}
+        <div className="md:hidden flex items-center justify-between px-4 py-2.5 bg-white">
+          <img
+            src={logoTrim}
+            alt="Salam BD"
+            className="h-10 cursor-pointer"
+            onClick={() => navigate("/")}
+          />
           <button
             onClick={() => {
               setMenuOpen(true);
               setSearchModalOpen(false);
             }}
-            className="p-2 text-green-800  hover:text-green-700 transition  md:hidden"
+            className="p-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition"
             aria-label="Open menu"
           >
-            <Menu size={21} />
+            <Menu size={22} />
           </button>
+        </div>
 
-          {/* Logo — centered on mobile */}
-          <img
-            src={logo}
-            alt="Salam BD"
-            className="h-12 cursor-pointer shrink-0 mx-auto md:mx-0"
-            onClick={() => navigate("/")}
-          />
+        {/* ══ DESKTOP top strip ══ */}
+        <div className="hidden md:block bg-gradient-to-r from-green-600 via-green-800 to-green-900 text-white">
+          <div className="max-w-7xl mx-auto px-6 py-2 flex items-center justify-between text-[13px]">
+            {/* Welcome greeting — left */}
+            <p className="font-semibold tracking-wide">Welcome To Salam BD</p>
 
-          {/* Cart — mobile top-right */}
-          <button
-            onClick={() => navigate("/cart")}
-            className="relative p-2 text-green-800 hover:text-green-700 transition rounded-full hover:bg-green-50 md:hidden shrink-0"
-          >
-            <ShoppingCart size={21} />
-            {cartCount > 0 && (
-              <span className="absolute top-0.5 right-0.5 bg-green-700 text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
-                {cartCount > 99 ? "99+" : cartCount}
-              </span>
-            )}
-          </button>
+            {/* Right actions */}
+            <div className="flex items-center gap-4">
+              {/* Social icons */}
+              <div className="flex items-center gap-1.5">
+                {SOCIAL_LINKS.map(({ label, href, icon: Icon }) => (
+                  <a
+                    key={label}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={label}
+                    className="w-7 h-7 rounded-full bg-white/15 text-white flex items-center justify-center hover:bg-white/25 transition"
+                  >
+                    <Icon size={13} />
+                  </a>
+                ))}
+              </div>
 
-          {/* ── DESKTOP Search ── */}
-          <div className="flex-1 relative hidden md:block" ref={searchRef}>
-            <form
-              onSubmit={handleSubmit}
-              className="flex border border-gray-300 rounded-sm overflow-hidden focus-within:border-green-600 transition"
-            >
-              <input
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                onFocus={() => results.length > 0 && setShowDrop(true)}
-                placeholder="Search by product name"
-                className="flex-1 px-5 py-2 text-sm outline-none bg-transparent"
-              />
-              <button
-                type="submit"
-                className="bg-green-700 hover:bg-green-800 transition px-5 flex items-center text-white"
-              >
-                <Search size={17} />
-              </button>
-            </form>
-
-            {showDrop && (
-              <div className="absolute top-full mt-1 left-0 right-0 bg-white border border-gray-200 rounded-xl shadow-xl z-50 max-h-72 overflow-y-auto">
-                {searching ? (
-                  <p className="px-4 py-3 text-sm text-gray-400">
-                    Searching...
-                  </p>
-                ) : results.length === 0 ? (
-                  <p className="px-4 py-3 text-sm text-gray-400">
-                    No results found
-                  </p>
-                ) : (
-                  results.map((p) => (
-                    <div
-                      key={p._id}
-                      onClick={() => handlePick(p)}
-                      className="flex items-center gap-3 px-4 py-2.5 hover:bg-green-50 cursor-pointer transition"
-                    >
+              {user ? (
+                <div className="relative" ref={userRef}>
+                  <button
+                    onClick={() => setShowUser(!showUser)}
+                    className="flex items-center gap-2 text-white hover:text-green-200 transition"
+                  >
+                    {user.photoURL ? (
                       <img
-                        src={p.image}
-                        alt={p.name}
-                        className="w-10 h-10 object-cover rounded-lg bg-gray-100 shrink-0"
+                        src={user.photoURL}
+                        className="w-6 h-6 rounded-full object-cover ring-2 ring-white/40"
+                        alt=""
                       />
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium text-gray-800 truncate">
-                          {p.name}
+                    ) : (
+                      <div className="w-6 h-6 rounded-full bg-white/20 text-white flex items-center justify-center text-xs font-bold">
+                        {user.displayName?.[0]?.toUpperCase() ||
+                          user.email?.[0]?.toUpperCase()}
+                      </div>
+                    )}
+                    <span className="font-medium max-w-[90px] truncate">
+                      {user.displayName || user.email?.split("@")[0]}
+                    </span>
+                    <ChevronDown
+                      size={13}
+                      className={`transition-transform duration-200 ${showUser ? "rotate-180" : ""}`}
+                    />
+                  </button>
+
+                  {showUser && (
+                    <div className="absolute right-0 mt-2 w-52 bg-white border border-gray-100 rounded-xl shadow-lg z-50 overflow-hidden text-gray-700">
+                      <div className="px-4 py-3 bg-green-50 border-b border-green-100">
+                        <p className="text-sm font-semibold text-gray-800 truncate">
+                          {user.displayName || "User"}
                         </p>
-                        <p className="text-xs text-green-700 font-semibold">
-                          ৳{p.price}
+                        <p className="text-xs text-gray-500 truncate">
+                          {user.email}
                         </p>
                       </div>
-                    </div>
-                  ))
-                )}
-              </div>
-            )}
-          </div>
-
-          {/* ── DESKTOP Right actions ── */}
-          <div className="items-center gap-5 shrink-0 hidden md:flex">
-            {user ? (
-              <div className="relative" ref={userRef}>
-                <button
-                  onClick={() => setShowUser(!showUser)}
-                  className="flex items-center gap-2 text-gray-700 hover:text-green-700 transition"
-                >
-                  {user.photoURL ? (
-                    <img
-                      src={user.photoURL}
-                      className="w-8 h-8 rounded-full object-cover ring-2 ring-green-100"
-                      alt=""
-                    />
-                  ) : (
-                    <div className="w-8 h-8 rounded-full bg-green-100 text-green-700 flex items-center justify-center text-sm font-bold">
-                      {user.displayName?.[0]?.toUpperCase() ||
-                        user.email?.[0]?.toUpperCase()}
+                      <button
+                        onClick={() => {
+                          navigate("/dashboard");
+                          setShowUser(false);
+                        }}
+                        className="flex items-center gap-2.5 w-full text-left px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition"
+                      >
+                        <LayoutDashboard size={15} className="text-green-700" />{" "}
+                        My Dashboard
+                      </button>
+                      <button
+                        onClick={() => {
+                          navigate("/orders");
+                          setShowUser(false);
+                        }}
+                        className="flex items-center gap-2.5 w-full text-left px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition"
+                      >
+                        <ClipboardList size={15} className="text-green-700" /> My
+                        Orders
+                      </button>
+                      <div className="border-t border-gray-100" />
+                      <button
+                        onClick={handleLogout}
+                        className="flex items-center gap-2.5 w-full text-left px-4 py-2.5 text-sm text-red-500 hover:bg-red-50 transition"
+                      >
+                        <LogOut size={15} /> Sign Out
+                      </button>
                     </div>
                   )}
-                  <span className="text-sm font-medium max-w-[80px] truncate hidden sm:block">
-                    {user.displayName || user.email?.split("@")[0]}
-                  </span>
-                  <ChevronDown
-                    size={13}
-                    className={`transition-transform duration-200 ${showUser ? "rotate-180" : ""}`}
-                  />
+                </div>
+              ) : (
+                <button
+                  onClick={() => navigate("/login")}
+                  className="flex items-center gap-1.5 text-white hover:text-green-200 transition font-medium"
+                >
+                  <User size={15} /> My Account
                 </button>
-
-                {showUser && (
-                  <div className="absolute right-0 mt-2 w-52 bg-white border border-gray-100 rounded-xl shadow-lg z-50 overflow-hidden">
-                    <div className="px-4 py-3 bg-green-50 border-b border-green-100">
-                      <p className="text-sm font-semibold text-gray-800 truncate">
-                        {user.displayName || "User"}
-                      </p>
-                      <p className="text-xs text-gray-500 truncate">
-                        {user.email}
-                      </p>
-                    </div>
-                    <button
-                      onClick={() => {
-                        navigate("/dashboard");
-                        setShowUser(false);
-                      }}
-                      className="flex items-center gap-2.5 w-full text-left px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition"
-                    >
-                      <LayoutDashboard size={15} className="text-green-700" />{" "}
-                      My Dashboard
-                    </button>
-                    <button
-                      onClick={() => {
-                        navigate("/orders");
-                        setShowUser(false);
-                      }}
-                      className="flex items-center gap-2.5 w-full text-left px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition"
-                    >
-                      <ClipboardList size={15} className="text-green-700" /> My
-                      Orders
-                    </button>
-                    <div className="border-t border-gray-100" />
-                    <button
-                      onClick={handleLogout}
-                      className="flex items-center text-green-800 gap-2.5 w-full text-left px-4 py-2.5 text-sm text-red-500 hover:bg-red-50 transition"
-                    >
-                      <LogOut size={15} /> Sign Out
-                    </button>
-                  </div>
-                )}
-              </div>
-            ) : (
-              <button
-                onClick={() => navigate("/login")}
-                className="flex items-center gap-1.5 text-green-800 hover:text-green-700 transition font-medium text-sm"
-              >
-                <LogIn size={18} /> Sign In
-              </button>
-            )}
-
-            <button
-              onClick={() => navigate("/cart")}
-              className="relative text-green-800 hover:text-green-700 transition"
-            >
-              <ShoppingCart size={22} />
-              {cartCount > 0 && (
-                <span className="absolute -top-2 -right-2 bg-green-700 text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center">
-                  {cartCount > 99 ? "99+" : cartCount}
-                </span>
               )}
-            </button>
+
+              <button
+                onClick={() => navigate("/cart")}
+                className="relative text-white hover:text-green-200 transition"
+              >
+                <ShoppingCart size={18} />
+                {cartCount > 0 && (
+                  <span className="absolute -top-2 -right-2 bg-white text-green-800 text-[10px] font-bold w-[18px] h-[18px] rounded-full flex items-center justify-center">
+                    {cartCount > 99 ? "99+" : cartCount}
+                  </span>
+                )}
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -588,21 +568,35 @@ const Topbar = () => {
 
           <nav className="flex-1 overflow-y-auto">
             <p className="px-5 pt-3 pb-1 text-[11px] font-bold uppercase tracking-widest text-gray-400 ">
-              Categories
+              Menu
             </p>
 
-            {NAV_LINKS.map(({ label, to, end, icon: Icon }) => (
-              <NavLink
-                key={to}
-                to={to}
-                end={end}
-                className={mobileNavLink}
-                onClick={closeMenu}
-              >
-                {Icon && <Icon size={17} className="mr-3 text-green-700" />}{" "}
-                {label}
-              </NavLink>
-            ))}
+            {NAV_LINKS.map(({ label, to, end, icon: Icon, external }) =>
+              external ? (
+                <a
+                  key={label}
+                  href={to}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={closeMenu}
+                  className="flex items-center w-full px-5 py-3.5 text-[15px] font-medium border-b border-gray-100 text-gray-800 hover:bg-gray-50 transition"
+                >
+                  {Icon && <Icon size={17} className="mr-3 text-green-700" />}{" "}
+                  {label}
+                </a>
+              ) : (
+                <NavLink
+                  key={to}
+                  to={to}
+                  end={end}
+                  className={mobileNavLink}
+                  onClick={closeMenu}
+                >
+                  {Icon && <Icon size={17} className="mr-3 text-green-700" />}{" "}
+                  {label}
+                </NavLink>
+              ),
+            )}
 
             {/* <button
               onClick={() => setKidsOpen((p) => !p)}

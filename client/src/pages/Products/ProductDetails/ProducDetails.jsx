@@ -26,8 +26,8 @@ import {
 
 const BASE_URL = `${import.meta.env.VITE_API_URL}/api` || "http://localhost:3000/api";
 
-const WHATSAPP_NUMBER = "+8801860989372";
-const CALL_NUMBER     = "+8801860989372";
+const WHATSAPP_NUMBER = "+8801886699883";
+const CALL_NUMBER     = "+8801886699883";
 
 const getAuthHeader = async (user) => {
   if (!user) return {};
@@ -59,6 +59,28 @@ const resolveOriginalPrice = (product, variant) => {
     return product.originalPrice + variant.priceAdjustment;
   }
   return product?.originalPrice ?? null;
+};
+
+// Convert a YouTube URL (watch, youtu.be, shorts, embed) into an embed URL.
+const toYouTubeEmbed = (url) => {
+  if (!url) return null;
+  try {
+    const u = new URL(url);
+    let id = "";
+    if (u.hostname.includes("youtu.be")) {
+      id = u.pathname.slice(1);
+    } else if (u.pathname.startsWith("/embed/")) {
+      id = u.pathname.split("/embed/")[1];
+    } else if (u.pathname.startsWith("/shorts/")) {
+      id = u.pathname.split("/shorts/")[1];
+    } else {
+      id = u.searchParams.get("v") || "";
+    }
+    id = (id || "").split("/")[0].split("?")[0];
+    return id ? `https://www.youtube.com/embed/${id}` : null;
+  } catch {
+    return null;
+  }
 };
 
 const calcDiscount = (price, originalPrice) => {
@@ -1041,11 +1063,31 @@ const ProductDetails = () => {
                   </div>
                 )}
 
-                {activeTab === 1 && (
-                  <div className="text-center py-12 text-gray-400 text-sm italic">
-                    No product video available for this item.
-                  </div>
-                )}
+                {activeTab === 1 &&
+                  (() => {
+                    const embed = toYouTubeEmbed(product.videoUrl);
+                    return embed ? (
+                      <div>
+                        <h2 className="text-lg font-bold text-gray-900 mb-1">
+                          Product Video
+                        </h2>
+                        <div className="w-10 h-1 bg-orange-500 rounded mb-4" />
+                        <div className="relative w-full overflow-hidden rounded-xl bg-black aspect-video">
+                          <iframe
+                            src={embed}
+                            title={`${product.name} video`}
+                            className="absolute inset-0 w-full h-full"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowFullScreen
+                          />
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="text-center py-12 text-gray-400 text-sm italic">
+                        No product video available for this item.
+                      </div>
+                    );
+                  })()}
 
                 {activeTab === 2 && (
                   <div>

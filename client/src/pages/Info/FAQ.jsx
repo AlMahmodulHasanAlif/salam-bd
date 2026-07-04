@@ -30,7 +30,7 @@ const FAQS = [
   },
   {
     q: "পণ্যের গুণগত মান নিয়ে কোনো সমস্যা হলে কী করব?",
-    a: "আমাদের ফোন (+880 1860-989372) বা ইমেইল (info@salambd.com) এ যোগাযোগ করুন। আমরা দ্রুত সমাধান করব।",
+    a: "আমাদের ফোন (01886699883) বা ইমেইল (salambd.contact@gmail.com) এ যোগাযোগ করুন। আমরা দ্রুত সমাধান করব।",
   },
   {
     q: "কি ধরনের পণ্য পাওয়া যায়?",
@@ -82,7 +82,7 @@ const FAQ = () => (
     <div className="bg-green-50 border border-green-100 rounded-xl p-4 mt-2">
       <p className="text-sm text-green-800 font-medium">আপনার প্রশ্নের উত্তর পাননি?</p>
       <p className="text-sm text-green-700 mt-1">
-        আমাদের সাথে সরাসরি যোগাযোগ করুন: 📞 +880 1860-989372 বা 📧 info@salambd.com
+        আমাদের সাথে সরাসরি যোগাযোগ করুন: 📞 01886699883 বা 📧 salambd.contact@gmail.com
       </p>
     </div>
   </InfoPageLayout>

@@ -33,11 +33,11 @@ export default function PhoneOrder() {
 
           {/* Phone button */}
           <a
-            href="tel:01860989372"
+            href="tel:01886699883"
             className="flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-base px-6 py-2.5 rounded-xl transition-all duration-200 shadow-md shadow-emerald-900/50 hover:-translate-y-0.5 active:scale-95 whitespace-nowrap"
           >
             <Phone size={16} strokeWidth={2.5} />
-            <span>018-609-89372</span>
+            <span>01886699883</span>
           </a>
 
           {/* Divider */}

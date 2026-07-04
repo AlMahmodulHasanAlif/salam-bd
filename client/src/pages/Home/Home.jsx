@@ -1,16 +1,14 @@
 import React from 'react';
 import Hero from './Hero';
-import ProductListPage from '../Products/ProductListPage';
-import AllProductsSlide from './AllProductsSlide';
-import AllProductsCategory from './AllProductsCategory';
-import Test from './Test';
+import Features from './Features';
+import AllProductsGrid from './AllProductsGrid';
 
 const Home = () => {
     return (
         <div>
         <Hero></Hero>
-        <AllProductsSlide></AllProductsSlide>
-        {/* <ProductListPage></ProductListPage> */}
+        <Features></Features>
+        <AllProductsGrid></AllProductsGrid>
         </div>
     );
 };

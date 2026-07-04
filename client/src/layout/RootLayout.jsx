@@ -7,7 +7,9 @@ import CartProvider from '../context/CartProvider';
 import BottomNav from '../components/Bottomnav';
 import FloatingActions from '../components/FloatingActions';
 import FooterContactStrip from '../components/FooterContactStrip';
+import CtaBanner from '../components/CtaBanner';
 import { GTM } from '../utils/gtm';
+
 
 const RootLayout = () => {
   const { pathname } = useLocation();
@@ -23,6 +25,7 @@ const RootLayout = () => {
   return (
     <CartProvider>
       <div className="min-h-screen flex flex-col bg-gray-50">
+        
         <Topbar />
         <Navbar />
         {/* <BottomNav /> */}
@@ -32,6 +35,7 @@ const RootLayout = () => {
         </main>
 
         <Footer />
+        <CtaBanner />
         <FloatingActions />
       </div>
     </CartProvider>

@@ -7,11 +7,10 @@ import footerbg from "../assets/footerbg1.jpg";
 
 const quickLinks = [
   { label: "Home", href: "/" },
-  { label: "Islamic Books", href: "/books" },
-  { label: "Wall Frames", href: "/wallframe" },
-  { label: "Attar & Perfume", href: "/attar" },
-  { label: "Kids Items", href: "/kids" },
-  { label: "Hajj Items", href: "/hajj-item" },
+  { label: "All Products", href: "/products" },
+  { label: "Gallery", href: "/gallery" },
+  { label: "Video", href: "https://www.youtube.com/quraneralotv", external: true },
+  { label: "Blog", href: "/blog" },
 ];
 
 const policyLinks = [
@@ -44,7 +43,7 @@ const socialLinks = [
   },
   {
     icon: <FaWhatsapp />,
-    href: "https://wa.me/8801860989372",
+    href: "https://wa.me/8801886699883",
     label: "WhatsApp",
     color: "hover:bg-green-500",
   },
@@ -102,8 +101,8 @@ export default function Footer() {
 
             {/* Brand Info */}
             <p className="text-[1rem] leading-relaxed text-gray-400">
-              Your trusted destination for quality Islamic goods — books, wall frames,
-              attars, kids' essentials, and Hajj supplies. Bringing barakah to every home.
+              Your trusted destination for quality Islamic products. Explore our
+              full collection and bring barakah to every home.
             </p>
             {/* Social Icons */}
             <div className="flex gap-3 pt-2">
@@ -128,17 +127,31 @@ export default function Footer() {
               Quick Links
             </h3>
             <ul className="space-y-2">
-              {quickLinks.map((link) => (
-                <li key={link.label}>
-                  <Link
-                    to={link.href}
-                    className="text-[1rem] text-gray-400 hover:text-[#c9a84c] transition-colors duration-200 flex items-center gap-2 group"
-                  >
-                    <IslamicBullet />
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
+              {quickLinks.map((link) =>
+                link.external ? (
+                  <li key={link.label}>
+                    <a
+                      href={link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[1rem] text-gray-400 hover:text-[#c9a84c] transition-colors duration-200 flex items-center gap-2 group"
+                    >
+                      <IslamicBullet />
+                      {link.label}
+                    </a>
+                  </li>
+                ) : (
+                  <li key={link.label}>
+                    <Link
+                      to={link.href}
+                      className="text-[1rem] text-gray-400 hover:text-[#c9a84c] transition-colors duration-200 flex items-center gap-2 group"
+                    >
+                      <IslamicBullet />
+                      {link.label}
+                    </Link>
+                  </li>
+                ),
+              )}
             </ul>
           </div>
 
@@ -170,24 +183,24 @@ export default function Footer() {
             <ul className="space-y-2 text-[1rem]">
               <li className="flex items-start gap-3 text-gray-400">
                 <MdLocationOn className="text-[#c9a84c] text-lg mt-0.5 shrink-0" />
-                <span>FutureTown, Mohammadpur,<br />Dhaka, Bangladesh</span>
+                <span>37 Ma Amena Plaza, (6th floor of Sundarban Courier),<br />falpatti area, Mirpur-10, Dhaka-1216</span>
               </li>
               <li>
                 <a
-                  href="tel:+8801860989372"
+                  href="tel:+8801886699883"
                   className="flex items-center gap-3 md:text-sm text-gray-400 hover:text-[#c9a84c] transition-colors duration-200"
                 >
                   <MdPhone className="text-[#c9a84c] text-lg shrink-0" />
-                  +8801860989372
+                  01886699883
                 </a>
               </li>
               <li>
                 <a
-                  href="mailto:info@salambd.com"
+                  href="mailto:salambd.contact@gmail.com"
                   className="flex items-center gap-3 md:text-sm text-gray-400 hover:text-[#c9a84c] transition-colors duration-200"
                 >
                   <MdEmail className="text-[#c9a84c] text-lg shrink-0" />
-                  info@salambd.com
+                  salambd.contact@gmail.com
                 </a>
               </li>
               <li className="md:text-sm text-gray-400">
