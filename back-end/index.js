@@ -43,12 +43,24 @@ const allowedOrigins = [
   "https://salambd.com",
   "https://www.salambd.com",
   "https://server.salambd.com",
+  // Optional extra origin(s) from env (comma-separated), e.g. your frontend URL
+  ...(process.env.CLIENT_URL
+    ? process.env.CLIENT_URL.split(",").map((s) => s.trim()).filter(Boolean)
+    : []),
 ];
+
+// Allow any of this account's Vercel deployments (preview + production URLs
+// all end in .vercel.app) so the frontend isn't blocked by CORS on the
+// auto-generated domains.
+const isAllowedOrigin = (origin) =>
+  allowedOrigins.includes(origin) || /\.vercel\.app$/.test(origin);
 
 app.use(
   cors({
     origin: function (origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) {
+      // Non-browser requests (no Origin) and allowed origins pass; everything
+      // else is rejected without throwing (so it doesn't 500).
+      if (!origin || isAllowedOrigin(origin)) {
         callback(null, true);
       } else {
         callback(null, false);
