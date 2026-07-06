@@ -48,6 +48,19 @@ app.use(
   }),
 );
 app.use(cookieParser());
+
+// Ensure the DB is connected before any route runs. In serverless (Vercel) a
+// request can hit a cold start before the connection is ready, so we await the
+// cached connection here rather than relying on a one-time startup call.
+app.use(async (_req, _res, next) => {
+  try {
+    await connectDB();
+    next();
+  } catch (err) {
+    next(err);
+  }
+});
+
 app.use(attachFbData); // ← ADD THIS (after cookieParser, before routes)
 
 // ─── ROUTES ───────────────────────────────────────────────────────────────
@@ -73,11 +86,18 @@ app.use((err, req, res, _next) => {
 });
 
 // ─── START ────────────────────────────────────────────────────────────────
-connectDB()
-  .then(() =>
-    app.listen(port, () => console.log(`✅ Server running on port ${port}`)),
-  )
-  .catch((err) => {
-    console.error("❌ Failed to connect to MongoDB:", err);
-    process.exit(1);
-  });
+// On Vercel the app is invoked as a serverless function via the default export
+// below — there is no long-lived process, so we only listen() during local dev.
+if (process.env.NODE_ENV !== "production") {
+  connectDB()
+    .then(() =>
+      app.listen(port, () => console.log(`✅ Server running on port ${port}`)),
+    )
+    .catch((err) => {
+      console.error("❌ Failed to connect to MongoDB:", err);
+      process.exit(1);
+    });
+}
+
+// Vercel (@vercel/node) needs the Express app exported as the request handler.
+export default app;
