@@ -6,7 +6,6 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
-config
 .env
 
 # Secrets / service-account credentials — never commit
@@ -26,5 +25,3 @@ node_modules
 *.njsproj
 *.sln
 *.sw?
-package-lock.json
-package.json

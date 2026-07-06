@@ -1,0 +1,39 @@
+{
+  "name": "salambd-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AlMahmodulHasanAlif/salambd-client.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/AlMahmodulHasanAlif/salambd-client/issues"
+  },
+  "homepage": "https://github.com/AlMahmodulHasanAlif/salambd-client#readme",
+  "dependencies": {
+    "@tanstack/react-query": "^5.97.0",
+    "chart.js": "^4.5.1",
+    "cloudinary": "^2.9.0",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.6",
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1",
+    "express-async-handler": "^1.2.0",
+    "facebook-nodejs-business-sdk": "^24.0.1",
+    "firebase": "^12.15.0",
+    "firebase-admin": "^14.1.0",
+    "mongodb": "^7.1.0",
+    "multer": "^1.4.5-lts.1",
+    "nodemon": "^3.1.14"
+  }
+}
