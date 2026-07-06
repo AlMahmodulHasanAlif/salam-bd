@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
-import img1 from "../../assets/Cover1.webp";
+import img1 from "../../assets/cover1.webp";
 import img3 from "../../assets/cover2.jpg";
 
 import codingbook2 from "../../assets/codingbook2.webp";

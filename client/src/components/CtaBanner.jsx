@@ -1,5 +1,5 @@
 // src/components/CtaBanner.jsx
-import footerBg from "../assets/footer.webp";
+import footerBg from "../assets/footerbg1.jpg";
 
 export default function CtaBanner() {
   return (
