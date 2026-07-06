@@ -16,6 +16,9 @@
   "author": "",
   "license": "ISC",
   "type": "module",
+  "overrides": {
+    "jose": "^4.15.9"
+  },
   "bugs": {
     "url": "https://github.com/AlMahmodulHasanAlif/salambd-client/issues"
   },

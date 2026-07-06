@@ -22,7 +22,17 @@ import galleryRoutes from "./routes/galleryRoutes.js";
 import blogRoutes from "./routes/blogRoutes.js";
 import pluginOrderRoutes from "./routes/pluginOrderRoutes.js";
 
-initFirebase();
+// Don't let a Firebase misconfig crash the entire serverless cold start —
+// log it clearly so it's visible in Vercel's Runtime Logs, and let non-auth
+// routes keep working. Auth routes will return 401 until it's fixed.
+try {
+  initFirebase();
+} catch (err) {
+  console.error(
+    "❌ Firebase Admin failed to initialize — check FIREBASE_SERVICE_ACCOUNT env var:",
+    err.message,
+  );
+}
 
 const app = express();
 const port = process.env.PORT || 3000;
