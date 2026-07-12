@@ -106,7 +106,7 @@ export default function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={s.label}
-                  className={`w-10 h-10 md:w-9 md:h-9 rounded-full bg-white/10 flex items-center justify-center text-white text-xl md:text-sm transition-colors duration-200 ${s.color}`}
+                  className={`w-10 h-10 md:w-9 md:h-9 shrink-0 aspect-square rounded-full bg-white/10 flex items-center justify-center text-white text-xl md:text-sm transition-colors duration-200 ${s.color}`}
                 >
                   {s.icon}
                 </a>
