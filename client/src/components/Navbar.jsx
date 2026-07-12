@@ -43,7 +43,7 @@ const Navbar = () => {
 
   return (
     // 👇 Hidden on mobile (handled by Topbar drawer), visible on md and up
-    <div className="hidden md:block bg-white border-b border-gray-200 shadow-md sticky top-0 z-50">
+    <div className="hidden md:block bg-white border-b border-gray-200 shadow-md">
       <div className="max-w-screen-2xl mx-auto px-6 flex items-center justify-between py-5">
         {/* Logo — left */}
         <NavLink to="/" className="shrink-0">

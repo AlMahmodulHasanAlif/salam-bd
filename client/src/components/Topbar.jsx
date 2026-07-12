@@ -194,9 +194,7 @@ const Topbar = () => {
   return (
     <>
       <div
-        className={`bg-white shadow-sm sticky top-0 ${
-          showUser ? "z-[60]" : "z-50"
-        }`}
+        className={`bg-white shadow-sm relative ${showUser ? "z-[60]" : ""}`}
       >
         {/* ══ MOBILE top strip ══ */}
         <div className="md:hidden bg-gradient-to-r from-green-600 via-green-800 to-green-900 text-white px-4 py-2">

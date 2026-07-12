@@ -24,10 +24,14 @@ const RootLayout = () => {
     <CartProvider>
       <div className="min-h-screen flex flex-col bg-gray-50">
         
-        <Topbar />
-        <Navbar />
+        {/* Sticky header — Topbar + Navbar move together so the PC cart/account
+            strip stays visible on scroll instead of being covered by the navbar */}
+        <div className="sticky top-0 z-50">
+          <Topbar />
+          <Navbar />
+        </div>
         {/* <BottomNav /> */}
-        
+
         <main className="flex-1">
           <Outlet />
         </main>
