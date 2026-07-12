@@ -193,7 +193,11 @@ const Topbar = () => {
 
   return (
     <>
-      <div className="bg-white shadow-sm sticky top-0 z-50">
+      <div
+        className={`bg-white shadow-sm sticky top-0 ${
+          showUser ? "z-[60]" : "z-50"
+        }`}
+      >
         {/* ══ MOBILE top strip ══ */}
         <div className="md:hidden bg-gradient-to-r from-green-600 via-green-800 to-green-900 text-white px-4 py-2">
           <p className="text-center text-[13px] font-semibold tracking-wide">
@@ -223,7 +227,7 @@ const Topbar = () => {
 
         {/* ══ DESKTOP top strip ══ */}
         <div className="hidden md:block bg-gradient-to-r from-green-600 via-green-800 to-green-900 text-white">
-          <div className="max-w-7xl mx-auto px-6 py-2 flex items-center justify-between text-[13px]">
+          <div className="max-w-screen-2xl mx-auto px-6 py-2 flex items-center justify-between text-[13px]">
             {/* Welcome greeting — left */}
             <p className="font-semibold tracking-wide">Welcome To Salam BD</p>
 

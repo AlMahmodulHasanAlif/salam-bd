@@ -44,7 +44,7 @@ const Features = () => {
       <div className="absolute -top-24 -left-24 w-72 h-72 rounded-full bg-[#00AB3D]/10 blur-3xl" />
       <div className="absolute -bottom-24 -right-24 w-72 h-72 rounded-full bg-emerald-400/10 blur-3xl" />
 
-      <div className="relative max-w-7xl mx-auto px-3 sm:px-4 py-6 sm:py-12">
+      <div className="relative max-w-screen-2xl mx-auto px-3 sm:px-4 py-6 sm:py-12">
         <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 gap-2.5 sm:gap-4">
           {FEATURES.map(({ icon: Icon, text, gradient, bgClass }) => (
             <div

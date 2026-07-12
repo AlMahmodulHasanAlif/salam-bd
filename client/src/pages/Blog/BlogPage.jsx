@@ -62,7 +62,7 @@ const BlogPage = () => {
         </p>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 md:px-6 py-12 flex flex-col lg:flex-row gap-10">
+      <div className="max-w-screen-2xl mx-auto px-4 md:px-6 py-12 flex flex-col lg:flex-row gap-10">
 
         {/* ── Main Content ── */}
         <div className="flex-1 min-w-0">

@@ -111,7 +111,7 @@ const AllProductsCategory = () => {
   const products = productMap[active.key] || [];
 
   return (
-    <section className="max-w-7xl mx-auto px-3 sm:px-4 py-6 sm:py-10">
+    <section className="max-w-screen-2xl mx-auto px-3 sm:px-4 py-6 sm:py-10">
       {/* Heading */}
       <div className="flex items-center justify-between mb-4 sm:mb-6">
         <div>

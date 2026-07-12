@@ -35,7 +35,7 @@ const ProductListPage = ({ category, subcategory, title, emoji }) => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-3 sm:px-4 py-6 sm:py-8">
+    <div className="max-w-screen-2xl mx-auto px-3 sm:px-4 py-6 sm:py-8">
       {/* Header */}
       <div className="flex items-center justify-between mb-5 sm:mb-6 gap-3">
         <div className="flex items-center gap-2 min-w-0">
@@ -59,7 +59,7 @@ const ProductListPage = ({ category, subcategory, title, emoji }) => {
 
       {/* Skeleton */}
       {loading ? (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 sm:gap-3">
           {[...Array(10)].map((_, i) => (
             <div key={i} className="rounded-xl overflow-hidden border border-gray-100 bg-white">
               <div className="bg-gray-100 animate-pulse" style={{ aspectRatio: "1/1" }} />
@@ -83,7 +83,7 @@ const ProductListPage = ({ category, subcategory, title, emoji }) => {
           {/* <p className="text-xs sm:text-sm text-gray-400 mb-3 sm:mb-4">
             {products.length} product{products.length !== 1 ? "s" : ""} found
           </p> */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 sm:gap-3">
             {products.map((p) => (
               <ProductCard key={p._id} product={p} />
             ))}

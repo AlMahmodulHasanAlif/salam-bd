@@ -23,7 +23,7 @@ const SearchResults = () => {
   }, [q]);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8">
+    <div className="max-w-screen-2xl mx-auto px-4 py-8">
       <h1 className="text-xl font-bold text-gray-800 mb-6 border-l-4 border-green-700 pl-3">
         Results for: <span className="text-green-700">"{q}"</span>
       </h1>
@@ -45,7 +45,7 @@ const SearchResults = () => {
       ) : (
         <>
           <p className="text-sm text-gray-400 mb-4">{results.length} results</p>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
             {results.map((p) => (
               <ProductCard key={p._id} product={p} />
             ))}

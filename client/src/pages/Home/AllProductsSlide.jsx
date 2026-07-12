@@ -240,7 +240,7 @@ const AllProductsSlide = () => {
   const productMap = data || {};
 
   return (
-    <section className="max-w-7xl mx-auto px-3 sm:px-4 py-6 sm:py-10 space-y-5">
+    <section className="max-w-screen-2xl mx-auto px-3 sm:px-4 py-6 sm:py-10 space-y-5">
       {CATEGORIES.map(({ key, label, emoji, route }) => {
         const products = productMap[key] || [];
         return (

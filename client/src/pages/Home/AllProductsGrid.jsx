@@ -27,7 +27,7 @@ const AllProductsGrid = () => {
   const products = data || [];
 
   return (
-    <section className="max-w-7xl mx-auto px-3 sm:px-4 py-6 sm:py-10">
+    <section className="max-w-screen-2xl mx-auto px-3 sm:px-4 py-6 sm:py-10">
       {/* Heading */}
       <div className="mb-5 sm:mb-8 text-center">
         <h2 className="text-xl sm:text-3xl font-extrabold text-gray-800">
@@ -39,7 +39,7 @@ const AllProductsGrid = () => {
       </div>
 
       {/* Grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-5">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-3">
         {isLoading ? (
           [...Array(10)].map((_, i) => <SkeletonCard key={i} />)
         ) : products.length === 0 ? (

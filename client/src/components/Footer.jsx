@@ -82,7 +82,7 @@ export default function Footer() {
 
         <FooterContactStrip />
 
-        <div className="max-w-7xl mx-auto px-6 py-14 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+        <div className="max-w-screen-2xl mx-auto px-6 py-14 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
 
           <div className="space-y-4">
             {/* Logo */}

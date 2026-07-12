@@ -9,6 +9,7 @@ import {
 import useAuth from "../../hooks/useAuth";
 import { Search, Trash2, Pencil, ZoomIn, Users } from "lucide-react";
 import toast from "react-hot-toast";
+import * as XLSX from "xlsx";
 
 const AdminUsers = () => {
   const axiosSecure = useAxiosSecure();
@@ -64,28 +65,41 @@ const AdminUsers = () => {
   // Shorten MongoDB _id to last 4 hex chars (uppercase) like "361E"
   const shortId = (id = "") => id.slice(-4).toUpperCase();
 
-  const exportCSV = () => {
-    const headers = ["ID", "Joining Date", "Name", "Email", "Phone", "Orders", "Role"];
-    const rows = users.map((u) => [
-      shortId(u._id),
-      u.createdAt ? new Date(u.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : "",
-      u.name || "",
-      u.email || "",
-      u.phone || "",
-      u.orderCount ?? 0,
-      u.role || "user",
-    ]);
-    const csv = [headers, ...rows]
-      .map((row) => row.map((v) => `"${String(v).replace(/"/g, '""')}"`).join(","))
-      .join("\n");
-    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `customers_${new Date().toISOString().slice(0, 10)}.csv`;
-    a.click();
-    URL.revokeObjectURL(url);
-    toast.success("Exported successfully!");
+  const exportExcel = () => {
+    if (!users.length) {
+      toast.error("No users to export");
+      return;
+    }
+    const rows = users.map((u) => ({
+      ID: shortId(u._id),
+      "Joining Date": u.createdAt
+        ? new Date(u.createdAt).toLocaleDateString("en-US", {
+            month: "short",
+            day: "numeric",
+            year: "numeric",
+          })
+        : "",
+      Name: u.name || "",
+      Email: u.email || "",
+      Phone: u.phone || "",
+      Orders: u.orderCount ?? 0,
+      Role: u.role || "user",
+    }));
+
+    const ws = XLSX.utils.json_to_sheet(rows);
+    ws["!cols"] = [
+      { wch: 8 },
+      { wch: 14 },
+      { wch: 22 },
+      { wch: 28 },
+      { wch: 16 },
+      { wch: 8 },
+      { wch: 10 },
+    ];
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Users");
+    XLSX.writeFile(wb, `users_${new Date().toISOString().slice(0, 10)}.xlsx`);
+    toast.success("Exported to Excel!");
   };
 
   return (
@@ -96,13 +110,9 @@ const AdminUsers = () => {
           <h1 className="text-2xl font-bold text-gray-800">Customers</h1>
         </div>
         <div className="flex gap-2">
-          <button onClick={exportCSV} className="flex items-center gap-1.5 text-sm border border-gray-300 px-4 py-2 rounded-lg hover:bg-gray-50 transition text-gray-600">
+          <button onClick={exportExcel} className="flex items-center gap-1.5 text-sm border border-gray-300 px-4 py-2 rounded-lg hover:bg-gray-50 transition text-gray-600">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            Export
-          </button>
-          <button className="flex items-center gap-1.5 text-sm border border-gray-300 px-4 py-2 rounded-lg hover:bg-gray-50 transition text-gray-600">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-            Import
+            Export Excel
           </button>
         </div>
       </div>
@@ -146,8 +156,14 @@ const AdminUsers = () => {
             <div key={i} className="h-14 bg-gray-100 rounded-xl animate-pulse" />
           ))}
         </div>
+      ) : !users.length ? (
+        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm text-center py-12 text-gray-400">
+          No users found
+        </div>
       ) : (
-        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-x-auto">
+        <>
+        {/* Desktop / tablet table */}
+        <div className="hidden md:block bg-white rounded-2xl border border-gray-100 shadow-sm overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
               <tr className="bg-gray-50 border-b border-gray-100 text-gray-500 text-left">
@@ -277,11 +293,103 @@ const AdminUsers = () => {
               ))}
             </tbody>
           </table>
-
-          {!users.length && (
-            <div className="text-center py-10 text-gray-400">No users found</div>
-          )}
         </div>
+
+        {/* Mobile cards */}
+        <div className="md:hidden space-y-3">
+          {users.map((u) => (
+            <div
+              key={u._id}
+              className="bg-white rounded-2xl border border-gray-100 shadow-sm p-4"
+            >
+              {/* Top: avatar + name + role */}
+              <div className="flex items-center gap-3">
+                {u.photoURL ? (
+                  <img
+                    src={u.photoURL}
+                    className="w-10 h-10 rounded-full object-cover flex-shrink-0"
+                    alt=""
+                  />
+                ) : (
+                  <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-700 text-sm font-bold flex-shrink-0">
+                    {u.name?.[0]?.toUpperCase() || "U"}
+                  </div>
+                )}
+                <div className="min-w-0 flex-1">
+                  <p className="font-semibold text-gray-800 truncate">
+                    {u.name || "—"}
+                  </p>
+                  <p className="text-xs text-gray-400 truncate">{u.email}</p>
+                </div>
+                <select
+                  value={u.role || "user"}
+                  onChange={(e) => handleRole(u.email, e.target.value)}
+                  disabled={u.email === me.email}
+                  className={`text-xs px-2 py-1 rounded-full border-0 outline-none cursor-pointer font-semibold flex-shrink-0 ${
+                    u.role === "admin"
+                      ? "bg-green-100 text-green-700"
+                      : "bg-gray-100 text-gray-600"
+                  }`}
+                >
+                  <option value="user">User</option>
+                  <option value="admin">Admin</option>
+                </select>
+              </div>
+
+              {/* Meta grid */}
+              <div className="grid grid-cols-2 gap-x-4 gap-y-2 mt-4 text-xs">
+                <div>
+                  <span className="text-gray-400">ID</span>
+                  <p className="font-mono font-bold text-gray-600">
+                    {shortId(u._id)}
+                  </p>
+                </div>
+                <div>
+                  <span className="text-gray-400">Joined</span>
+                  <p className="text-gray-600">
+                    {u.createdAt
+                      ? new Date(u.createdAt).toLocaleDateString("en-US", {
+                          month: "short",
+                          day: "numeric",
+                          year: "numeric",
+                        })
+                      : "—"}
+                  </p>
+                </div>
+                <div>
+                  <span className="text-gray-400">Phone</span>
+                  <p className="text-gray-600">{u.phone || "—"}</p>
+                </div>
+                <div>
+                  <span className="text-gray-400">Orders</span>
+                  <p className="text-gray-600 font-semibold">
+                    {u.orderCount ?? 0}
+                  </p>
+                </div>
+              </div>
+
+              {/* Actions */}
+              <div className="flex items-center gap-2 mt-4 pt-3 border-t border-gray-50">
+                <button
+                  onClick={() =>
+                    (window.location.href = `/panel/orders?user=${u.email}`)
+                  }
+                  className="flex-1 flex items-center justify-center gap-1.5 text-xs font-semibold text-green-700 bg-green-50 hover:bg-green-100 rounded-lg py-2 transition"
+                >
+                  <ZoomIn size={14} /> View Orders
+                </button>
+                <button
+                  onClick={() => handleDelete(u.email)}
+                  disabled={u.email === me.email}
+                  className="flex items-center justify-center gap-1.5 text-xs font-semibold text-red-500 bg-red-50 hover:bg-red-100 rounded-lg py-2 px-4 disabled:opacity-30 transition"
+                >
+                  <Trash2 size={14} /> Delete
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+        </>
       )}
     </div>
   );

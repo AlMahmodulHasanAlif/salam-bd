@@ -9,6 +9,7 @@ export const getAllUsers = async (req, res) => {
         $or: [
           { name:  { $regex: searchText, $options: "i" } },
           { email: { $regex: searchText, $options: "i" } },
+          { phone: { $regex: searchText, $options: "i" } },
         ],
       }
     : {};
