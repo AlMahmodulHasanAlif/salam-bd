@@ -9,7 +9,6 @@ import {
 import useAuth from "../../hooks/useAuth";
 import { Search, Trash2, Pencil, ZoomIn, Users } from "lucide-react";
 import toast from "react-hot-toast";
-import * as XLSX from "xlsx";
 
 const AdminUsers = () => {
   const axiosSecure = useAxiosSecure();
@@ -65,40 +64,70 @@ const AdminUsers = () => {
   // Shorten MongoDB _id to last 4 hex chars (uppercase) like "361E"
   const shortId = (id = "") => id.slice(-4).toUpperCase();
 
+  // Zero-dependency Excel export via SpreadsheetML (opens cleanly in Excel/Sheets)
   const exportExcel = () => {
     if (!users.length) {
       toast.error("No users to export");
       return;
     }
-    const rows = users.map((u) => ({
-      ID: shortId(u._id),
-      "Joining Date": u.createdAt
+
+    const headers = [
+      "ID",
+      "Joining Date",
+      "Name",
+      "Email",
+      "Phone",
+      "Orders",
+      "Role",
+    ];
+    const rows = users.map((u) => [
+      shortId(u._id),
+      u.createdAt
         ? new Date(u.createdAt).toLocaleDateString("en-US", {
             month: "short",
             day: "numeric",
             year: "numeric",
           })
         : "",
-      Name: u.name || "",
-      Email: u.email || "",
-      Phone: u.phone || "",
-      Orders: u.orderCount ?? 0,
-      Role: u.role || "user",
-    }));
+      u.name || "",
+      u.email || "",
+      u.phone || "",
+      u.orderCount ?? 0,
+      u.role || "user",
+    ]);
 
-    const ws = XLSX.utils.json_to_sheet(rows);
-    ws["!cols"] = [
-      { wch: 8 },
-      { wch: 14 },
-      { wch: 22 },
-      { wch: 28 },
-      { wch: 16 },
-      { wch: 8 },
-      { wch: 10 },
-    ];
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "Users");
-    XLSX.writeFile(wb, `users_${new Date().toISOString().slice(0, 10)}.xlsx`);
+    const esc = (v) =>
+      String(v)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+
+    const cell = (v) =>
+      `<Cell><Data ss:Type="${
+        typeof v === "number" ? "Number" : "String"
+      }">${esc(v)}</Data></Cell>`;
+
+    const row = (arr) => `<Row>${arr.map(cell).join("")}</Row>`;
+
+    const xml =
+      '<?xml version="1.0"?>' +
+      '<?mso-application progid="Excel.Sheet"?>' +
+      '<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" ' +
+      'xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet">' +
+      '<Worksheet ss:Name="Users"><Table>' +
+      row(headers) +
+      rows.map(row).join("") +
+      "</Table></Worksheet></Workbook>";
+
+    const blob = new Blob([xml], {
+      type: "application/vnd.ms-excel;charset=utf-8;",
+    });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `users_${new Date().toISOString().slice(0, 10)}.xls`;
+    a.click();
+    URL.revokeObjectURL(url);
     toast.success("Exported to Excel!");
   };
 
