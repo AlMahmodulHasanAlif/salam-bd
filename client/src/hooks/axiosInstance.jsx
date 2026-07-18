@@ -20,8 +20,8 @@ axiosInstance.interceptors.request.use((config) => {
   return config;
 });
 
-const MAX_RETRIES = 2;
-const RETRY_DELAY = 1000;
+const MAX_RETRIES = 1;
+const RETRY_DELAY = 500;
 
 axiosInstance.interceptors.response.use(
   (response) => response,
@@ -32,7 +32,12 @@ axiosInstance.interceptors.response.use(
     config.__retryCount = config.__retryCount || 0;
 
     const status = error.response?.status;
-    const isRetryable = !status || status === 403 || status >= 500;
+    // Only retry on network errors and true server errors. NEVER retry 4xx
+    // (esp. 401/403) — an auth failure won't succeed on retry and just delays
+    // the error by seconds while hammering the server. Idempotent reads only.
+    const method = (config.method || "get").toLowerCase();
+    const isReadOnly = method === "get" || method === "head";
+    const isRetryable = isReadOnly && (!status || status >= 500);
 
     if (isRetryable && config.__retryCount < MAX_RETRIES) {
       config.__retryCount += 1;

@@ -115,6 +115,8 @@ const ProductCard = ({ product }) => {
           <img
             src={image}
             alt={name}
+            loading="lazy"
+            decoding="async"
             className="w-full h-40 md:h-60 object-cover group-hover:scale-105 transition-transform duration-300"
           />
           {discount && (

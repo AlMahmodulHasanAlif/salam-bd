@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, Suspense } from 'react';
 import { Outlet, useLocation } from 'react-router';
 import Navbar from '../components/Navbar';
 import Topbar from '../components/Topbar';
@@ -6,6 +6,7 @@ import Footer from '../components/Footer';
 import CartProvider from '../context/CartProvider';
 import BottomNav from '../components/Bottomnav';
 import FloatingActions from '../components/FloatingActions';
+import RouteFallback from '../components/RouteFallback';
 import { GTM } from '../utils/gtm';
 
 
@@ -33,7 +34,9 @@ const RootLayout = () => {
         {/* <BottomNav /> */}
 
         <main className="flex-1">
-          <Outlet />
+          <Suspense fallback={<RouteFallback />}>
+            <Outlet />
+          </Suspense>
         </main>
 
         <Footer />

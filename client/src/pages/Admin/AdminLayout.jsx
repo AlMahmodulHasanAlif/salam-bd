@@ -1,6 +1,7 @@
 // src/pages/Admin/AdminLayout.jsx
-import React, { useState } from "react";
+import React, { useState, Suspense } from "react";
 import { NavLink, Outlet, useNavigate } from "react-router";
+import RouteFallback from "../../components/RouteFallback";
 import {
   LayoutDashboard,
   Package,
@@ -97,7 +98,9 @@ const AdminLayout = () => {
           <p className="font-bold text-green-800">Admin Panel</p>
         </header>
         <main className="flex-1 p-6 overflow-y-auto">
-          <Outlet />
+          <Suspense fallback={<RouteFallback />}>
+            <Outlet />
+          </Suspense>
         </main>
       </div>
     </div>

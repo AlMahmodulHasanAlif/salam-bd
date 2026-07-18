@@ -24,7 +24,10 @@ export const connectDB = async () => {
 
     db = client.db("salam-bd");
 
-    await ensureIndexes(db);
+    // Ensure indexes in the BACKGROUND — don't make the first request after a
+    // cold start wait on ~18 createIndex round-trips to Atlas. Guarded so it
+    // only runs once per warm instance.
+    ensureIndexes(db);
     return db;
   })();
 
@@ -39,8 +42,21 @@ export const connectDB = async () => {
 
 // Create indexes for hot query paths. Uses allSettled so a pre-existing
 // duplicate (e.g. on the unique email index) logs a warning instead of
-// crashing startup.
+// crashing startup. Runs at most once per process and never rejects into the
+// caller — it's fired without await from connectDB().
+let indexesEnsured = false;
 const ensureIndexes = async (database) => {
+  if (indexesEnsured) return;
+  indexesEnsured = true;
+  try {
+    await createIndexes(database);
+  } catch (err) {
+    indexesEnsured = false; // allow a retry on a later request
+    console.warn("⚠️  ensureIndexes failed:", err?.message);
+  }
+};
+
+const createIndexes = async (database) => {
   const jobs = [
     database.collection("users").createIndex({ email: 1 }, { unique: true }),
     database.collection("orders").createIndex({ userEmail: 1, createdAt: -1 }),

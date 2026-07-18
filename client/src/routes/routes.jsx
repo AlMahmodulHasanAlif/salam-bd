@@ -1,51 +1,55 @@
 // src/routes/router.jsx
+import { lazy, Suspense } from "react";
 import { createBrowserRouter } from "react-router";
+
+// Layouts + guards stay eager — they're small and needed on every navigation.
 import RootLayout from "../layout/RootLayout";
 import AdminLayout from "../pages/Admin/AdminLayout";
-
-// Pages
-import Home from "../pages/Home/Home";
-import IslamicBooks from "../pages/Products/IslamicBooks/IslamicBooks";
-import WallFrame from "../pages/Products/WallFrame/WallFrame";
-import Attar from "../pages/Products/Attar/Attar";
-import HajjItem from "../pages/Products/HajjItem/HajjItem";
-import Kids from "../pages/Products/Kids/Kids";
-import ProductListPage from "../pages/Products/ProductListPage";
-import AllProductsGrid from "../pages/Home/AllProductsGrid";
-import ProductDetails from "../pages/Products/ProductDetails/ProducDetails";
-import SearchResults from "../pages/Products/SearchResults";
-import Cart from "../pages/Cart/Cart";
-import Checkout from "../pages/Cart/Checkout";
-import OrderSuccess from "../pages/Cart/OrderSuccess";
-import Orders from "../pages/Orders/Orders";
-import Login from "../pages/Auth/Login";
-import Register from "../pages/Auth/Register";
-import AdminDashboard from "../pages/Admin/AdminDashboard";
-import AdminProducts from "../pages/Admin/AdminProducts";
-import AdminOrders from "../pages/Admin/AdminOrders";
-import AdminUsers from "../pages/Admin/AdminUsers";
-import UserDashboard from "../pages/Dashboard/UserDashboard";
-import Gallery from "../pages/gallery/GalleryPage";
-import AdminGallery from "../pages/Admin/AdminGallery";
-import AdminBlog from "../pages/Admin/AdminBlog";
-import Blog from "../pages/Blog/BlogPage";
-import BlogDetails from "../pages/Blog/BlogDetailPage";
-import NotFound from "../components/NotFound";
-import PluginAdmin from "../pages/Admin/PluginAdmin";
-import IslamicProducts from "../pages/Products/IslamicProducts/IslamicProducts";
-
-// Guards
 import ProtectedRoute from "./ProtectedRoute";
 import AdminRoute from "./AdminRoute";
 import PublicRoute from "./PublicRoute";
-import ReturnPolicy from "../pages/Info/ReturnPolicy";
-import TermsConditions from "../pages/Info/TermsConditions";
-import PrivacyPolicy from "../pages/Info/PrivacyPolicy";
-import AboutUs from "../pages/Info/AboutUs";
-import ContactUs from "../pages/Info/ContactUs";
-import FAQ from "../pages/Info/FAQ";
-import ProfitAdmin from "../pages/Admin/ProfitAdmin";
-import LandingPage from "../landing/LandingPage";
+import RouteFallback from "../components/RouteFallback";
+
+// Pages are code-split — each becomes its own chunk that loads on demand,
+// so a first-time visitor to the homepage no longer downloads the admin
+// dashboard, charts, and every product page up front.
+const Home = lazy(() => import("../pages/Home/Home"));
+const IslamicBooks = lazy(() => import("../pages/Products/IslamicBooks/IslamicBooks"));
+const WallFrame = lazy(() => import("../pages/Products/WallFrame/WallFrame"));
+const Attar = lazy(() => import("../pages/Products/Attar/Attar"));
+const HajjItem = lazy(() => import("../pages/Products/HajjItem/HajjItem"));
+const Kids = lazy(() => import("../pages/Products/Kids/Kids"));
+const ProductListPage = lazy(() => import("../pages/Products/ProductListPage"));
+const AllProductsGrid = lazy(() => import("../pages/Home/AllProductsGrid"));
+const ProductDetails = lazy(() => import("../pages/Products/ProductDetails/ProducDetails"));
+const SearchResults = lazy(() => import("../pages/Products/SearchResults"));
+const Cart = lazy(() => import("../pages/Cart/Cart"));
+const Checkout = lazy(() => import("../pages/Cart/Checkout"));
+const OrderSuccess = lazy(() => import("../pages/Cart/OrderSuccess"));
+const Orders = lazy(() => import("../pages/Orders/Orders"));
+const Login = lazy(() => import("../pages/Auth/Login"));
+const Register = lazy(() => import("../pages/Auth/Register"));
+const AdminDashboard = lazy(() => import("../pages/Admin/AdminDashboard"));
+const AdminProducts = lazy(() => import("../pages/Admin/AdminProducts"));
+const AdminOrders = lazy(() => import("../pages/Admin/AdminOrders"));
+const AdminUsers = lazy(() => import("../pages/Admin/AdminUsers"));
+const UserDashboard = lazy(() => import("../pages/Dashboard/UserDashboard"));
+const Gallery = lazy(() => import("../pages/gallery/GalleryPage"));
+const AdminGallery = lazy(() => import("../pages/Admin/AdminGallery"));
+const AdminBlog = lazy(() => import("../pages/Admin/AdminBlog"));
+const Blog = lazy(() => import("../pages/Blog/BlogPage"));
+const BlogDetails = lazy(() => import("../pages/Blog/BlogDetailPage"));
+const NotFound = lazy(() => import("../components/NotFound"));
+const PluginAdmin = lazy(() => import("../pages/Admin/PluginAdmin"));
+const IslamicProducts = lazy(() => import("../pages/Products/IslamicProducts/IslamicProducts"));
+const ReturnPolicy = lazy(() => import("../pages/Info/ReturnPolicy"));
+const TermsConditions = lazy(() => import("../pages/Info/TermsConditions"));
+const PrivacyPolicy = lazy(() => import("../pages/Info/PrivacyPolicy"));
+const AboutUs = lazy(() => import("../pages/Info/AboutUs"));
+const ContactUs = lazy(() => import("../pages/Info/ContactUs"));
+const FAQ = lazy(() => import("../pages/Info/FAQ"));
+const ProfitAdmin = lazy(() => import("../pages/Admin/ProfitAdmin"));
+const LandingPage = lazy(() => import("../landing/LandingPage"));
 
 const router = createBrowserRouter([
   {
@@ -169,8 +173,14 @@ const router = createBrowserRouter([
     ],
   },
   {
+    // Standalone route with no layout — needs its own Suspense boundary for the
+    // lazily-loaded chunk.
     path: "/landing",
-    Component: LandingPage,
+    element: (
+      <Suspense fallback={<RouteFallback />}>
+        <LandingPage />
+      </Suspense>
+    ),
   },
 ]);
 

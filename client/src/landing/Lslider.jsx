@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import img1 from "../landing/slider01.png";
+import img1 from "../landing/slider01.webp";
 import img2 from "../landing/slider02.jpeg";
 import img3 from "../landing/slider03.jpeg";
 import img4 from "../landing/slider04.jpeg";

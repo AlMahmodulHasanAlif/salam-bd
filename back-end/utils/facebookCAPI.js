@@ -11,12 +11,10 @@ const hash = (val) =>
     ? crypto.createHash('sha256').update(val.trim().toLowerCase()).digest('hex')
     : undefined;
 
-const sendServerEvent = async (eventName, req, customData = {}, eventId = null) => {
-  if (!ACCESS_TOKEN || !PIXEL_ID) {
-    console.warn('[FB CAPI] Missing ACCESS_TOKEN or PIXEL_ID — skipping');
-    return;
-  }
-
+// Fire-and-forget: the actual Meta Graph API round-trip lives here. Callers get
+// an immediately-resolved promise from sendServerEvent() so the HTTP response is
+// never blocked waiting on Facebook (which could add 200ms–2s+ per request).
+const dispatchServerEvent = async (eventName, req, customData, eventId) => {
   try {
     FacebookAdsApi.init(ACCESS_TOKEN);
 
@@ -60,6 +58,21 @@ const sendServerEvent = async (eventName, req, customData = {}, eventId = null) 
   } catch (err) {
     console.error(`[FB CAPI] ✗ ${eventName} failed:`, err.message);
   }
+};
+
+// Public API. Kept `async` so existing `await sendServerEvent(...)` call sites
+// keep working, but it returns almost immediately — the network call is
+// dispatched in the background and its result is not awaited by the caller.
+const sendServerEvent = async (eventName, req, customData = {}, eventId = null) => {
+  if (!ACCESS_TOKEN || !PIXEL_ID) {
+    console.warn('[FB CAPI] Missing ACCESS_TOKEN or PIXEL_ID — skipping');
+    return;
+  }
+
+  // Do NOT await — let the response go out while Meta's API call runs.
+  dispatchServerEvent(eventName, req, customData, eventId).catch((err) =>
+    console.error(`[FB CAPI] ✗ ${eventName} dispatch failed:`, err.message),
+  );
 };
 
 export { sendServerEvent };
