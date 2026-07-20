@@ -21,4 +21,7 @@ export default defineConfig({
     },
     chunkSizeWarningLimit: 700,
   },
+  server: {
+    port: 5172, // Replace 3000 with your preferred port
+  }
 })

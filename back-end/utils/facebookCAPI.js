@@ -5,6 +5,9 @@ const { CustomData, EventRequest, UserData, ServerEvent, FacebookAdsApi } = bizS
 
 const ACCESS_TOKEN = process.env.FB_ACCESS_TOKEN;
 const PIXEL_ID     = process.env.FB_PIXEL_ID;
+// Set only while validating in Events Manager → Test Events. Events sent with a
+// test code do NOT count toward optimisation/attribution, so unset it in prod.
+const TEST_EVENT_CODE = process.env.FB_TEST_EVENT_CODE;
 
 const hash = (val) =>
   val
@@ -53,8 +56,12 @@ const dispatchServerEvent = async (eventName, req, customData, eventId) => {
     const eventRequest = new EventRequest(ACCESS_TOKEN, PIXEL_ID)
       .setEvents([serverEvent]);
 
+    if (TEST_EVENT_CODE) eventRequest.setTestEventCode(TEST_EVENT_CODE);
+
     await eventRequest.execute();
-    console.log(`[FB CAPI] ✓ ${eventName} sent`);
+    console.log(
+      `[FB CAPI] ✓ ${eventName} sent${TEST_EVENT_CODE ? ` (test: ${TEST_EVENT_CODE})` : ''}`,
+    );
   } catch (err) {
     console.error(`[FB CAPI] ✗ ${eventName} failed:`, err.message);
   }
