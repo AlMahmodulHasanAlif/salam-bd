@@ -1,19 +1,28 @@
 import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
-import salambdMobile from "../../assets/salambd-mobile.png";
-import salambdMobile1 from "../../assets/salambd-mobile1.png";
+// import salambdMobile from "../../assets/salambd-mobile.png";
+// import salambdMobile1 from "../../assets/salambd-mobile1.png";
 import salambdMobile2 from "../../assets/salambd-mobile2.png";
 import salabd1 from "../../assets/salabd1.webp";
 import salambd2 from "../../assets/salambd2.webp";
 import salambd3 from "../../assets/salambd3.webp";
+import twoBrother from "../../assets/2Brother.webp";
+import mobileNew from "../../assets/Mobile.png";
+import mobileNew2 from "../../assets/Mobile 2.png";
 import upcomingProduct from "../../assets/UpComingProduct.png";
 
 // Left carousel slides (desktop)
-const SLIDES = [salabd1, salambd2, salambd3];
+const SLIDES = [salabd1, salambd2, salambd3, twoBrother];
 // Right single banner (desktop)
 const RIGHT_BANNER = upcomingProduct;
 // Mobile-only carousel slides
-const MOBILE_SLIDES = [salambdMobile, salambdMobile1, salambdMobile2];
+const MOBILE_SLIDES = [
+  // salambdMobile,
+  // salambdMobile1,
+  salambdMobile2,
+  mobileNew,
+  mobileNew2,
+];
 
 const INTERVAL = 4000;
 const FADE = { duration: 0.9, ease: "easeInOut" };

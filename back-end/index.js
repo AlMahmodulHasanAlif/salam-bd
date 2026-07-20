@@ -39,7 +39,7 @@ const port = process.env.PORT || 3000;
 
 app.use(express.json());
 const allowedOrigins = [
-  "http://localhost:5173",
+  "http://localhost:5172",
   "https://salambd.com",
   "https://www.salambd.com",
   "https://server.salambd.com",
