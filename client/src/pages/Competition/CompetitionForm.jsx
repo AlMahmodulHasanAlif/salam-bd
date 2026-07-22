@@ -14,7 +14,7 @@ import {
   Globe,
   Info,
 } from "lucide-react";
-import logo from "../../assets/salamBDlogo.png";
+import logo from "../../assets/SalamBDLogo.png";
 import { DISTRICTS, BD_LOCATIONS } from "../../utils/bdLocations";
 
 const API_URL = import.meta.env.VITE_API_URL;

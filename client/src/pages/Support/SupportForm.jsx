@@ -21,7 +21,7 @@ import {
   ClipboardList,
   X,
 } from "lucide-react";
-import logo from "../../assets/salamBDlogo.png";
+import logo from "../../assets/SalamBDLogo.png";
 
 const API_URL = import.meta.env.VITE_API_URL;
 const VALID_PHONE = /^01[3-9]\d{8}$/;
