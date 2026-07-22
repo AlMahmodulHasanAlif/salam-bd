@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import useAxiosSecure from "../../hooks/useAxios";
+import { exportToExcel } from "../../utils/exportExcel";
 import {
   LifeBuoy,
   Search,
@@ -64,27 +65,26 @@ function triggerDownload(url, filename) {
   a.remove();
 }
 
-async function exportToExcel(rows, filenameBase) {
-  const XLSX = await import("xlsx");
-  const data = rows.map((r) => ({
-    "Ticket No": r.ticketNo || "",
-    Name: r.customer?.name || "",
-    Mobile: r.customer?.mobile || "",
-    "Order ID": r.customer?.orderId || "",
-    "Purchase Date": r.customer?.purchaseDate || "",
-    "Complaint Type": r.complaint?.typeLabel || TYPE_LABELS[r.complaint?.type] || "",
-    Details: r.complaint?.details || "",
-    "Image URL": r.complaint?.image || "",
-    "Video URL": r.complaint?.video || "",
-    Status: r.status || "",
-    "Created At": r.createdAt ? new Date(r.createdAt).toLocaleString("en-BD") : "",
-  }));
-  const ws = XLSX.utils.json_to_sheet(data);
-  ws["!cols"] = [14, 20, 14, 14, 14, 20, 40, 40, 40, 12, 20].map((w) => ({ wch: w }));
-  const wb = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(wb, ws, "Complaints");
-  XLSX.writeFile(wb, `${filenameBase}.xlsx`);
-}
+const EXPORT_COLUMNS = [
+  { header: "Ticket No", value: (r) => r.ticketNo || "" },
+  { header: "Name", value: (r) => r.customer?.name || "" },
+  { header: "Mobile", value: (r) => r.customer?.mobile || "" },
+  { header: "Order ID", value: (r) => r.customer?.orderId || "" },
+  { header: "Purchase Date", value: (r) => r.customer?.purchaseDate || "" },
+  {
+    header: "Complaint Type",
+    value: (r) => r.complaint?.typeLabel || TYPE_LABELS[r.complaint?.type] || "",
+  },
+  { header: "Details", value: (r) => r.complaint?.details || "" },
+  { header: "Image URL", value: (r) => r.complaint?.image || "" },
+  { header: "Video URL", value: (r) => r.complaint?.video || "" },
+  { header: "Status", value: (r) => r.status || "" },
+  {
+    header: "Created At",
+    value: (r) =>
+      r.createdAt ? new Date(r.createdAt).toLocaleString("en-BD") : "",
+  },
+];
 
 const StatusPill = ({ status }) => {
   const cfg = STATUS_CONFIG[status] || STATUS_CONFIG.pending;
@@ -328,7 +328,7 @@ export default function AdminSupport() {
       const { data } = await axiosSecure.get(`${ENDPOINT}?${params}`);
       const rows = data.complaints || [];
       if (!rows.length) return alert("No complaints to export");
-      await exportToExcel(rows, `support-complaints-${stamp}`);
+      exportToExcel(EXPORT_COLUMNS, rows, `support-complaints-${stamp}`);
     } catch {
       alert("Export failed");
     } finally {
@@ -340,7 +340,7 @@ export default function AdminSupport() {
     if (!rows.length) return;
     setExporting(true);
     try {
-      await exportToExcel(rows, `support-selected-${stamp}`);
+      exportToExcel(EXPORT_COLUMNS, rows, `support-selected-${stamp}`);
     } catch {
       alert("Export failed");
     } finally {

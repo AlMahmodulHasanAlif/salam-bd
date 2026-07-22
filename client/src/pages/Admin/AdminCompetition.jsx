@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import useAxiosSecure from "../../hooks/useAxios";
+import { exportToExcel } from "../../utils/exportExcel";
 import {
   Trophy,
   Search,
@@ -77,37 +78,29 @@ function triggerDownload(url, filename) {
   a.remove();
 }
 
-// ── Build an .xlsx from registration rows (xlsx loaded lazily) ──
-async function exportToExcel(rows, filenameBase) {
-  const XLSX = await import("xlsx");
-  const data = rows.map((r) => ({
-    "Reg No": r.regNo || "",
-    "Student Name": r.student?.name || "",
-    "Date of Birth": r.student?.dob || "",
-    Class: r.student?.grade || "",
-    Institution: r.student?.institution || "",
-    "Village / Area": r.address?.village || "",
-    Thana: r.address?.thana || "",
-    District: r.address?.district || "",
-    Guardian: r.guardian?.name || "",
-    Mobile: r.guardian?.mobile || "",
-    "Customer Code": r.customer?.code || "",
-    Referral: r.customer?.referral || "",
-    Status: r.status || "",
-    "Photo URL": r.student?.photo || "",
-    "Signature URL": r.signature || "",
-    "Registered At": r.createdAt
-      ? new Date(r.createdAt).toLocaleString("en-BD")
-      : "",
-  }));
-  const ws = XLSX.utils.json_to_sheet(data);
-  ws["!cols"] = [
-    14, 20, 14, 14, 24, 18, 16, 16, 20, 14, 16, 16, 12, 40, 40, 20,
-  ].map((w) => ({ wch: w }));
-  const wb = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(wb, ws, "Registrations");
-  XLSX.writeFile(wb, `${filenameBase}.xlsx`);
-}
+// Columns for the Excel export (see utils/exportExcel — dependency-free .xls).
+const EXPORT_COLUMNS = [
+  { header: "Reg No", value: (r) => r.regNo || "" },
+  { header: "Student Name", value: (r) => r.student?.name || "" },
+  { header: "Date of Birth", value: (r) => r.student?.dob || "" },
+  { header: "Class", value: (r) => r.student?.grade || "" },
+  { header: "Institution", value: (r) => r.student?.institution || "" },
+  { header: "Village / Area", value: (r) => r.address?.village || "" },
+  { header: "Thana", value: (r) => r.address?.thana || "" },
+  { header: "District", value: (r) => r.address?.district || "" },
+  { header: "Guardian", value: (r) => r.guardian?.name || "" },
+  { header: "Mobile", value: (r) => r.guardian?.mobile || "" },
+  { header: "Customer Code", value: (r) => r.customer?.code || "" },
+  { header: "Referral", value: (r) => r.customer?.referral || "" },
+  { header: "Status", value: (r) => r.status || "" },
+  { header: "Photo URL", value: (r) => r.student?.photo || "" },
+  { header: "Signature URL", value: (r) => r.signature || "" },
+  {
+    header: "Registered At",
+    value: (r) =>
+      r.createdAt ? new Date(r.createdAt).toLocaleString("en-BD") : "",
+  },
+];
 
 const StatusPill = ({ status }) => {
   const cfg = STATUS_CONFIG[status] || STATUS_CONFIG.pending;
@@ -482,7 +475,7 @@ export default function AdminCompetition() {
         alert("No registrations to export");
         return;
       }
-      await exportToExcel(rows, `medha-registrations-${stamp}`);
+      exportToExcel(EXPORT_COLUMNS, rows, `medha-registrations-${stamp}`);
     } catch {
       alert("Export failed");
     } finally {
@@ -495,7 +488,7 @@ export default function AdminCompetition() {
     if (!rows.length) return;
     setExporting(true);
     try {
-      await exportToExcel(rows, `medha-selected-${stamp}`);
+      exportToExcel(EXPORT_COLUMNS, rows, `medha-selected-${stamp}`);
     } catch {
       alert("Export failed");
     } finally {
