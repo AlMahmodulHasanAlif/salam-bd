@@ -1,5 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
+import { Link } from "react-router";
+import { ArrowRight } from "lucide-react";
+import SupportShield from "../../components/SupportShield";
 // import salambdMobile from "../../assets/salambd-mobile.png";
 // import salambdMobile1 from "../../assets/salambd-mobile1.png";
 import salambdMobile2 from "../../assets/salambd-mobile2.png";
@@ -152,6 +155,69 @@ export default function HeroSection() {
           ))}
         </div>
       </div>
+
+      {/* ── CTA cards under the hero ── */}
+      <motion.div
+        variants={{ hidden: {}, show: { transition: { staggerChildren: 0.15, delayChildren: 0.1 } } }}
+        initial="hidden"
+        animate="show"
+        className="mt-5 sm:mt-7 grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5"
+      >
+        {/* মেধা যাচাই — goes to the competition page */}
+        <motion.div
+          variants={{ hidden: { opacity: 0, y: 24 }, show: { opacity: 1, y: 0, transition: { duration: 0.5 } } }}
+          whileHover={{ y: -4 }}
+          transition={{ type: "spring", stiffness: 300, damping: 20 }}
+          className="relative overflow-hidden rounded-2xl border border-orange-100 bg-gradient-to-br from-orange-50 to-amber-50 p-5 flex flex-col items-center gap-3 text-center shadow-sm"
+        >
+          {/* decorative sparkles */}
+          <span className="pointer-events-none absolute top-3 right-5 text-orange-200 text-lg select-none">✦</span>
+          <span className="pointer-events-none absolute top-9 right-14 text-amber-200 text-xs select-none">✦</span>
+          <span className="pointer-events-none absolute bottom-4 right-8 text-orange-200 text-sm select-none">✦</span>
+
+          <div className="flex-shrink-0 text-5xl sm:text-6xl leading-none drop-shadow-sm">
+            🏆
+          </div>
+          <div className="relative min-w-0">
+            <h3 className="text-base sm:text-lg font-black text-gray-800 leading-snug">
+              আপনার সন্তানের মেধা যাচাই করুন
+            </h3>
+            <p className="text-xs sm:text-sm text-gray-500 mt-1 mb-3 leading-relaxed">
+              সারাদেশব্যাপী মেধা যাচাই প্রতিযোগিতায় অংশগ্রহণ করুন এখনই
+            </p>
+            <Link
+              to="/competition"
+              className="inline-flex items-center gap-2 rounded-lg bg-orange-500 hover:bg-orange-600 text-white text-sm font-bold px-4 py-2.5 shadow-md shadow-orange-500/25 transition-colors"
+            >
+              মেধা যাচাইয়ে অংশ নিন <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+        </motion.div>
+
+        {/* গ্যারান্টি সাপোর্ট — destination to be added later */}
+        <motion.div
+          variants={{ hidden: { opacity: 0, y: 24 }, show: { opacity: 1, y: 0, transition: { duration: 0.5 } } }}
+          whileHover={{ y: -4 }}
+          transition={{ type: "spring", stiffness: 300, damping: 20 }}
+          className="relative overflow-hidden rounded-2xl border border-emerald-100 bg-gradient-to-br from-emerald-50 to-green-50 p-5 flex flex-col items-center gap-3 text-center shadow-sm"
+        >
+          <SupportShield className="w-16 h-auto flex-shrink-0" />
+          <div className="relative min-w-0">
+            <h3 className="text-base sm:text-lg font-black text-gray-800 leading-snug">
+              ১০০ দিনের গ্যারান্টি সাপোর্ট
+            </h3>
+            <p className="text-xs sm:text-sm text-gray-500 mt-1 mb-3 leading-relaxed">
+              পণ্য সংক্রান্ত যেকোনো সমস্যা হলে অভিযোগ করুন, সমাধান নিশ্চিত
+            </p>
+            <Link
+              to="/guarantee-support"
+              className="inline-flex items-center gap-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-bold px-4 py-2.5 shadow-md shadow-emerald-600/25 transition-colors"
+            >
+              অভিযোগ করুন <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+        </motion.div>
+      </motion.div>
     </div>
   );
 }

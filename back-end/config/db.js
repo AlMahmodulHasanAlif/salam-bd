@@ -71,6 +71,20 @@ const createIndexes = async (database) => {
     database.collection("reviews").createIndex({ productId: 1, userEmail: 1 }),
     database.collection("pluginorders").createIndex({ createdAt: -1 }),
     database.collection("pluginorders").createIndex({ status: 1 }),
+    database
+      .collection("competitionregistrations")
+      .createIndex({ createdAt: -1 }),
+    database
+      .collection("competitionregistrations")
+      .createIndex({ status: 1, createdAt: -1 }),
+    database
+      .collection("competitionregistrations")
+      .createIndex({ regNo: 1 }),
+    database.collection("supportcomplaints").createIndex({ createdAt: -1 }),
+    database
+      .collection("supportcomplaints")
+      .createIndex({ status: 1, createdAt: -1 }),
+    database.collection("supportcomplaints").createIndex({ ticketNo: 1 }),
     database.collection("blogs").createIndex({ slug: 1 }),
     database.collection("blogs").createIndex({ published: 1, createdAt: -1 }),
     database.collection("blogComments").createIndex({ blogId: 1 }),

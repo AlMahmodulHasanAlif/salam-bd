@@ -21,6 +21,8 @@ import { attachFbData } from "./middlewares/auth.js";
 import galleryRoutes from "./routes/galleryRoutes.js";
 import blogRoutes from "./routes/blogRoutes.js";
 import pluginOrderRoutes from "./routes/pluginOrderRoutes.js";
+import competitionRoutes from "./routes/competitionRoutes.js";
+import supportRoutes from "./routes/supportRoutes.js";
 
 // Don't let a Firebase misconfig crash the entire serverless cold start —
 // log it clearly so it's visible in Vercel's Runtime Logs, and let non-auth
@@ -96,6 +98,8 @@ app.use("/api/upload", uploadRoutes);
 app.use("/api/gallery", galleryRoutes);
 app.use("/api/blogs", blogRoutes);
 app.use("/api/pluginorder", pluginOrderRoutes);
+app.use("/api/competition", competitionRoutes);
+app.use("/api/support", supportRoutes);
 app.get("/", (_req, res) => res.send("Salam BD API is running! 🕌"));
 
 // ─── GLOBAL ERROR HANDLER ─────────────────────────────────────────────────

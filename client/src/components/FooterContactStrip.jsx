@@ -7,7 +7,7 @@ export default function FooterContactStrip() {
 
         {/* Address */}
         <div className="flex items-center gap-4">
-          <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-primary text-[30px]">
+          <div className="w-12 h-12 shrink-0 aspect-square rounded-full bg-white flex items-center justify-center text-primary text-[30px]">
             <MdLocationOn />
           </div>
 
@@ -22,7 +22,7 @@ export default function FooterContactStrip() {
 
         {/* Email */}
         <div className="flex items-center gap-4">
-          <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-primary text-[20px]">
+          <div className="w-12 h-12 shrink-0 aspect-square rounded-full bg-white flex items-center justify-center text-primary text-[20px]">
             <MdEmail />
           </div>
 
@@ -36,7 +36,7 @@ export default function FooterContactStrip() {
 
         {/* Phone */}
         <div className="flex items-center gap-4">
-          <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-primary text-xl">
+          <div className="w-12 h-12 shrink-0 aspect-square rounded-full bg-white flex items-center justify-center text-primary text-xl">
             <MdPhone />
           </div>
 

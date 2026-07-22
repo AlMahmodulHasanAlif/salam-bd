@@ -12,6 +12,8 @@ import {
   TrendingUp,
   Image,
   BookOpen,
+  Trophy,
+  LifeBuoy,
 } from "lucide-react";
 import useAuth from "../../hooks/useAuth";
 
@@ -32,6 +34,16 @@ const LINKS = [
     to: "/panel/pluginadmin",
     label: "Plugin Admin",
     icon: <BookOpen size={22} />,
+  },
+  {
+    to: "/panel/competition",
+    label: "মেধা যাচাই",
+    icon: <Trophy size={22} />,
+  },
+  {
+    to: "/panel/support",
+    label: "গ্যারান্টি সাপোর্ট",
+    icon: <LifeBuoy size={22} />,
   },
 ];
 
