@@ -1,0 +1,16 @@
+{
+  "appId": "com.salambd.app",
+  "appName": "Salam BD",
+  "webDir": "dist",
+  "android": {
+    "backgroundColor": "#ffffff"
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 1200,
+      "backgroundColor": "#ffffff",
+      "androidSpinnerStyle": "small",
+      "showSpinner": false
+    }
+  }
+}

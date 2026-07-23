@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx --no-install cap add android)",
+      "Bash(npx --no-install cap sync android)",
+      "Bash(grep -iE \"\\\\.\\(png|jpg|jpeg|svg|webp\\)$\")",
+      "Bash(cp \"C:/Users/almah/AppData/Local/Temp/claude/c--Projects-salam-bd/1061535b-c52d-4b5e-93d4-74ccd3306cf4/scratchpad/make-assets.cjs\" \"c:/Projects/salam-bd/client/tmp-make-assets.cjs\")",
+      "Bash(rm -f tmp-make-assets.cjs)",
+      "Bash(npx --no-install @capacitor/assets generate --android --iconBackgroundColor '#065F35' --iconBackgroundColorDark '#065F35' --splashBackgroundColor '#ffffff' --splashBackgroundColorDark '#065F35')",
+      "Bash(export JAVA_HOME=\"/c/Program Files/Android/Android Studio/jbr\")",
+      "Bash('/c/Program Files/Android/Android Studio/jbr/bin/jarsigner' -verify -verbose -certs app/build/outputs/bundle/release/app-release.aab)",
+      "Bash(mkdir -p /c/Users/almah/Desktop/salambd-app-backup)",
+      "Bash(cp c:/Projects/salam-bd/client/android/salambd-upload-key.jks /c/Users/almah/Desktop/salambd-app-backup/)",
+      "Bash(cp c:/Projects/salam-bd/client/android/keystore.properties /c/Users/almah/Desktop/salambd-app-backup/)",
+      "Bash(cat)",
+      "Read(//c/Users/almah/Desktop/**)",
+      "Bash(npx --no-install cap open android)",
+      "Bash(echo \"exit: $?\")",
+      "Bash(tasklist)",
+      "Bash(powershell -NoProfile -Command \"Get-Process studio64 -ErrorAction SilentlyContinue | Select-Object -First 1 ProcessName,Id\")"
+    ]
+  }
+}

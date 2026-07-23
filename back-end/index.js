@@ -23,6 +23,7 @@ import blogRoutes from "./routes/blogRoutes.js";
 import pluginOrderRoutes from "./routes/pluginOrderRoutes.js";
 import competitionRoutes from "./routes/competitionRoutes.js";
 import supportRoutes from "./routes/supportRoutes.js";
+import pushRoutes from "./routes/pushRoutes.js";
 
 // Don't let a Firebase misconfig crash the entire serverless cold start —
 // log it clearly so it's visible in Vercel's Runtime Logs, and let non-auth
@@ -45,6 +46,12 @@ const allowedOrigins = [
   "https://salambd.com",
   "https://www.salambd.com",
   "https://server.salambd.com",
+  // Capacitor native app origins (the WebView runs from https://localhost on
+  // Android, capacitor://localhost on iOS) — required so the mobile app can
+  // call the API without being blocked by CORS.
+  "https://localhost",
+  "capacitor://localhost",
+  "http://localhost",
   // Optional extra origin(s) from env (comma-separated), e.g. your frontend URL
   ...(process.env.CLIENT_URL
     ? process.env.CLIENT_URL.split(",").map((s) => s.trim()).filter(Boolean)
@@ -100,6 +107,7 @@ app.use("/api/blogs", blogRoutes);
 app.use("/api/pluginorder", pluginOrderRoutes);
 app.use("/api/competition", competitionRoutes);
 app.use("/api/support", supportRoutes);
+app.use("/api/push", pushRoutes);
 app.get("/", (_req, res) => res.send("Salam BD API is running! 🕌"));
 
 // ─── GLOBAL ERROR HANDLER ─────────────────────────────────────────────────
