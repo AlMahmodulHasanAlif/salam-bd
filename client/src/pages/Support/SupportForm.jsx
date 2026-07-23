@@ -20,8 +20,13 @@ import {
   Loader2,
   ClipboardList,
   X,
+  Check,
 } from "lucide-react";
+import { FaWhatsapp } from "react-icons/fa";
 import logo from "../../assets/SalamBDLogo.png";
+
+// Official support WhatsApp number (digits only, with country code).
+const SUPPORT_WHATSAPP = "8801886699883";
 
 const API_URL = import.meta.env.VITE_API_URL;
 const VALID_PHONE = /^01[3-9]\d{8}$/;
@@ -73,7 +78,15 @@ async function uploadMedia(file) {
   return data.url;
 }
 
-const IconField = ({ icon: Icon, label, required, error, children }) => (
+// Full class strings (Tailwind can't build dynamic `bg-${x}-50` names).
+const FIELD_COLORS = {
+  emerald: "bg-emerald-100 text-emerald-600",
+  sky: "bg-sky-100 text-sky-600",
+  amber: "bg-amber-100 text-amber-600",
+  violet: "bg-violet-100 text-violet-600",
+};
+
+const IconField = ({ icon: Icon, label, required, error, children, color = "emerald" }) => (
   <div>
     <div
       className={`flex items-center gap-3 rounded-xl border px-3.5 py-2.5 bg-white transition-colors ${
@@ -82,7 +95,7 @@ const IconField = ({ icon: Icon, label, required, error, children }) => (
           : "border-gray-200 focus-within:border-emerald-500"
       }`}
     >
-      <div className="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center text-emerald-600 flex-shrink-0">
+      <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${FIELD_COLORS[color]}`}>
         <Icon className="w-4 h-4" />
       </div>
       <div className="flex-1 min-w-0">
@@ -107,8 +120,7 @@ export default function SupportForm() {
     mobile: "",
     orderId: "",
     purchaseDate: "",
-    type: "",
-    typeLabel: "",
+    types: [], // one or more selected complaint-type ids
     details: "",
   });
   const [image, setImage] = useState({ url: "", name: "", uploading: false });
@@ -124,8 +136,15 @@ export default function SupportForm() {
     setErrors((er) => ({ ...er, [key]: "" }));
   };
 
+  // Toggle a complaint type on/off (multiple selection allowed).
   const selectType = (t) => {
-    setForm((f) => ({ ...f, type: t.id, typeLabel: t.label }));
+    setForm((f) => {
+      const has = f.types.includes(t.id);
+      return {
+        ...f,
+        types: has ? f.types.filter((id) => id !== t.id) : [...f.types, t.id],
+      };
+    });
     setErrors((er) => ({ ...er, type: "" }));
   };
 
@@ -157,7 +176,7 @@ export default function SupportForm() {
       if (!VALID_PHONE.test(form.mobile)) e.mobile = "সঠিক মোবাইল নম্বর দিন";
     }
     if (s === 2) {
-      if (!form.type) e.type = "অভিযোগের ধরন নির্বাচন করুন";
+      if (!form.types.length) e.type = "অভিযোগের ধরন নির্বাচন করুন";
       if (!form.details.trim()) e.details = "সমস্যার বিস্তারিত লিখুন";
       if (!agreed) e.agreed = "সম্মতি প্রদান করুন";
     }
@@ -185,6 +204,11 @@ export default function SupportForm() {
       return;
     }
     setSubmitting(true);
+    // Send the multiple selections as comma-joined strings so the backend/admin,
+    // which expect single `type`/`typeLabel` fields, keep working unchanged.
+    const selected = COMPLAINT_TYPES.filter((t) => form.types.includes(t.id));
+    const typeIds = selected.map((t) => t.id).join(",");
+    const typeLabels = selected.map((t) => t.label).join(", ");
     try {
       const res = await fetch(`${API_URL}/api/support`, {
         method: "POST",
@@ -197,8 +221,8 @@ export default function SupportForm() {
             purchaseDate: form.purchaseDate,
           },
           complaint: {
-            type: form.type,
-            typeLabel: form.typeLabel,
+            type: typeIds,
+            typeLabel: typeLabels,
             details: form.details,
             image: image.url || null,
             video: video.url || null,
@@ -218,7 +242,7 @@ export default function SupportForm() {
 
   // ── Shared field renderers ──
   const fName = () => (
-    <IconField icon={User} label="আপনার নাম" required error={errors.name}>
+    <IconField icon={User} label="আপনার নাম" required error={errors.name} color="emerald">
       <input
         type="text"
         placeholder="আপনার পূর্ণ নাম লিখুন"
@@ -229,7 +253,7 @@ export default function SupportForm() {
     </IconField>
   );
   const fMobile = () => (
-    <IconField icon={Phone} label="মোবাইল নম্বর" required error={errors.mobile}>
+    <IconField icon={Phone} label="মোবাইল নম্বর" required error={errors.mobile} color="sky">
       <input
         type="tel"
         placeholder="01XXXXXXXXX"
@@ -242,7 +266,7 @@ export default function SupportForm() {
     </IconField>
   );
   const fOrderId = () => (
-    <IconField icon={FileText} label="অর্ডার আইডি">
+    <IconField icon={FileText} label="অর্ডার আইডি" color="amber">
       <input
         type="text"
         placeholder="যেমন: SCB123456"
@@ -253,11 +277,14 @@ export default function SupportForm() {
     </IconField>
   );
   const fDate = () => (
-    <IconField icon={Calendar} label="ক্রয়ের তারিখ">
+    <IconField icon={Calendar} label="ক্রয়ের তারিখ" color="violet">
       <input
         type="date"
         value={form.purchaseDate}
         onChange={set("purchaseDate")}
+        // Bound the range so the native picker can't accept a 5-digit year.
+        min="2000-01-01"
+        max="2100-12-31"
         className={inputCls}
       />
     </IconField>
@@ -267,10 +294,11 @@ export default function SupportForm() {
     <div>
       <p className="text-sm font-semibold text-gray-700 mb-2">
         অভিযোগের ধরন নির্বাচন করুন <span className="text-red-500">*</span>
+        <span className="ml-1 text-xs font-normal text-gray-400">(এক বা একাধিক)</span>
       </p>
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-2.5">
         {COMPLAINT_TYPES.map((t) => {
-          const active = form.type === t.id;
+          const active = form.types.includes(t.id);
           return (
             <button
               key={t.id}
@@ -292,12 +320,13 @@ export default function SupportForm() {
               <span className="text-sm font-medium text-gray-700 flex-1 leading-tight">
                 {t.no}. {t.label}
               </span>
+              {/* Checkbox indicator (square) — multiple can be ticked */}
               <span
-                className={`w-4 h-4 rounded-full border-2 flex-shrink-0 flex items-center justify-center ${
-                  active ? "border-emerald-500" : "border-gray-300"
+                className={`w-5 h-5 rounded-md border-2 flex-shrink-0 flex items-center justify-center transition-colors ${
+                  active ? "border-emerald-500 bg-emerald-500 text-white" : "border-gray-300"
                 }`}
               >
-                {active && <span className="w-2 h-2 rounded-full bg-emerald-500" />}
+                {active && <Check className="w-3.5 h-3.5" strokeWidth={3} />}
               </span>
             </button>
           );
@@ -437,7 +466,11 @@ export default function SupportForm() {
           {
             icon: MoreHorizontal,
             label: "অভিযোগের ধরন",
-            value: form.typeLabel || "নির্বাচিত হবে",
+            value: form.types.length
+              ? COMPLAINT_TYPES.filter((t) => form.types.includes(t.id))
+                  .map((t) => t.label)
+                  .join(", ")
+              : "নির্বাচিত হবে",
           },
         ].map((s) => (
           <div key={s.label} className="flex items-start gap-2">
@@ -533,32 +566,60 @@ export default function SupportForm() {
         <p className="text-sm text-gray-500 mb-6">
           এই নম্বরটি সংরক্ষণ করুন — যোগাযোগের সময় প্রয়োজন হবে।
         </p>
-        <a
-          href="/"
-          className="inline-block bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2.5 rounded-xl text-sm font-semibold transition-colors"
-        >
-          হোমে ফিরে যান
-        </a>
+        {(() => {
+          const labels = COMPLAINT_TYPES.filter((t) => form.types.includes(t.id))
+            .map((t) => t.label)
+            .join(", ");
+          const msg =
+            `আসসালামু আলাইকুম,\n` +
+            `আমি একটি অভিযোগ জমা দিয়েছি।\n\n` +
+            `🎫 টিকিট নম্বর: ${result.ticketNo}\n` +
+            `👤 নাম: ${form.name}\n` +
+            `📞 মোবাইল: ${form.mobile}\n` +
+            (form.orderId ? `🧾 অর্ডার আইডি: ${form.orderId}\n` : "") +
+            (labels ? `⚠️ অভিযোগের ধরন: ${labels}\n` : "");
+          const waLink = `https://wa.me/${SUPPORT_WHATSAPP}?text=${encodeURIComponent(msg)}`;
+          return (
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+              <a
+                href={waLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#1ebe57] text-white px-6 py-3 rounded-xl text-sm font-bold shadow-md shadow-green-500/25 transition-colors w-full sm:w-auto"
+              >
+                <FaWhatsapp className="w-5 h-5" /> WhatsApp-এ পাঠান
+              </a>
+              <a
+                href="/"
+                className="inline-block bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-3 rounded-xl text-sm font-semibold transition-colors w-full sm:w-auto"
+              >
+                হোমে ফিরে যান
+              </a>
+            </div>
+          );
+        })()}
       </div>
     );
   }
 
   const Header = () => (
-    <div className="flex items-center justify-between gap-4 mb-6">
-      <img src={logo} alt="Salam Coding Book" className="h-11 w-auto" />
+    <div className="flex items-center justify-between gap-4 mb-6 rounded-2xl bg-gradient-to-r from-emerald-600 to-green-600 px-4 sm:px-6 py-4 shadow-sm">
+      <div className="bg-white/95 rounded-xl px-2 py-1.5 flex-shrink-0">
+        <img src={logo} alt="Salam Coding Book" className="h-8 sm:h-11 w-auto" />
+      </div>
       <div className="text-center flex-1">
-        <h1 className="text-xl sm:text-3xl font-black text-emerald-800 leading-tight">
+        <h1 className="text-xl sm:text-3xl font-black text-white leading-tight">
           ১০০ দিনের গ্যারান্টি সাপোর্ট
         </h1>
-        <p className="text-xs sm:text-sm text-gray-500 mt-0.5">
+        <p className="text-xs sm:text-sm text-emerald-50/90 mt-0.5">
           আপনার সমস্যা দ্রুত সমাধানের জন্য অভিযোগ জমা দিন
         </p>
       </div>
-      <div className="hidden sm:flex items-center gap-2 rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-2">
-        <ShieldCheck className="w-5 h-5 text-emerald-600" />
+      <div className="hidden sm:flex items-center gap-2 rounded-xl border border-white/40 bg-white/15 px-3 py-2">
+        <ShieldCheck className="w-5 h-5 text-white" />
         <div className="leading-none">
-          <p className="text-sm font-black text-emerald-700">100 DAYS</p>
-          <p className="text-[10px] text-emerald-600 tracking-wide">GUARANTEE</p>
+          <p className="text-sm font-black text-white">100 DAYS</p>
+          <p className="text-[10px] text-emerald-50 tracking-wide">GUARANTEE</p>
         </div>
       </div>
     </div>
@@ -618,7 +679,7 @@ export default function SupportForm() {
         <div className="grid grid-cols-[380px_1fr] gap-6 items-start">
           {/* Left — customer info + commitment */}
           <div className="space-y-5">
-            <div className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm">
+            <div className="rounded-2xl border border-emerald-100 bg-gradient-to-br from-emerald-100 via-sky-50 to-violet-100 p-5 shadow-sm">
               <div className="flex items-center gap-2.5 mb-4">
                 <div className="w-9 h-9 rounded-lg bg-emerald-600 flex items-center justify-center text-white">
                   <User className="w-5 h-5" />
@@ -667,67 +728,50 @@ export default function SupportForm() {
   }
 
   // ─────────────────────────────────────────────────────────────
-  // MOBILE — 2-step wizard
+  // MOBILE — full form on a single page (no step wizard)
   // ─────────────────────────────────────────────────────────────
   return (
-    <div>
+    <div className="space-y-5">
       <Header />
-      <Stepper />
 
-      {step === 1 && (
-        <div className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm space-y-3">
-          <div className="flex items-center gap-2.5 mb-1">
-            <div className="w-9 h-9 rounded-lg bg-emerald-600 flex items-center justify-center text-white">
-              <User className="w-5 h-5" />
-            </div>
-            <div>
-              <p className="font-bold text-emerald-800">গ্রাহকের তথ্য</p>
-              <p className="text-xs text-gray-400">আপনার সঠিক তথ্য দিন</p>
-            </div>
+      {/* Customer info */}
+      <div className="rounded-2xl border border-emerald-100 bg-gradient-to-br from-emerald-100 via-sky-50 to-violet-100 p-5 shadow-sm space-y-3">
+        <div className="flex items-center gap-2.5 mb-1">
+          <div className="w-9 h-9 rounded-lg bg-emerald-600 flex items-center justify-center text-white">
+            <User className="w-5 h-5" />
           </div>
-          {fName()}
-          {fMobile()}
-          {fOrderId()}
-          {fDate()}
-          <button
-            type="button"
-            onClick={next}
-            className="w-full flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm px-5 py-3 rounded-xl transition-colors"
-          >
-            পরবর্তী ধাপ <ArrowRight className="w-4 h-4" />
-          </button>
-          <div className="pt-1">{commitmentCard()}</div>
-        </div>
-      )}
-
-      {step === 2 && (
-        <div className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm space-y-5">
-          <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-lg bg-orange-500 flex items-center justify-center text-white">
-              <MessageSquare className="w-5 h-5" />
-            </div>
-            <div>
-              <p className="font-bold text-emerald-800">অভিযোগের বিস্তারিত</p>
-              <p className="text-xs text-gray-400">আপনার সমস্যার বিস্তারিত জানান</p>
-            </div>
-          </div>
-          {typeGrid()}
-          {detailsField()}
-          {mediaButtons()}
-          {summaryBox()}
-          {consentBox()}
-          <div className="flex gap-3">
-            <button
-              type="button"
-              onClick={() => setStep(1)}
-              className="px-5 py-3.5 rounded-xl border border-gray-300 text-gray-600 font-semibold text-sm hover:bg-gray-50 transition-colors"
-            >
-              পূর্ববর্তী
-            </button>
-            <div className="flex-1">{submitBtn()}</div>
+          <div>
+            <p className="font-bold text-emerald-800">গ্রাহকের তথ্য</p>
+            <p className="text-xs text-gray-400">আপনার সঠিক তথ্য দিন</p>
           </div>
         </div>
-      )}
+        {fName()}
+        {fMobile()}
+        {fOrderId()}
+        {fDate()}
+      </div>
+
+      {/* Complaint details */}
+      <div className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm space-y-5">
+        <div className="flex items-center gap-2.5">
+          <div className="w-9 h-9 rounded-lg bg-orange-500 flex items-center justify-center text-white">
+            <MessageSquare className="w-5 h-5" />
+          </div>
+          <div>
+            <p className="font-bold text-emerald-800">অভিযোগের বিস্তারিত</p>
+            <p className="text-xs text-gray-400">আপনার সমস্যার বিস্তারিত জানান</p>
+          </div>
+        </div>
+        {typeGrid()}
+        {detailsField()}
+        {mediaButtons()}
+        {summaryBox()}
+        {consentBox()}
+        {submitBtn()}
+      </div>
+
+      {/* Commitment */}
+      {commitmentCard()}
     </div>
   );
 }

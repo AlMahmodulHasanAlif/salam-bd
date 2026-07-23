@@ -991,6 +991,8 @@ const AdminOrders = () => {
               type="date"
               value={startDate}
               onChange={(e) => setStartDate(e.target.value)}
+              min="2000-01-01"
+              max="2100-12-31"
               className="border border-gray-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-green-500"
             />
           </div>
@@ -1002,6 +1004,8 @@ const AdminOrders = () => {
               type="date"
               value={endDate}
               onChange={(e) => setEndDate(e.target.value)}
+              min="2000-01-01"
+              max="2100-12-31"
               className="border border-gray-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-green-500"
             />
           </div>

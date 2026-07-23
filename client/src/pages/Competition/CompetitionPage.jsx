@@ -1,5 +1,4 @@
 import {
-  Trophy,
   BookOpen,
   Gift,
   CheckCircle2,
@@ -7,6 +6,8 @@ import {
   Award,
 } from "lucide-react";
 import CompetitionForm from "./CompetitionForm";
+import prizeDesktop from "../../assets/prize.png";
+import prizeMobile from "../../assets/prizemobile.png";
 
 const RULES = [
   "শুধুমাত্র যারা সালাম কোডিং বুক (Grade-1) ক্রয় করবেন এবং এর নিবন্ধিত ব্যবহারকারী, তারাই এই প্রতিযোগিতায় অংশগ্রহণ করতে পারবেন।",
@@ -55,24 +56,17 @@ const PRIZES = [
 export default function CompetitionPage() {
   return (
     <div className="bg-gradient-to-b from-emerald-50 via-orange-50/30 to-white min-h-screen">
-      {/* ── Top banner ── */}
-      <section className="bg-gradient-to-br from-emerald-800 to-emerald-600 text-white">
-        <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 py-12 md:py-16 text-center">
-          <span className="inline-flex items-center gap-1.5 bg-white/15 backdrop-blur px-4 py-1.5 rounded-full text-sm font-medium mb-4">
-            <Trophy className="w-4 h-4 text-amber-300" /> সালাম কোডিং বুক
-          </span>
-          <h1 className="text-3xl md:text-5xl font-black leading-tight mb-3">
-            মেধা যাচাই প্রতিযোগিতা
-          </h1>
-          <div className="inline-block bg-amber-400 text-emerald-950 font-black text-2xl md:text-4xl px-6 py-3 rounded-2xl shadow-lg my-3">
-            ২ লক্ষ টাকার পুরস্কার
-          </div>
-          <p className="text-emerald-100 max-w-2xl mx-auto mt-4 text-sm md:text-base">
-            ২–৫ বছরের শিশুরা এই প্রতিযোগিতায় অংশগ্রহণ করে জিতে নিতে পারে নগদ
-            অর্থ, ক্রেস্ট ও সার্টিফিকেট।
-          </p>
-        </div>
-      </section>
+      {/* ── Prize banner (separate art for desktop vs mobile) ── */}
+      <img
+        src={prizeMobile}
+        alt="মেধা যাচাই প্রতিযোগিতা — ২ লক্ষ টাকার পুরস্কার"
+        className="block md:hidden w-full h-auto"
+      />
+      <img
+        src={prizeDesktop}
+        alt="মেধা যাচাই প্রতিযোগিতা — ২ লক্ষ টাকার পুরস্কার"
+        className="hidden md:block w-full h-auto"
+      />
 
       <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 py-10 space-y-10">
         {/* ── Rules ── */}

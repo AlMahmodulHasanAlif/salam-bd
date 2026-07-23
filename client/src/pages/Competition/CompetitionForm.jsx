@@ -351,6 +351,9 @@ export default function CompetitionForm() {
         type="date"
         value={form.dob}
         onChange={set("dob")}
+        // Cap the year to 4 digits (native pickers otherwise allow 5+).
+        min="1950-01-01"
+        max="2100-12-31"
         className={errors.dob ? inputError : inputNormal}
       />
     </Field>

@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router";
 import { ArrowRight } from "lucide-react";
-import SupportShield from "../../components/SupportShield";
 // import salambdMobile from "../../assets/salambd-mobile.png";
 // import salambdMobile1 from "../../assets/salambd-mobile1.png";
 import salambdMobile2 from "../../assets/salambd-mobile2.png";
@@ -13,6 +12,8 @@ import twoBrother from "../../assets/2Brother.webp";
 import mobileNew from "../../assets/Mobile.png";
 import mobileNew2 from "../../assets/Mobile 2.png";
 import upcomingProduct from "../../assets/UpComingProduct.png";
+import button1 from "../../assets/button1.png";
+import button2 from "../../assets/button2.png";
 
 // Left carousel slides (desktop)
 const SLIDES = [salabd1, salambd2, salambd3, twoBrother];
@@ -156,66 +157,55 @@ export default function HeroSection() {
         </div>
       </div>
 
-      {/* ── CTA cards under the hero ── */}
+      {/* ── Banner CTAs under the hero ── */}
       <motion.div
         variants={{ hidden: {}, show: { transition: { staggerChildren: 0.15, delayChildren: 0.1 } } }}
         initial="hidden"
         animate="show"
         className="mt-5 sm:mt-7 grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5"
       >
-        {/* মেধা যাচাই — goes to the competition page */}
+        {/* মেধা যাচাই — competition banner (button sits in the banner's empty space) */}
         <motion.div
           variants={{ hidden: { opacity: 0, y: 24 }, show: { opacity: 1, y: 0, transition: { duration: 0.5 } } }}
           whileHover={{ y: -4 }}
           transition={{ type: "spring", stiffness: 300, damping: 20 }}
-          className="relative overflow-hidden rounded-2xl border border-orange-100 bg-gradient-to-br from-orange-50 to-amber-50 p-5 flex flex-col items-center gap-3 text-center shadow-sm"
         >
-          {/* decorative sparkles */}
-          <span className="pointer-events-none absolute top-3 right-5 text-orange-200 text-lg select-none">✦</span>
-          <span className="pointer-events-none absolute top-9 right-14 text-amber-200 text-xs select-none">✦</span>
-          <span className="pointer-events-none absolute bottom-4 right-8 text-orange-200 text-sm select-none">✦</span>
-
-          <div className="flex-shrink-0 text-5xl sm:text-6xl leading-none drop-shadow-sm">
-            🏆
-          </div>
-          <div className="relative min-w-0">
-            <h3 className="text-base sm:text-lg font-black text-gray-800 leading-snug">
-              আপনার সন্তানের মেধা যাচাই করুন
-            </h3>
-            <p className="text-xs sm:text-sm text-gray-500 mt-1 mb-3 leading-relaxed">
-              সারাদেশব্যাপী মেধা যাচাই প্রতিযোগিতায় অংশগ্রহণ করুন এখনই
-            </p>
-            <Link
-              to="/competition"
-              className="inline-flex items-center gap-2 rounded-lg bg-orange-500 hover:bg-orange-600 text-white text-sm font-bold px-4 py-2.5 shadow-md shadow-orange-500/25 transition-colors"
-            >
-              মেধা যাচাইয়ে অংশ নিন <ArrowRight className="w-4 h-4" />
-            </Link>
-          </div>
+          <Link
+            to="/competition"
+            className="@container relative block overflow-hidden rounded-2xl shadow-sm"
+          >
+            <img
+              src={button1}
+              alt="আপনার সন্তানের মেধা যাচাই করুন"
+              className="w-full h-auto"
+            />
+            {/* Button sized in cqw so it scales proportionally with the banner. */}
+            <span className="absolute left-[44.5%] top-[80%] -translate-y-1/2 inline-flex items-center gap-[1.2cqw] rounded-[1.2cqw] bg-gradient-to-b from-yellow-300 to-yellow-500 hover:from-yellow-200 hover:to-yellow-400 text-blue-950 font-black text-[2.8cqw] px-[4cqw] py-[1.5cqw] shadow-lg ring-1 ring-white/40 whitespace-nowrap transition-colors">
+              মেধা যাচাইয়ে অংশ নিন <ArrowRight className="w-[3.6cqw] h-[3.6cqw]" />
+            </span>
+          </Link>
         </motion.div>
 
-        {/* গ্যারান্টি সাপোর্ট — destination to be added later */}
+        {/* গ্যারান্টি সাপোর্ট — guarantee support banner */}
         <motion.div
           variants={{ hidden: { opacity: 0, y: 24 }, show: { opacity: 1, y: 0, transition: { duration: 0.5 } } }}
           whileHover={{ y: -4 }}
           transition={{ type: "spring", stiffness: 300, damping: 20 }}
-          className="relative overflow-hidden rounded-2xl border border-emerald-100 bg-gradient-to-br from-emerald-50 to-green-50 p-5 flex flex-col items-center gap-3 text-center shadow-sm"
         >
-          <SupportShield className="w-16 h-auto flex-shrink-0" />
-          <div className="relative min-w-0">
-            <h3 className="text-base sm:text-lg font-black text-gray-800 leading-snug">
-              ১০০ দিনের গ্যারান্টি সাপোর্ট
-            </h3>
-            <p className="text-xs sm:text-sm text-gray-500 mt-1 mb-3 leading-relaxed">
-              পণ্য সংক্রান্ত যেকোনো সমস্যা হলে অভিযোগ করুন, সমাধান নিশ্চিত
-            </p>
-            <Link
-              to="/guarantee-support"
-              className="inline-flex items-center gap-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-bold px-4 py-2.5 shadow-md shadow-emerald-600/25 transition-colors"
-            >
-              অভিযোগ করুন <ArrowRight className="w-4 h-4" />
-            </Link>
-          </div>
+          <Link
+            to="/guarantee-support"
+            className="@container relative block overflow-hidden rounded-2xl shadow-sm"
+          >
+            <img
+              src={button2}
+              alt="১০০ দিনের গ্যারান্টি সাপোর্ট"
+              className="w-full h-auto"
+            />
+            {/* Button sized in cqw so it scales proportionally with the banner. */}
+            <span className="absolute left-1/2 top-[80%] -translate-x-1/2 -translate-y-1/2 inline-flex items-center gap-[1.2cqw] rounded-[1.2cqw] bg-gradient-to-b from-lime-400 to-green-600 hover:from-lime-300 hover:to-green-500 text-white font-black text-[2.8cqw] px-[4cqw] py-[1.5cqw] shadow-lg ring-1 ring-white/30 whitespace-nowrap transition-colors">
+              অভিযোগ করুন <ArrowRight className="w-[3.6cqw] h-[3.6cqw]" />
+            </span>
+          </Link>
         </motion.div>
       </motion.div>
     </div>
