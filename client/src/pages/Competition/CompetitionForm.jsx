@@ -601,10 +601,10 @@ export default function CompetitionForm() {
               সহায়তার জন্য যোগাযোগ করুন
             </h4>
             <a
-              href="tel:01712345678"
+              href="tel:01886699883"
               className="flex items-center gap-2 text-sm text-gray-600 mb-2 hover:text-emerald-700"
             >
-              <Phone className="w-4 h-4 text-emerald-600" /> 01712-345678
+              <Phone className="w-4 h-4 text-emerald-600" /> 01886699883
             </a>
             <a
               href="https://salambd.com/contact"

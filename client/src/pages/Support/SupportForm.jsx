@@ -764,7 +764,7 @@ export default function SupportForm() {
         </div>
         {typeGrid()}
         {detailsField()}
-        {mediaButtons()}
+        {mediaButtons(false)}
         {summaryBox()}
         {consentBox()}
         {submitBtn()}
