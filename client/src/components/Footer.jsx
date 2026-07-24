@@ -10,7 +10,7 @@ const quickLinks = [
   { label: "Home", href: "/" },
   { label: "All Products", href: "/products" },
   { label: "Gallery", href: "/gallery" },
-  { label: "Video", href: "https://www.youtube.com/quraneralotv", external: true },
+  { label: "Video", href: "", external: true },
   { label: "Blog", href: "/blog" },
 ];
 

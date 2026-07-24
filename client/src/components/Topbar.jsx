@@ -54,7 +54,7 @@ const NAV_LINKS = [
   { label: "Gallery", to: "/gallery", icon: Image },
   {
     label: "Video",
-    to: "https://www.youtube.com/quraneralotv",
+    to: "",
     icon: Youtube,
     external: true,
   },

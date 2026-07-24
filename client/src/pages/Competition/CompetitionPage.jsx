@@ -1,10 +1,4 @@
-import {
-  BookOpen,
-  Gift,
-  CheckCircle2,
-  MessageCircle,
-  Award,
-} from "lucide-react";
+import { BookOpen, Gift, Award } from "lucide-react";
 import CompetitionForm from "./CompetitionForm";
 import prizeDesktop from "../../assets/prize.png";
 import prizeMobile from "../../assets/prizemobile.png";
@@ -70,28 +64,40 @@ export default function CompetitionPage() {
 
       <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 py-10 space-y-10">
         {/* ── Rules ── */}
-        <section className="bg-white rounded-2xl border border-emerald-100 shadow-sm p-6 md:p-8">
-          <h2 className="flex items-center gap-2 text-xl md:text-2xl font-bold text-emerald-800 mb-5">
-            <CheckCircle2 className="w-6 h-6 text-orange-500" />
-            প্রতিযোগিতায় অংশগ্রহণের নিয়ম
-          </h2>
-          <ol className="space-y-3">
-            {RULES.map((rule, i) => (
-              <li key={i} className="flex gap-3">
-                <span className="flex-shrink-0 w-7 h-7 rounded-full bg-emerald-100 text-emerald-700 font-bold text-sm flex items-center justify-center">
-                  {i + 1}
-                </span>
-                <p className="text-gray-700 text-sm md:text-base leading-relaxed">
-                  {rule}
-                </p>
-              </li>
-            ))}
-          </ol>
-          <div className="mt-5 flex items-center gap-2 bg-green-50 border border-green-200 rounded-xl px-4 py-3">
-            <MessageCircle className="w-5 h-5 text-green-600 flex-shrink-0" />
-            <p className="text-sm font-semibold text-green-800">
-              অফিসিয়াল WhatsApp: +88 018 411 411 07
-            </p>
+        <section className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-white via-emerald-50 to-emerald-100/70 border-4 border-[#12592f] shadow-lg">
+          {/* gold corner brackets */}
+          <span className="pointer-events-none absolute top-2 left-2 w-10 h-10 border-t-2 border-l-2 border-amber-400 rounded-tl-lg z-10" />
+          <span className="pointer-events-none absolute top-2 right-2 w-10 h-10 border-t-2 border-r-2 border-amber-400 rounded-tr-lg z-10" />
+          {/* gold swoosh at the bottom */}
+          <span className="pointer-events-none absolute -bottom-12 -right-6 w-64 h-28 border-b-4 border-amber-400/70 rounded-[100%] rotate-[-8deg]" />
+
+          {/* ── dark green header bar ── */}
+          <div className="bg-gradient-to-r from-[#0b3d21] via-[#12592f] to-[#0b3d21] flex items-center justify-center gap-3 py-4 px-4">
+            <span className="text-amber-400 text-2xl leading-none tracking-tighter select-none">
+              ❮❮
+            </span>
+            <h2 className="text-xl md:text-2xl font-bold text-amber-50 text-center px-2">
+              প্রতিযোগিতায় অংশগ্রহণের নিয়ম
+            </h2>
+            <span className="text-amber-400 text-2xl leading-none tracking-tighter select-none">
+              ❯❯
+            </span>
+          </div>
+
+          {/* ── body ── */}
+          <div className="relative p-6 md:p-8">
+            <ol className="space-y-4">
+              {RULES.map((rule, i) => (
+                <li key={i} className="flex gap-3 md:gap-4">
+                  <span className="flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-b from-emerald-500 to-[#12592f] text-white font-bold text-sm flex items-center justify-center shadow-md">
+                    {i + 1}
+                  </span>
+                  <p className="text-[#0f4d2a] text-base md:text-lg leading-relaxed pt-0.5">
+                    {rule}
+                  </p>
+                </li>
+              ))}
+            </ol>
           </div>
         </section>
 

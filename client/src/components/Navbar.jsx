@@ -5,7 +5,7 @@ import logo from "../assets/logo-trim.png";
 
 const MEDIA_LINKS = [
   { label: "Gallery", to: "/gallery" },
-  { label: "Video", to: "https://www.youtube.com/@quraneralotv", external: true },
+  { label: "Video", to: "", external: true },
 ];
 
 const Navbar = () => {
