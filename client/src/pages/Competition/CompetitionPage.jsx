@@ -1,4 +1,4 @@
-import { BookOpen, Gift, Award } from "lucide-react";
+import { BookOpen, Gift, Award, Calculator, Lightbulb } from "lucide-react";
 import CompetitionForm from "./CompetitionForm";
 import prizeDesktop from "../../assets/prize.png";
 import prizeMobile from "../../assets/prizemobile.png";
@@ -37,6 +37,25 @@ const SYLLABUS = [
     title: "ছোটদের সংখ্যা চেনা",
     body: "৩টি বাংলা ছড়া ও ৩টি ইংরেজি ছড়া।",
   },
+];
+
+// Right-side illustrative icon for each syllabus card (matches SYLLABUS order).
+const SYLLABUS_ICONS = [
+  <span className="text-3xl font-bold text-emerald-800">অ</span>,
+  <div className="flex items-center -space-x-1.5">
+    {["A", "B", "C"].map((c) => (
+      <span
+        key={c}
+        className="w-6 h-6 rounded-full bg-white border-2 border-emerald-600 text-emerald-700 text-[11px] font-bold flex items-center justify-center"
+      >
+        {c}
+      </span>
+    ))}
+  </div>,
+  <Calculator className="w-8 h-8 text-emerald-700" strokeWidth={1.75} />,
+  <span className="text-3xl font-bold text-emerald-800">أ</span>,
+  <Lightbulb className="w-8 h-8 text-emerald-700" strokeWidth={1.75} />,
+  <span className="text-xl font-black text-emerald-800">123</span>,
 ];
 
 const PRIZES = [
@@ -103,24 +122,40 @@ export default function CompetitionPage() {
 
         {/* ── Syllabus ── */}
         <section>
-          <h2 className="flex items-center gap-2 text-xl md:text-2xl font-bold text-emerald-800 mb-5">
-            <BookOpen className="w-6 h-6 text-orange-500" /> সিলেবাস
-          </h2>
-          <div className="grid sm:grid-cols-2 gap-4">
+          {/* centered header with ornamental divider */}
+          <div className="text-center mb-8">
+            <h2 className="inline-flex items-center gap-2.5 text-2xl md:text-3xl font-bold text-emerald-800">
+              <BookOpen className="w-7 h-7 text-amber-500" /> সিলেবাস
+            </h2>
+            <div className="flex items-center justify-center gap-2 mt-2 text-amber-400">
+              <span className="h-px w-16 bg-gradient-to-r from-transparent to-amber-400" />
+              <span className="text-sm tracking-[0.3em] leading-none">
+                ❖❖❖
+              </span>
+              <span className="h-px w-16 bg-gradient-to-l from-transparent to-amber-400" />
+            </div>
+          </div>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {SYLLABUS.map((item, i) => (
               <div
                 key={i}
-                className="bg-white rounded-2xl border border-orange-100 shadow-sm p-5"
+                className="bg-white rounded-2xl border border-emerald-100 shadow-sm hover:shadow-md transition-shadow p-5 flex items-center gap-4"
               >
-                <div className="flex items-center gap-2 mb-2">
-                  <span className="w-8 h-8 rounded-lg bg-orange-100 text-orange-600 font-bold flex items-center justify-center">
-                    {i + 1}
-                  </span>
-                  <h3 className="font-bold text-gray-800">{item.title}</h3>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="w-8 h-8 rounded-lg bg-gradient-to-b from-emerald-500 to-[#12592f] text-white font-bold flex items-center justify-center">
+                      {i + 1}
+                    </span>
+                    <h3 className="font-bold text-emerald-800">{item.title}</h3>
+                  </div>
+                  <p className="text-sm text-gray-600 leading-relaxed">
+                    {item.body}
+                  </p>
                 </div>
-                <p className="text-sm text-gray-600 leading-relaxed">
-                  {item.body}
-                </p>
+                <div className="flex-shrink-0 w-20 h-20 rounded-full bg-amber-50 ring-4 ring-amber-100 border border-amber-200 flex items-center justify-center">
+                  {SYLLABUS_ICONS[i]}
+                </div>
               </div>
             ))}
           </div>

@@ -51,8 +51,10 @@ const FAQ = lazy(() => import("../pages/Info/FAQ"));
 const ProfitAdmin = lazy(() => import("../pages/Admin/ProfitAdmin"));
 const LandingPage = lazy(() => import("../landing/LandingPage"));
 const CompetitionPage = lazy(() => import("../pages/Competition/CompetitionPage"));
+const CompetitionSuccess = lazy(() => import("../pages/Competition/CompetitionSuccess"));
 const AdminCompetition = lazy(() => import("../pages/Admin/AdminCompetition"));
 const SupportPage = lazy(() => import("../pages/Support/SupportPage"));
+const SupportSuccess = lazy(() => import("../pages/Support/SupportSuccess"));
 const AdminSupport = lazy(() => import("../pages/Admin/AdminSupport"));
 
 const router = createBrowserRouter([
@@ -139,7 +141,9 @@ const router = createBrowserRouter([
       { path: "contact", Component: ContactUs },
       { path: "gallery", Component: Gallery },
       { path: "competition", Component: CompetitionPage },
+      { path: "competition/success", Component: CompetitionSuccess },
       { path: "guarantee-support", Component: SupportPage },
+      { path: "guarantee-support/success", Component: SupportSuccess },
       { path: "blog", Component: Blog },
       { path: "blog/:slug", Component: BlogDetails },
       { path: "*", element: <NotFound /> },

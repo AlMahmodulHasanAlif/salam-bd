@@ -26,9 +26,9 @@ export default function FooterContactStrip() {
             <MdEmail />
           </div>
 
-          <div>
+          <div className="min-w-0">
             <p className="text-sm text-white/70">Send Email</p>
-            <p className="font-semibold text-lg">
+            <p className="font-semibold text-base sm:text-lg break-all">
               salambd.contact@gmail.com
             </p>
           </div>

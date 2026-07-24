@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router";
 import {
   User,
   Phone,
@@ -22,11 +23,7 @@ import {
   X,
   Check,
 } from "lucide-react";
-import { FaWhatsapp } from "react-icons/fa";
 import logo from "../../assets/SalamBDLogo.png";
-
-// Official support WhatsApp number (digits only, with country code).
-const SUPPORT_WHATSAPP = "8801886699883";
 
 const API_URL = import.meta.env.VITE_API_URL;
 const VALID_PHONE = /^01[3-9]\d{8}$/;
@@ -113,6 +110,7 @@ const inputCls =
   "w-full text-sm text-gray-800 placeholder-gray-400 outline-none bg-transparent";
 
 export default function SupportForm() {
+  const navigate = useNavigate();
   const isDesktop = useIsDesktop();
   const [step, setStep] = useState(1);
   const [form, setForm] = useState({
@@ -128,7 +126,6 @@ export default function SupportForm() {
   const [agreed, setAgreed] = useState(false);
   const [errors, setErrors] = useState({});
   const [submitting, setSubmitting] = useState(false);
-  const [result, setResult] = useState(null);
 
   const set = (key) => (e) => {
     const value = e?.target ? e.target.value : e;
@@ -232,7 +229,15 @@ export default function SupportForm() {
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(data.message || "অভিযোগ জমা ব্যর্থ হয়েছে");
-      setResult({ ticketNo: data.ticketNo });
+      navigate("/guarantee-support/success", {
+        state: {
+          ticketNo: data.ticketNo,
+          name: form.name,
+          mobile: form.mobile,
+          orderId: form.orderId,
+          typeLabels,
+        },
+      });
     } catch (err) {
       alert(err.message || "কিছু একটা ভুল হয়েছে, আবার চেষ্টা করুন");
     } finally {
@@ -543,64 +548,6 @@ export default function SupportForm() {
       </ul>
     </div>
   );
-
-  // ── Success screen ──
-  if (result) {
-    return (
-      <div className="bg-white rounded-2xl border border-emerald-200 shadow-sm p-8 md:p-10 text-center max-w-2xl mx-auto">
-        <div className="w-16 h-16 bg-emerald-50 rounded-full flex items-center justify-center mx-auto mb-4">
-          <CheckCircle2 className="text-emerald-500 w-9 h-9" />
-        </div>
-        <h2 className="text-2xl font-bold text-gray-800 mb-2">
-          অভিযোগ জমা হয়েছে! ✅
-        </h2>
-        <p className="text-gray-500 mb-4">
-          আমরা ২৪ ঘন্টার মধ্যে আপনার সাথে যোগাযোগ করব।
-        </p>
-        <div className="inline-block bg-orange-50 border border-orange-200 rounded-xl px-6 py-3 mb-6">
-          <p className="text-xs text-gray-500">টিকিট নম্বর</p>
-          <p className="text-xl font-black text-orange-600 tracking-wide">
-            {result.ticketNo}
-          </p>
-        </div>
-        <p className="text-sm text-gray-500 mb-6">
-          এই নম্বরটি সংরক্ষণ করুন — যোগাযোগের সময় প্রয়োজন হবে।
-        </p>
-        {(() => {
-          const labels = COMPLAINT_TYPES.filter((t) => form.types.includes(t.id))
-            .map((t) => t.label)
-            .join(", ");
-          const msg =
-            `আসসালামু আলাইকুম,\n` +
-            `আমি একটি অভিযোগ জমা দিয়েছি।\n\n` +
-            `🎫 টিকিট নম্বর: ${result.ticketNo}\n` +
-            `👤 নাম: ${form.name}\n` +
-            `📞 মোবাইল: ${form.mobile}\n` +
-            (form.orderId ? `🧾 অর্ডার আইডি: ${form.orderId}\n` : "") +
-            (labels ? `⚠️ অভিযোগের ধরন: ${labels}\n` : "");
-          const waLink = `https://wa.me/${SUPPORT_WHATSAPP}?text=${encodeURIComponent(msg)}`;
-          return (
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-              <a
-                href={waLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#1ebe57] text-white px-6 py-3 rounded-xl text-sm font-bold shadow-md shadow-green-500/25 transition-colors w-full sm:w-auto"
-              >
-                <FaWhatsapp className="w-5 h-5" /> WhatsApp-এ পাঠান
-              </a>
-              <a
-                href="/"
-                className="inline-block bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-3 rounded-xl text-sm font-semibold transition-colors w-full sm:w-auto"
-              >
-                হোমে ফিরে যান
-              </a>
-            </div>
-          );
-        })()}
-      </div>
-    );
-  }
 
   const Header = () => (
     <div className="flex items-center justify-between gap-4 mb-6 rounded-2xl bg-gradient-to-r from-emerald-600 to-green-600 px-4 sm:px-6 py-4 shadow-sm">

@@ -193,7 +193,7 @@ export default function Footer() {
                   className="flex items-center gap-3 md:text-sm text-gray-400 hover:text-[#c9a84c] transition-colors duration-200"
                 >
                   <MdEmail className="text-[#c9a84c] text-lg shrink-0" />
-                  salambd.contact@gmail.com
+                  <span className="min-w-0 break-all">salambd.contact@gmail.com</span>
                 </a>
               </li>
               <li className="md:text-sm text-gray-400">

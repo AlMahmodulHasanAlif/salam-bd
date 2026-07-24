@@ -1,5 +1,5 @@
 import React, { useEffect, Suspense } from 'react';
-import { Outlet, useLocation } from 'react-router';
+import { Outlet, useLocation, useNavigationType } from 'react-router';
 import Navbar from '../components/Navbar';
 import Topbar from '../components/Topbar';
 import Footer from '../components/Footer';
@@ -14,6 +14,7 @@ import usePushNotifications from '../hooks/usePushNotifications';
 
 const RootLayout = () => {
   const { pathname } = useLocation();
+  const navType = useNavigationType();
 
   // Set up native-app behavior (status bar, splash, hardware back button).
   // No-op on the web.
@@ -22,9 +23,13 @@ const RootLayout = () => {
   // Register for push notifications (FCM) and handle taps. No-op on the web.
   usePushNotifications();
 
+  // Scroll to the top only for new (forward) navigations. On Back/Forward
+  // (POP) leave the scroll alone so the browser restores the position the
+  // user was at — otherwise pressing Back dumps them at the top/footer.
   useEffect(() => {
+    if (navType === "POP") return;
     window.scrollTo({ top: 0, behavior: "smooth" });
-  }, [pathname]);
+  }, [pathname, navType]);
 
   useEffect(() => {
     GTM.pageView(pathname);

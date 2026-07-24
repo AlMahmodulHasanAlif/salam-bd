@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router";
 import {
   User,
   MapPin,
@@ -138,6 +139,7 @@ const SectionHead = ({ icon: Icon, title, hint }) => (
 );
 
 export default function CompetitionForm() {
+  const navigate = useNavigate();
   const isDesktop = useIsDesktop();
   const [step, setStep] = useState(1);
   const [form, setForm] = useState({
@@ -158,7 +160,6 @@ export default function CompetitionForm() {
   const [agreed, setAgreed] = useState(false);
   const [errors, setErrors] = useState({});
   const [submitting, setSubmitting] = useState(false);
-  const [result, setResult] = useState(null);
 
   const set = (key) => (e) => {
     const value = e?.target ? e.target.value : e;
@@ -270,7 +271,7 @@ export default function CompetitionForm() {
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(data.message || "রেজিস্ট্রেশন ব্যর্থ হয়েছে");
-      setResult({ regNo: data.regNo });
+      navigate("/competition/success", { state: { regNo: data.regNo } });
     } catch (err) {
       alert(err.message || "কিছু একটা ভুল হয়েছে, আবার চেষ্টা করুন");
     } finally {
@@ -502,39 +503,6 @@ export default function CompetitionForm() {
       {errors.agreed && <p className="text-xs text-red-500 mt-1">{errors.agreed}</p>}
     </div>
   );
-
-  // ── Success screen (shared) ──
-  if (result) {
-    return (
-      <div className="bg-white rounded-2xl border border-emerald-200 shadow-sm p-8 md:p-10 text-center max-w-2xl mx-auto">
-        <div className="w-16 h-16 bg-emerald-50 rounded-full flex items-center justify-center mx-auto mb-4">
-          <CheckCircle2 className="text-emerald-500 w-9 h-9" />
-        </div>
-        <h2 className="text-2xl font-bold text-gray-800 mb-2">
-          রেজিস্ট্রেশন সম্পন্ন হয়েছে! 🎉
-        </h2>
-        <p className="text-gray-500 mb-4">
-          আপনার সন্তানের নিবন্ধন সফলভাবে গ্রহণ করা হয়েছে।
-        </p>
-        <div className="inline-block bg-orange-50 border border-orange-200 rounded-xl px-6 py-3 mb-6">
-          <p className="text-xs text-gray-500">রেজিস্ট্রেশন নম্বর</p>
-          <p className="text-xl font-black text-orange-600 tracking-wide">
-            {result.regNo}
-          </p>
-        </div>
-        <p className="text-sm text-gray-500 mb-6">
-          এই নম্বরটি সংরক্ষণ করুন। প্রতিযোগিতার সময় প্রমাণের জন্য জন্মনিবন্ধন ফরম
-          দেখাতে হবে।
-        </p>
-        <a
-          href="/"
-          className="inline-block bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2.5 rounded-xl text-sm font-semibold transition-colors"
-        >
-          হোমে ফিরে যান
-        </a>
-      </div>
-    );
-  }
 
   // ─────────────────────────────────────────────────────────────
   // DESKTOP — single-page layout (sidebar + all sections)
