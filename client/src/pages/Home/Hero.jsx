@@ -181,7 +181,7 @@ export default function HeroSection() {
             />
             {/* Button sized in cqw so it scales proportionally with the banner. */}
             <span className="absolute left-[44.5%] top-[80%] -translate-y-1/2 inline-flex items-center gap-[1.2cqw] rounded-[1.2cqw] bg-gradient-to-b from-yellow-300 to-yellow-500 hover:from-yellow-200 hover:to-yellow-400 text-blue-950 font-black text-[2.8cqw] px-[4cqw] py-[1.5cqw] shadow-lg ring-1 ring-white/40 whitespace-nowrap transition-colors">
-              মেধা যাচাইয়ে অংশ নিন <ArrowRight className="w-[3.6cqw] h-[3.6cqw]" />
+              এখনই নিবন্ধন করুন <ArrowRight className="w-[3.6cqw] h-[3.6cqw]" />
             </span>
           </Link>
         </motion.div>

@@ -14,6 +14,7 @@ import {
   Phone,
   Globe,
   Info,
+  Headset,
 } from "lucide-react";
 import logo from "../../assets/SalamBDLogo.png";
 import { DISTRICTS, BD_LOCATIONS } from "../../utils/bdLocations";
@@ -125,6 +126,39 @@ const MobileStepper = ({ step }) => (
       );
     })}
   </div>
+);
+
+// 8-pointed Islamic star (Rub el Hizb style) badge with a gold outline.
+const StarBadge = ({ children }) => (
+  <span className="relative inline-flex items-center justify-center w-11 h-11 shrink-0">
+    <svg viewBox="0 0 100 100" className="absolute inset-0 w-full h-full">
+      <path
+        d="M50 4 L61.48 22.28 L82.53 17.47 L77.72 38.52 L96 50 L77.72 61.48 L82.53 82.53 L61.48 77.72 L50 96 L38.52 77.72 L17.47 82.53 L22.28 61.48 L4 50 L22.28 38.52 L17.47 17.47 L38.52 22.28 Z"
+        className="fill-amber-400/15 stroke-amber-400"
+        strokeWidth="4"
+        strokeLinejoin="round"
+      />
+    </svg>
+    <span className="relative text-amber-300">{children}</span>
+  </span>
+);
+
+// Faint decorative mosque silhouette for the instructions card background.
+const MosqueSilhouette = (props) => (
+  <svg viewBox="0 0 220 140" fill="currentColor" {...props}>
+    <rect x="34" y="40" width="11" height="90" rx="2" />
+    <path d="M34 40 q5.5 -14 5.5 -14 q5.5 14 5.5 14 z" />
+    <circle cx="39.5" cy="38" r="6" />
+    <rect x="175" y="40" width="11" height="90" rx="2" />
+    <path d="M175 40 q5.5 -14 5.5 -14 q5.5 14 5.5 14 z" />
+    <circle cx="180.5" cy="38" r="6" />
+    <rect x="60" y="72" width="100" height="58" rx="3" />
+    <path d="M78 72 C78 44 92 30 110 24 C128 30 142 44 142 72 Z" />
+    <rect x="107" y="10" width="6" height="16" rx="2" />
+    <circle cx="110" cy="8" r="5" />
+    <path d="M60 72 C60 58 66 52 74 50 C82 52 88 58 88 72 Z" />
+    <path d="M132 72 C132 58 138 52 146 50 C154 52 160 58 160 72 Z" />
+  </svg>
 );
 
 const SectionHead = ({ icon: Icon, title, hint }) => (
@@ -527,14 +561,18 @@ export default function CompetitionForm() {
                 রেজিস্ট্রেশন ফরম
               </span>
             </div>
-            <ol className="space-y-1">
+            <ol className="relative pl-1">
               {STEPS.map((s, i) => (
                 <li
                   key={s.id}
-                  className="flex items-center gap-3 rounded-lg px-2 py-2"
+                  className="relative flex items-center gap-3 pb-5 last:pb-0"
                 >
+                  {/* vertical connector to the next step */}
+                  {i < STEPS.length - 1 && (
+                    <span className="absolute left-[13px] top-7 h-[calc(100%-1.75rem)] w-0.5 bg-gray-200" />
+                  )}
                   <span
-                    className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold ${
+                    className={`relative z-10 w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold ring-4 ring-white ${
                       i === 0
                         ? "bg-emerald-600 text-white"
                         : "bg-gray-100 text-gray-500"
@@ -550,35 +588,71 @@ export default function CompetitionForm() {
             </ol>
           </div>
 
-          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
-            <h4 className="flex items-center gap-1.5 font-bold text-emerald-800 mb-3">
-              <Info className="w-4 h-4 text-orange-500" /> বিশেষ নির্দেশনা
-            </h4>
-            <ol className="space-y-2">
+          {/* ── Instructions — dark green Islamic-themed card ── */}
+          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#0d3b24] to-[#062617] shadow-lg p-5">
+            <MosqueSilhouette className="pointer-events-none absolute -bottom-1 -right-2 w-44 text-emerald-300/10" />
+
+            {/* header */}
+            <div className="relative flex items-center gap-3 mb-4">
+              <StarBadge>
+                <Info className="w-5 h-5" />
+              </StarBadge>
+              <h4 className="text-lg font-black text-amber-300">
+                বিশেষ নির্দেশনা
+              </h4>
+            </div>
+            <div className="relative flex items-center gap-2 mb-4 text-amber-400/70">
+              <span className="h-px flex-1 bg-gradient-to-r from-amber-400/50 to-transparent" />
+              <span className="text-xs leading-none">❖</span>
+              <span className="h-px flex-1 bg-gradient-to-l from-amber-400/50 to-transparent" />
+            </div>
+
+            {/* list */}
+            <ol className="relative space-y-3">
               {INSTRUCTIONS.map((t, i) => (
-                <li key={i} className="flex gap-2 text-xs text-gray-600 leading-relaxed">
-                  <span className="text-orange-500 font-bold">{i + 1}.</span>
-                  <span>{t}</span>
+                <li key={i} className="flex gap-3">
+                  <span className="flex-shrink-0 w-6 h-6 rounded-md border border-amber-400/60 bg-amber-400/5 text-amber-300 text-[11px] font-bold flex items-center justify-center">
+                    {i + 1}
+                  </span>
+                  <span className="text-emerald-50/90 text-xs leading-relaxed pt-0.5">
+                    {t}
+                  </span>
                 </li>
               ))}
             </ol>
           </div>
 
-          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
-            <h4 className="font-bold text-emerald-800 mb-3 text-sm">
-              সহায়তার জন্য যোগাযোগ করুন
-            </h4>
+          {/* ── Contact — light blue support card ── */}
+          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-blue-50 to-white border-2 border-blue-200 shadow-sm p-5">
+            <div className="flex items-center gap-3 mb-4">
+              <span className="w-11 h-11 rounded-full bg-white ring-2 ring-blue-200 shadow flex items-center justify-center shrink-0">
+                <Headset className="w-5 h-5 text-blue-700" />
+              </span>
+              <h4 className="text-sm font-black text-blue-900 leading-snug">
+                সহায়তার জন্য যোগাযোগ করুন
+              </h4>
+            </div>
             <a
               href="tel:01886699883"
-              className="flex items-center gap-2 text-sm text-gray-600 mb-2 hover:text-emerald-700"
+              className="flex items-center gap-3 bg-blue-50 rounded-xl p-2.5 mb-2.5 hover:bg-blue-100 transition-colors"
             >
-              <Phone className="w-4 h-4 text-emerald-600" /> 01886699883
+              <span className="w-9 h-9 rounded-lg bg-blue-700 text-white flex items-center justify-center shrink-0">
+                <Phone className="w-4 h-4" />
+              </span>
+              <span className="text-sm font-semibold text-blue-900">
+                01886699883
+              </span>
             </a>
             <a
               href="https://salambd.com/contact"
-              className="flex items-center gap-2 text-sm text-gray-600 hover:text-emerald-700"
+              className="flex items-center gap-3 bg-blue-50 rounded-xl p-2.5 hover:bg-blue-100 transition-colors"
             >
-              <Globe className="w-4 h-4 text-emerald-600" /> salambd.com/contact
+              <span className="w-9 h-9 rounded-lg bg-blue-700 text-white flex items-center justify-center shrink-0">
+                <Globe className="w-4 h-4" />
+              </span>
+              <span className="text-sm font-semibold text-blue-900">
+                salambd.com/contact
+              </span>
             </a>
           </div>
         </aside>

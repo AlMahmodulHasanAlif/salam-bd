@@ -1,4 +1,4 @@
-import { BookOpen, Gift, Award, Calculator, Lightbulb } from "lucide-react";
+import { BookOpen, Gift, Calculator, Lightbulb, Trophy } from "lucide-react";
 import CompetitionForm from "./CompetitionForm";
 import prizeDesktop from "../../assets/prize.png";
 import prizeMobile from "../../assets/prizemobile.png";
@@ -58,12 +58,53 @@ const SYLLABUS_ICONS = [
   <span className="text-xl font-black text-emerald-800">123</span>,
 ];
 
+// Each prize has its own metallic gradient theme (gold, silver, bronze, green, teal)
 const PRIZES = [
-  { medal: "🥇", place: "১ম পুরস্কার", amount: "৩০,০০০/- টাকা" },
-  { medal: "🥈", place: "২য় পুরস্কার", amount: "১০,০০০/- টাকা" },
-  { medal: "🥉", place: "৩য় পুরস্কার", amount: "৮,০০০/- টাকা" },
-  { medal: "🏅", place: "৪র্থ পুরস্কার", amount: "৩,০০০/- টাকা" },
-  { medal: "🎖️", place: "৫ম পুরস্কার", amount: "২,০০০/- টাকা" },
+  {
+    place: "১ম পুরস্কার",
+    amount: "৩০,০০০/-",
+    unit: "টাকা",
+    card: "from-yellow-50 to-amber-100 border-amber-300",
+    trophy: "from-amber-300 to-yellow-600",
+    ribbon: "from-amber-400 to-yellow-600",
+    swoosh: "from-amber-300 to-yellow-500",
+  },
+  {
+    place: "২য় পুরস্কার",
+    amount: "১০,০০০/-",
+    unit: "টাকা",
+    card: "from-slate-50 to-slate-200 border-slate-300",
+    trophy: "from-slate-300 to-slate-500",
+    ribbon: "from-slate-400 to-slate-500",
+    swoosh: "from-slate-300 to-slate-400",
+  },
+  {
+    place: "৩য় পুরস্কার",
+    amount: "৮,০০০/-",
+    unit: "টাকা",
+    card: "from-orange-50 to-orange-100 border-orange-300",
+    trophy: "from-orange-400 to-amber-700",
+    ribbon: "from-orange-500 to-amber-700",
+    swoosh: "from-orange-400 to-amber-600",
+  },
+  {
+    place: "৪র্থ পুরস্কার",
+    amount: "৩,০০০/-",
+    unit: "টাকা",
+    card: "from-green-50 to-green-100 border-green-300",
+    trophy: "from-lime-400 to-green-600",
+    ribbon: "from-lime-500 to-green-600",
+    swoosh: "from-lime-400 to-green-500",
+  },
+  {
+    place: "৫ম পুরস্কার",
+    amount: "২,০০০/-",
+    unit: "টাকা",
+    card: "from-teal-50 to-teal-100 border-teal-300",
+    trophy: "from-teal-300 to-teal-600",
+    ribbon: "from-teal-400 to-teal-600",
+    swoosh: "from-teal-300 to-teal-500",
+  },
 ];
 
 export default function CompetitionPage() {
@@ -163,28 +204,60 @@ export default function CompetitionPage() {
 
         {/* ── Prizes ── */}
         <section>
-          <h2 className="flex items-center gap-2 text-xl md:text-2xl font-bold text-emerald-800 mb-5">
-            <Gift className="w-6 h-6 text-orange-500" /> পুরস্কার
-          </h2>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {/* header: title left, crest note right */}
+          <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
+            <h2 className="flex items-center gap-2 text-xl md:text-2xl font-bold text-emerald-800">
+              <Gift className="w-6 h-6 text-orange-500" /> পুরস্কার
+            </h2>
+            <p className="flex items-center gap-2 text-amber-600 font-semibold text-sm md:text-base">
+              <Trophy className="w-5 h-5 text-amber-500" />
+              সাথে রয়েছে ক্রেস্ট ও সার্টিফিকেট
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
             {PRIZES.map((p) => (
               <div
                 key={p.place}
-                className="bg-white rounded-2xl border border-amber-200 shadow-sm p-5 flex items-center gap-4"
+                className={`group relative overflow-hidden rounded-2xl border bg-gradient-to-b ${p.card}
+                           shadow-md hover:shadow-xl transition-shadow pt-6 pb-9 px-3
+                           flex flex-col items-center text-center`}
               >
-                <span className="text-4xl">{p.medal}</span>
-                <div>
-                  <p className="font-bold text-gray-800">{p.place}</p>
-                  <p className="text-orange-600 font-black text-lg">
-                    {p.amount}
-                  </p>
+                {/* Trophy badge */}
+                <div
+                  className={`relative z-10 w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-gradient-to-b ${p.trophy}
+                             flex items-center justify-center ring-4 ring-white/60 shadow-lg mb-4`}
+                >
+                  <Trophy
+                    className="w-9 h-9 sm:w-12 sm:h-12 text-white drop-shadow"
+                    strokeWidth={1.5}
+                  />
                 </div>
+
+                {/* Ribbon banner */}
+                <div
+                  className={`relative z-10 mb-4 px-6 py-1.5 text-white font-bold text-xs sm:text-sm shadow
+                             bg-gradient-to-r ${p.ribbon}
+                             [clip-path:polygon(0_0,100%_0,90%_50%,100%_100%,0_100%,10%_50%)]`}
+                >
+                  {p.place}
+                </div>
+
+                {/* Amount */}
+                <p className="relative z-10 text-xl sm:text-2xl font-black text-emerald-900 leading-none">
+                  {p.amount}
+                </p>
+                <p className="relative z-10 text-base sm:text-lg font-bold text-emerald-900">
+                  {p.unit}
+                </p>
+
+                {/* bottom metallic swoosh */}
+                <div
+                  className={`pointer-events-none absolute -bottom-8 -inset-x-8 h-16 rounded-[100%]
+                             bg-gradient-to-r ${p.swoosh}`}
+                />
               </div>
             ))}
-          </div>
-          <div className="mt-4 flex items-center justify-center gap-2 bg-emerald-600 text-white rounded-2xl px-6 py-4 font-semibold">
-            <Award className="w-5 h-5 text-amber-300" />
-            সাথে রয়েছে ক্রেস্ট ও সার্টিফিকেট।
           </div>
         </section>
 
