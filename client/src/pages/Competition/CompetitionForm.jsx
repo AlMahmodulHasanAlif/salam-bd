@@ -546,18 +546,20 @@ export default function CompetitionForm() {
       <div id="reg-form" className="grid grid-cols-[300px_1fr] gap-6">
         {/* Sidebar */}
         <aside className="space-y-5">
-          <div className="bg-white rounded-2xl border border-orange-100 shadow-sm p-5">
+          <div className="relative overflow-hidden bg-gradient-to-br from-[#0d3b24] to-[#062617] rounded-2xl shadow-lg p-5">
             <div className="flex items-center gap-2.5 mb-4">
               <img src={logo} alt="Salam" className="h-11 w-auto" />
               <div>
-                <p className="font-black text-emerald-800 leading-tight">
+                <p className="font-black text-white leading-tight">
                   সালাম কোডিং বুক
                 </p>
-                <p className="text-xs text-gray-500">মেধা যাচাই প্রতিযোগিতা</p>
+                <p className="text-xs text-emerald-100/70">
+                  মেধা যাচাই প্রতিযোগিতা
+                </p>
               </div>
             </div>
-            <div className="text-center mb-4">
-              <span className="inline-block bg-orange-500 text-white text-sm font-bold px-5 py-1.5 rounded-full">
+            <div className="text-center mb-5">
+              <span className="inline-block bg-orange-500 text-white text-sm font-bold px-5 py-1.5 rounded-full shadow-md">
                 রেজিস্ট্রেশন ফরম
               </span>
             </div>
@@ -569,18 +571,22 @@ export default function CompetitionForm() {
                 >
                   {/* vertical connector to the next step */}
                   {i < STEPS.length - 1 && (
-                    <span className="absolute left-[13px] top-7 h-[calc(100%-1.75rem)] w-0.5 bg-gray-200" />
+                    <span className="absolute left-[13px] top-7 h-[calc(100%-1.75rem)] w-0.5 bg-white/15" />
                   )}
                   <span
-                    className={`relative z-10 w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold ring-4 ring-white ${
+                    className={`relative z-10 w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold ring-4 ring-[#0a3320] ${
                       i === 0
-                        ? "bg-emerald-600 text-white"
-                        : "bg-gray-100 text-gray-500"
+                        ? "bg-emerald-500 text-white"
+                        : "bg-white/10 text-emerald-100/60 border border-white/20"
                     }`}
                   >
                     {s.id}
                   </span>
-                  <span className="text-sm font-medium text-gray-700">
+                  <span
+                    className={`text-sm font-medium ${
+                      i === 0 ? "text-white" : "text-emerald-100/70"
+                    }`}
+                  >
                     {s.label}
                   </span>
                 </li>
