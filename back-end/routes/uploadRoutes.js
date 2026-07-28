@@ -14,11 +14,36 @@ const upload = multer({
   },
 });
 
+// Avatars are compressed client-side to ≤ 50 KB; enforce that as a hard cap
+// server-side too, so the limit holds even if the upload bypasses the browser.
+const avatarUpload = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 50 * 1024 }, // 50 KB
+  fileFilter: (_req, file, cb) => {
+    if (!file.mimetype.startsWith("image/"))
+      return cb(new Error("Only image files are allowed"), false);
+    cb(null, true);
+  },
+});
+
+// Translate multer's raw errors (esp. the 50 KB overflow) into a clean 400.
+const handleAvatarUpload = (req, res, next) =>
+  avatarUpload.single("image")(req, res, (err) => {
+    if (err) {
+      const message =
+        err.code === "LIMIT_FILE_SIZE"
+          ? "Profile image must be 50 KB or smaller."
+          : err.message || "Upload failed";
+      return res.status(400).send({ message });
+    }
+    next();
+  });
+
 const router = Router();
 
 // Profile avatar — any signed-in user (NOT admin-only), so it must be declared
 // before the admin gate below.
-router.post("/avatar", verifyFBToken, upload.single("image"), uploadAvatar);
+router.post("/avatar", verifyFBToken, handleAvatarUpload, uploadAvatar);
 
 // All remaining upload routes are admin-only
 router.use(verifyFBToken, verifyAdmin);

@@ -4,6 +4,7 @@ import { useNavigate } from "react-router";
 import toast from "react-hot-toast";
 import { getUserOrders } from "../../api/orderApi";
 import { getMyProfile, updateMyProfile, uploadAvatar } from "../../api/userApi";
+import { compressImage } from "../../utils/compressImage";
 import useAuth from "../../hooks/useAuth";
 import useAxiosSecure from "../../hooks/useAxios";
 import { DISTRICTS, BD_LOCATIONS } from "../../utils/bdLocations";
@@ -105,14 +106,10 @@ const ChangePasswordModal = ({ onClose }) => {
   };
 
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
-      onClick={onClose}
-    >
-      <div
-        className="w-full max-w-sm rounded-2xl bg-white p-6 shadow-xl"
-        onClick={(e) => e.stopPropagation()}
-      >
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
+      {/* Deliberately no backdrop click-to-close — the user must use the X or
+          submit, so a stray outside click can't discard a half-typed password. */}
+      <div className="w-full max-w-sm rounded-2xl bg-white p-6 shadow-xl">
         <div className="mb-4 flex items-center justify-between">
           <h3 className="flex items-center gap-2 font-bold text-gray-800">
             <KeyRound size={16} className="text-green-700" /> Change Password
@@ -176,17 +173,29 @@ const EditProfileModal = ({ axiosSecure, user, onClose, onSaved }) => {
   const [name, setName] = useState(user?.displayName || "");
   const [photoFile, setPhotoFile] = useState(null);
   const [preview, setPreview] = useState(user?.photoURL || "");
+  const [processing, setProcessing] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
-  const handlePick = (e) => {
+  const handlePick = async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
     if (!file.type.startsWith("image/")) {
       toast.error("Please choose an image file.");
       return;
     }
-    setPhotoFile(file);
-    setPreview(URL.createObjectURL(file));
+
+    // Compress in the browser so the avatar is always ≤ 50 KB — the user can
+    // pick a full-size phone photo and it just works.
+    setProcessing(true);
+    try {
+      const compressed = await compressImage(file, { maxBytes: 50 * 1024 });
+      setPhotoFile(compressed);
+      setPreview(URL.createObjectURL(compressed));
+    } catch (err) {
+      toast.error(err?.message || "Could not process that image.");
+    } finally {
+      setProcessing(false);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -223,14 +232,9 @@ const EditProfileModal = ({ axiosSecure, user, onClose, onSaved }) => {
   };
 
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
-      onClick={onClose}
-    >
-      <div
-        className="w-full max-w-sm rounded-2xl bg-white p-6 shadow-xl"
-        onClick={(e) => e.stopPropagation()}
-      >
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
+      {/* No backdrop click-to-close — dismiss via the X or submit only. */}
+      <div className="w-full max-w-sm rounded-2xl bg-white p-6 shadow-xl">
         <div className="mb-4 flex items-center justify-between">
           <h3 className="flex items-center gap-2 font-bold text-gray-800">
             <Pencil size={16} className="text-green-700" /> Edit Profile
@@ -260,7 +264,13 @@ const EditProfileModal = ({ axiosSecure, user, onClose, onSaved }) => {
               </span>
               <input type="file" accept="image/*" onChange={handlePick} className="hidden" />
             </label>
-            <p className="text-[11px] text-gray-400 mt-2">Tap the camera to change photo</p>
+            <p className="text-[11px] text-gray-400 mt-2">
+              {processing
+                ? "Optimizing image…"
+                : photoFile
+                  ? `Ready · ${(photoFile.size / 1024).toFixed(0)} KB`
+                  : "Tap the camera to change photo (auto-compressed to ≤ 50 KB)"}
+            </p>
           </div>
 
           <div>
@@ -275,10 +285,10 @@ const EditProfileModal = ({ axiosSecure, user, onClose, onSaved }) => {
 
           <button
             type="submit"
-            disabled={submitting}
+            disabled={submitting || processing}
             className="w-full rounded-xl bg-green-700 py-2 text-sm font-semibold text-white transition hover:bg-green-800 disabled:opacity-60"
           >
-            {submitting ? "Saving…" : "Save Changes"}
+            {submitting ? "Saving…" : processing ? "Processing…" : "Save Changes"}
           </button>
         </form>
       </div>
@@ -332,14 +342,9 @@ const SavedAddressModal = ({ axiosSecure, user, initial, onClose, onSaved }) => 
     "w-full rounded-xl border border-gray-200 px-3 py-2 text-sm outline-none focus:border-green-400";
 
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
-      onClick={onClose}
-    >
-      <div
-        className="w-full max-w-sm rounded-2xl bg-white p-6 shadow-xl max-h-[90vh] overflow-y-auto"
-        onClick={(e) => e.stopPropagation()}
-      >
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
+      {/* No backdrop click-to-close — dismiss via the X or submit only. */}
+      <div className="w-full max-w-sm rounded-2xl bg-white p-6 shadow-xl max-h-[90vh] overflow-y-auto">
         <div className="mb-4 flex items-center justify-between">
           <h3 className="flex items-center gap-2 font-bold text-gray-800">
             <MapPin size={16} className="text-green-700" /> Saved Address
