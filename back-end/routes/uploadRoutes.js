@@ -1,7 +1,7 @@
 import { Router }  from "express";
 import multer       from "multer";
 import { verifyFBToken, verifyAdmin } from "../middlewares/auth.js";
-import { uploadProductImages, deleteProductImage } from "../controllers/uploadController.js";
+import { uploadProductImages, deleteProductImage, uploadAvatar } from "../controllers/uploadController.js";
 
 // Memory storage — files go straight to Cloudinary, never touch disk
 const upload = multer({
@@ -16,7 +16,11 @@ const upload = multer({
 
 const router = Router();
 
-// All upload routes are admin-only
+// Profile avatar — any signed-in user (NOT admin-only), so it must be declared
+// before the admin gate below.
+router.post("/avatar", verifyFBToken, upload.single("image"), uploadAvatar);
+
+// All remaining upload routes are admin-only
 router.use(verifyFBToken, verifyAdmin);
 
 // POST /upload/product-images  — up to 10 images at once

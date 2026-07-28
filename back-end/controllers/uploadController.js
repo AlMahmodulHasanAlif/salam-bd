@@ -68,6 +68,48 @@ export const uploadProductImages = asyncHandler(async (req, res) => {
 });
 
 // ─────────────────────────────────────────
+// POST /upload/avatar
+// Accepts: multipart/form-data  field: "image"  (1 file)
+// Returns: { url, publicId }
+// User-scoped (any signed-in user) — used for profile photos, so it is NOT
+// behind the admin gate. Square-cropped to keep avatars uniform.
+// ─────────────────────────────────────────
+export const uploadAvatar = asyncHandler(async (req, res) => {
+  checkConfig();
+
+  if (!req.file)
+    return res.status(400).send({ message: "No file uploaded" });
+
+  try {
+    const result = await new Promise((resolve, reject) => {
+      const stream = cloudinary.uploader.upload_stream(
+        {
+          folder: "salam-bd/avatars",
+          resource_type: "image",
+          transformation: [
+            { width: 400, height: 400, crop: "fill", gravity: "face", quality: "auto:good" },
+            { fetch_format: "auto" },
+          ],
+        },
+        (error, uploaded) => {
+          if (error) {
+            console.error("❌ Cloudinary avatar upload error:", error);
+            return reject(error);
+          }
+          resolve(uploaded);
+        },
+      );
+      stream.end(req.file.buffer);
+    });
+
+    res.send({ url: result.secure_url, publicId: result.public_id });
+  } catch (err) {
+    console.error("❌ Avatar upload failed:", err.message);
+    res.status(500).send({ message: err.message || "Upload failed" });
+  }
+});
+
+// ─────────────────────────────────────────
 // DELETE /upload/product-image
 // Body: { publicId }
 // ─────────────────────────────────────────

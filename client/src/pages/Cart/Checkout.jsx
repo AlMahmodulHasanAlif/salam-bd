@@ -1,8 +1,10 @@
 // src/pages/Cart/Checkout.jsx
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router";
 import { placeOrder } from "../../api/orderApi";
+import { getMyProfile } from "../../api/userApi";
 import useIncompleteOrder from "../../hooks/useIncompleteOrder";
+import useAxiosSecure from "../../hooks/useAxios";
 import useCart from "../../hooks/useCart";
 import useAuth from "../../hooks/useAuth";
 import { getGuestId } from "../../context/AuthProvider";
@@ -669,6 +671,7 @@ const Checkout = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { user, loading: authLoading } = useAuth();
+  const axiosSecure = useAxiosSecure();
   const { items, emptyCart, updateQty, removeItem, fetchCart } = useCart();
 
   // Buy Now → isolated single-product checkout (passed via navigation state).
@@ -701,6 +704,37 @@ const Checkout = () => {
   const [shippingZone, setShippingZone] = useState(SHIPPING_ZONES[1]); // default: outside dhaka
   const [loading, setLoading] = useState(false);
   const isSubmitting = React.useRef(false);
+
+  // Auto-fill the shipping form from the user's saved address (set in the
+  // dashboard). Runs once when the profile loads and only while the form is
+  // still untouched, so it never clobbers something the customer typed.
+  const [addressPrefilled, setAddressPrefilled] = useState(false);
+  useEffect(() => {
+    if (authLoading || !user?.email || addressPrefilled) return;
+    let active = true;
+    getMyProfile(axiosSecure, user.email)
+      .then((res) => {
+        const saved = res.data?.shippingAddress;
+        if (!active || !saved) return;
+        setForm((prev) => {
+          const untouched = !prev.name && !prev.phone && !prev.address && !prev.district && !prev.thana;
+          if (!untouched) return prev;
+          return {
+            name: saved.name || "",
+            phone: saved.phone || "",
+            address: saved.address || "",
+            district: saved.district || "",
+            thana: saved.thana || "",
+          };
+        });
+        setAddressPrefilled(true);
+      })
+      .catch(() => {});
+    return () => {
+      active = false;
+    };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.email, authLoading]);
 
   // Derived totals are computed before the empty-cart redirect below so the
   // draft-capture hook — which must run unconditionally — can read them.

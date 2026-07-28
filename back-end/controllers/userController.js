@@ -56,8 +56,10 @@ export const updateUser = async (req, res) => {
   if (email !== req.user?.email && req.user?.role !== "admin")
     return res.status(403).send({ message: "Forbidden access" });
 
-  // Whitelist editable fields — never allow self-promotion via role/email/_id
-  const ALLOWED = ["name", "phone", "photo", "photoURL", "address"];
+  // Whitelist editable fields — never allow self-promotion via role/email/_id.
+  // `shippingAddress` is a structured object { name, phone, address, district,
+  // thana } used to auto-fill checkout.
+  const ALLOWED = ["name", "phone", "photo", "photoURL", "address", "shippingAddress"];
   const updates = { updatedAt: new Date() };
   for (const key of ALLOWED) {
     if (key in req.body) updates[key] = req.body[key];

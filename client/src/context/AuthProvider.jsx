@@ -3,12 +3,15 @@ import React, { useEffect, useState } from "react";
 import { AuthContext } from "./AuthContext";
 import {
   createUserWithEmailAndPassword,
+  EmailAuthProvider,
   GoogleAuthProvider,
   onAuthStateChanged,
+  reauthenticateWithCredential,
   sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
+  updatePassword,
   updateProfile,
 } from "firebase/auth";
 import { auth } from "../firebase/firebase.init";
@@ -49,6 +52,23 @@ const AuthProvider = ({ children }) => {
 
   const resetPassword = (email) => sendPasswordResetEmail(auth, email);
 
+  // Change the signed-in user's password. Firebase requires a *recent* login
+  // before it will accept a password change, so we re-authenticate with the
+  // current password first (this also verifies the user actually knows it).
+  // Only works for email/password accounts — Google-only users have no password
+  // credential to re-authenticate with.
+  const changePassword = async (currentPassword, newPassword) => {
+    const current = auth.currentUser;
+    if (!current?.email) throw new Error("You are not signed in.");
+
+    const credential = EmailAuthProvider.credential(
+      current.email,
+      currentPassword,
+    );
+    await reauthenticateWithCredential(current, credential);
+    await updatePassword(current, newPassword);
+  };
+
   const logOut = () => {
     setLoading(true);
     return signOut(auth);
@@ -85,6 +105,7 @@ const AuthProvider = ({ children }) => {
     signInGoogle,
     updateUserProfile,
     resetPassword,
+    changePassword,
     logOut,
     setLoading,
   };
