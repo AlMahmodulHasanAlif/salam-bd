@@ -2,7 +2,14 @@
 import React, { useEffect, useState, useRef } from "react";
 import ReactDOM from "react-dom";
 import useAxiosSecure from "../../hooks/useAxios";
-import { getAllOrders, updateOrderStatus } from "../../api/orderApi";
+import MarketingAttribution from "../../components/MarketingAttribution";
+import {
+  getAllOrders,
+  updateOrderStatus,
+  blockEntity,
+  unblockEntity,
+  sendOrderToSteadfast,
+} from "../../api/orderApi";
 import logo from "../../assets/sitelogo.png";
 import toast from "react-hot-toast";
 import {
@@ -15,6 +22,9 @@ import {
   X,
   Mail,
   MapPin,
+  Ban,
+  ShieldCheck,
+  Truck,
 } from "lucide-react";
 
 const STATUSES = [
@@ -124,6 +134,124 @@ const AddressPopover = ({ address, children }) => {
               <MapPin size={12} className="mt-0.5 shrink-0 text-green-500" />
               <p className="text-xs text-gray-700 leading-relaxed">{address}</p>
             </div>
+          </div>,
+          document.body,
+        )}
+    </>
+  );
+};
+
+// ─── Block Actions (Block IP / Phone / Email) ─────────────────────────────────
+const BLOCK_TYPES = [
+  { type: "ip", noun: "IP", read: (o) => o.ip },
+  { type: "phone", noun: "Phone", read: (o) => o.shippingInfo?.phone },
+  { type: "email", noun: "Email", read: (o) => o.userEmail },
+];
+
+const BlockActions = ({ order, onBlock, onUnblock }) => {
+  const [open, setOpen] = useState(false);
+  const [pos, setPos] = useState({ top: 0, left: 0 });
+  const triggerRef = useRef(null);
+
+  const blocked = order.blocked || {};
+  const anyBlocked = blocked.ip || blocked.phone || blocked.email;
+
+  const handleTriggerClick = (e) => {
+    e.stopPropagation();
+    if (!open && triggerRef.current) {
+      const rect = triggerRef.current.getBoundingClientRect();
+      const spaceBelow = window.innerHeight - rect.bottom;
+      const top =
+        spaceBelow < 190
+          ? rect.top + window.scrollY - 190
+          : rect.bottom + window.scrollY + 6;
+      let left = rect.right + window.scrollX - 224; // align right edge (w-56)
+      if (left < 12) left = 12;
+      setPos({ top, left });
+    }
+    setOpen((v) => !v);
+  };
+
+  useEffect(() => {
+    if (!open) return;
+    const close = () => setOpen(false);
+    document.addEventListener("click", close);
+    return () => document.removeEventListener("click", close);
+  }, [open]);
+
+  // Already-blocked entries toggle back off; the rest block.
+  const handleItemClick = (type, value, isBlocked) => {
+    const message = isBlocked
+      ? `Unblock this ${type.toUpperCase()}?\n\n${value}\n\nOrders from this ${type} will be accepted again.`
+      : `Block this ${type.toUpperCase()}?\n\n${value}\n\nFuture orders from this ${type} will be rejected automatically.`;
+    if (!window.confirm(message)) return;
+
+    (isBlocked ? onUnblock : onBlock)(type, value);
+    setOpen(false);
+  };
+
+  return (
+    <>
+      <button
+        ref={triggerRef}
+        onClick={handleTriggerClick}
+        title={anyBlocked ? "Customer partially blocked" : "Block customer"}
+        className={`p-1.5 rounded-lg transition ${
+          anyBlocked
+            ? "text-red-500 hover:bg-red-50"
+            : "text-gray-400 hover:text-red-600 hover:bg-red-50"
+        }`}
+      >
+        <Ban size={14} />
+      </button>
+
+      {open &&
+        ReactDOM.createPortal(
+          <div
+            style={{ top: pos.top, left: pos.left }}
+            className="absolute z-[9999] w-56 bg-white border border-gray-200 rounded-xl shadow-2xl p-2"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest px-2 py-1">
+              Block Customer
+            </p>
+            {BLOCK_TYPES.map(({ type, noun, read }) => {
+              const value = read(order);
+              const isBlocked = !!blocked[type];
+              const disabled = !value;
+              return (
+                <button
+                  key={type}
+                  disabled={disabled}
+                  onClick={() =>
+                    !disabled && handleItemClick(type, value, isBlocked)
+                  }
+                  className={`w-full flex items-center justify-between gap-2 px-2 py-2 rounded-lg text-xs font-medium text-left transition ${
+                    isBlocked
+                      ? "text-red-500 bg-red-50 hover:bg-green-50 hover:text-green-700"
+                      : !value
+                        ? "text-gray-300 cursor-not-allowed"
+                        : "text-gray-700 hover:bg-red-50 hover:text-red-600"
+                  }`}
+                >
+                  <span className="flex items-center gap-1.5">
+                    {isBlocked ? <ShieldCheck size={12} /> : <Ban size={12} />}{" "}
+                    {isBlocked ? `Unblock ${noun}` : `Block ${noun}`}
+                  </span>
+                  {isBlocked ? (
+                    <span className="text-[10px] font-bold uppercase">
+                      Blocked
+                    </span>
+                  ) : value ? (
+                    <span className="text-[10px] text-gray-400 truncate max-w-[90px]">
+                      {value}
+                    </span>
+                  ) : (
+                    <span className="text-[10px] text-gray-300">N/A</span>
+                  )}
+                </button>
+              );
+            })}
           </div>,
           document.body,
         )}
@@ -544,6 +672,11 @@ const InvoiceModal = ({ order, onClose }) => {
                 </table>
               </div>
 
+              {/* Which ad drove this order — below the ordered products */}
+              <div className="mb-6">
+                <MarketingAttribution attribution={order.attribution} />
+              </div>
+
               {/* Footer summary */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-5 border-t-2 border-gray-100">
                 {[
@@ -602,7 +735,16 @@ const InvoiceModal = ({ order, onClose }) => {
 };
 
 // ─── Mobile Order Card ────────────────────────────────────────────────────────
-const OrderCard = ({ o, onInvoice, onStatusChange, onDelete }) => {
+const OrderCard = ({
+  o,
+  onInvoice,
+  onStatusChange,
+  onDelete,
+  onBlock,
+  onUnblock,
+  onSteadfast,
+  sending,
+}) => {
   const orderItems = o.items || o.products || [];
   const address = buildAddress(o.shippingInfo || {});
 
@@ -727,6 +869,23 @@ const OrderCard = ({ o, onInvoice, onStatusChange, onDelete }) => {
           <Printer size={15} />
         </button>
         <button
+          onClick={() => onSteadfast(o._id)}
+          disabled={sending}
+          className={`p-2 rounded-xl transition disabled:opacity-50 ${
+            o.steadfast?.trackingCode
+              ? "text-indigo-600 bg-indigo-50 hover:bg-indigo-100"
+              : "text-gray-400 hover:text-indigo-600 hover:bg-indigo-50"
+          }`}
+          title={
+            o.steadfast?.trackingCode
+              ? `Sent to Steadfast — ${o.steadfast.trackingCode} (tap to resend)`
+              : "Send to Steadfast"
+          }
+        >
+          <Truck size={15} />
+        </button>
+        <BlockActions order={o} onBlock={onBlock} onUnblock={onUnblock} />
+        <button
           onClick={() => onDelete(o._id)}
           className="p-2 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-xl transition"
           title="Delete Order"
@@ -734,6 +893,11 @@ const OrderCard = ({ o, onInvoice, onStatusChange, onDelete }) => {
           <Trash2 size={15} />
         </button>
       </div>
+      {o.steadfast?.trackingCode && (
+        <p className="text-[11px] font-semibold text-indigo-600 flex items-center gap-1">
+          <Truck size={11} /> Steadfast: {o.steadfast.trackingCode}
+        </p>
+      )}
     </div>
   );
 };
@@ -756,6 +920,7 @@ const AdminOrders = () => {
     endDate: "",
   });
   const [invoiceOrder, setInvoiceOrder] = useState(null);
+  const [sendingId, setSendingId] = useState(null); // order being sent to courier
 
   const load = async (s = "all") => {
     setLoading(true);
@@ -792,6 +957,80 @@ const AdminOrders = () => {
       load(filter);
     } catch {
       toast.error("Delete failed");
+    }
+  };
+
+  // Block / unblock an order's IP / phone / email, then flag every order that
+  // shares that value so the whole list updates immediately without a refetch.
+  const applyBlockChange = async (type, value, block) => {
+    const verb = block ? "block" : "unblock";
+    try {
+      const { data } = await (block ? blockEntity : unblockEntity)(axiosSecure, {
+        type,
+        value,
+      });
+
+      // The server lowercases emails before storing, so compare the same way.
+      const norm = (v) => (type === "email" ? v.toLowerCase() : v);
+      const target = norm(value);
+      setOrders((prev) =>
+        prev.map((o) => {
+          const raw =
+            type === "ip"
+              ? o.ip
+              : type === "phone"
+                ? o.shippingInfo?.phone
+                : o.userEmail;
+          if (!raw || norm(raw) !== target) return o;
+          return { ...o, blocked: { ...(o.blocked || {}), [type]: block } };
+        }),
+      );
+
+      const noOp = block ? data?.alreadyBlocked : data?.wasBlocked === false;
+      toast.success(
+        noOp
+          ? `${type.toUpperCase()} was already ${block ? "blocked" : "unblocked"}`
+          : `${type.toUpperCase()} ${verb}ed`,
+      );
+    } catch {
+      toast.error(`Failed to ${verb} ${type}`);
+    }
+  };
+
+  const handleBlock = (type, value) => applyBlockChange(type, value, true);
+  const handleUnblock = (type, value) => applyBlockChange(type, value, false);
+
+  // ── Steadfast courier ──
+  // Send one order to Steadfast; patch it in place with the tracking code.
+  const handleSendSteadfast = async (id) => {
+    const order = orders.find((o) => o._id === id);
+    if (order?.steadfast?.trackingCode) {
+      if (
+        !confirm(
+          `This order was already sent (${order.steadfast.trackingCode}). Send again?`,
+        )
+      )
+        return;
+    }
+    setSendingId(id);
+    try {
+      const { data } = await sendOrderToSteadfast(
+        axiosSecure,
+        id,
+        !!order?.steadfast?.trackingCode,
+      );
+      toast.success(data?.message || "Sent to Steadfast");
+      setOrders((prev) =>
+        prev.map((o) =>
+          o._id === id ? { ...o, steadfast: data.steadfast } : o,
+        ),
+      );
+    } catch (err) {
+      toast.error(
+        err?.response?.data?.message || "Failed to send to Steadfast",
+      );
+    } finally {
+      setSendingId(null);
     }
   };
 
@@ -1203,6 +1442,27 @@ const AdminOrders = () => {
                             <Printer size={14} />
                           </button>
                           <button
+                            onClick={() => handleSendSteadfast(o._id)}
+                            disabled={sendingId === o._id}
+                            className={`p-1.5 rounded-lg transition disabled:opacity-50 ${
+                              o.steadfast?.trackingCode
+                                ? "text-indigo-600 hover:bg-indigo-50"
+                                : "text-gray-400 hover:text-indigo-600 hover:bg-indigo-50"
+                            }`}
+                            title={
+                              o.steadfast?.trackingCode
+                                ? `Sent to Steadfast — ${o.steadfast.trackingCode} (click to resend)`
+                                : "Send to Steadfast"
+                            }
+                          >
+                            <Truck size={14} />
+                          </button>
+                          <BlockActions
+                            order={o}
+                            onBlock={handleBlock}
+                            onUnblock={handleUnblock}
+                          />
+                          <button
                             onClick={() => handleDelete(o._id)}
                             className="p-1.5 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition"
                             title="Delete"
@@ -1233,6 +1493,10 @@ const AdminOrders = () => {
                   onInvoice={setInvoiceOrder}
                   onStatusChange={handleStatus}
                   onDelete={handleDelete}
+                  onBlock={handleBlock}
+                  onUnblock={handleUnblock}
+                  onSteadfast={handleSendSteadfast}
+                  sending={sendingId === o._id}
                 />
               ))
             ) : (

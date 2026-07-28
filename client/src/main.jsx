@@ -7,8 +7,12 @@ import AuthProvider from "../src/context/AuthProvider";
 import router from "../src/routes/routes";
 import "./index.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { captureAttribution } from "./utils/attribution";
 
-
+// Runs before render so ad params are banked even if the visitor bounces to
+// another page immediately. The landing/plugin funnel sits outside RootLayout,
+// so this is the only place that covers both funnels.
+captureAttribution();
 
 
 

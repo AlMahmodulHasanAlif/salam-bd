@@ -9,6 +9,8 @@ import {
 } from "lucide-react";
 import pluginImg from "../assets/pluginquran.webp";
 import { GTM } from "../utils/gtm";
+import { getAttribution } from "../utils/attribution";
+import useIncompleteOrder from "../hooks/useIncompleteOrder";
 
 const PRODUCT = {
   name: "Plug In Quran New V-2",
@@ -699,6 +701,33 @@ export default function PluginOrderForm() {
 
   const thanaList = form.district ? BD_LOCATIONS[form.district] : [];
 
+  // Capture the form as an "incomplete order" so a visitor who fills it in but
+  // never submits still shows up in the admin panel for follow-up.
+  const { draftId, clearDraft } = useIncompleteOrder({
+    source: "plugin",
+    data: {
+      customer: {
+        name: form.name,
+        phone: form.phone,
+        // Matches what the real order stores: thana and street detail combined.
+        address: [form.address, form.detailAddress].filter(Boolean).join(", "),
+        thana: form.address,
+        district: form.district,
+        country: form.country,
+      },
+      items: [
+        {
+          name: PRODUCT.name,
+          image: PRODUCT.image,
+          price: PRODUCT.price,
+          quantity,
+        },
+      ],
+      estimatedTotal: total,
+      attribution: getAttribution(),
+    },
+  });
+
   const handleFormFocus = () => {
     if (checkoutFired.current) return;
     checkoutFired.current = true;
@@ -761,11 +790,17 @@ export default function PluginOrderForm() {
             : { zone: shipping.id, charge: shipping.charge },
           payment: { method: "cod" },
           pricing: { subtotal, total },
+          // Meta ad attribution banked on landing; null for direct visits.
+          attribution: getAttribution(),
+          // Retires the abandoned-form draft this order came from.
+          draftId,
         }),
       });
       const data = await response.json().catch(() => ({}));
       if (!response.ok)
         throw new Error(data.message || "Failed to place order");
+
+      clearDraft();
 
       GTM.purchase({
         content_ids: [PRODUCT.name],

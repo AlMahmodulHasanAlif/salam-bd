@@ -2,12 +2,14 @@
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router";
 import { placeOrder } from "../../api/orderApi";
+import useIncompleteOrder from "../../hooks/useIncompleteOrder";
 import useCart from "../../hooks/useCart";
 import useAuth from "../../hooks/useAuth";
 import { getGuestId } from "../../context/AuthProvider";
 import toast from "react-hot-toast";
 import { Tag, Truck } from "lucide-react";
 import { GTM, generateEventId } from "../../utils/gtm";
+import { getAttribution } from "../../utils/attribution";
 
 // All 64 districts with upazilas (thanas)
 const BD_LOCATIONS = {
@@ -700,11 +702,8 @@ const Checkout = () => {
   const [loading, setLoading] = useState(false);
   const isSubmitting = React.useRef(false);
 
-  if (!checkoutItems.length && !isSubmitting.current) {
-    navigate("/cart");
-    return null;
-  }
-
+  // Derived totals are computed before the empty-cart redirect below so the
+  // draft-capture hook — which must run unconditionally — can read them.
   const allFreeDelivery =
     checkoutItems.length > 0 && checkoutItems.every((i) => i.freeDelivery);
   const thanas = form.district ? BD_LOCATIONS[form.district] : [];
@@ -714,6 +713,31 @@ const Checkout = () => {
     0,
   );
   const grandTotal = itemsTotal + shippingCharge;
+
+  // Capture the form as an "incomplete order" so an abandoned checkout still
+  // reaches the admin panel. `draftId` goes with the order below; the server
+  // deletes the draft once the order lands.
+  const { draftId, clearDraft } = useIncompleteOrder({
+    source: "checkout",
+    data: {
+      customer: form,
+      items: checkoutItems.map((i) => ({
+        productId: i.productId,
+        name: i.name,
+        image: i.image,
+        price: i.price,
+        quantity: i.quantity,
+        variantLabel: i.variantLabel || null,
+      })),
+      estimatedTotal: grandTotal,
+      attribution: getAttribution(),
+    },
+  });
+
+  if (!checkoutItems.length && !isSubmitting.current) {
+    navigate("/cart");
+    return null;
+  }
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -790,9 +814,15 @@ const Checkout = () => {
           shippingZone: shippingZone.id,
           shippingCharge,
         },
+        // Meta ad attribution banked when the visitor first landed; null when
+        // they arrived directly.
+        attribution: getAttribution(),
+        // Retires the abandoned-checkout draft this order came from.
+        draftId,
       };
 
       const response = await placeOrder(orderData);
+      clearDraft();
 
       if (!user) {
         const prev = JSON.parse(localStorage.getItem("guestOrders") || "[]");

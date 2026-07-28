@@ -1,5 +1,8 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
+import ReactDOM from "react-dom";
 import useAxiosSecure from "../../hooks/useAxios";
+import MarketingAttribution from "../../components/MarketingAttribution";
+import toast from "react-hot-toast";
 import {
   Package,
   Search,
@@ -14,6 +17,9 @@ import {
   CheckCircle,
   Loader2,
   ShoppingBag,
+  Ban,
+  ShieldCheck,
+  Truck,
 } from "lucide-react";
 
 const ENDPOINT = "/pluginorder";
@@ -67,6 +73,127 @@ const StatusBadge = ({ status }) => {
     </span>
   );
 };
+
+// ── Block Actions (Block IP / Phone) ──────────────────────────────────────
+const BLOCK_TYPES = [
+  { type: "ip", noun: "IP", read: (o) => o.ip },
+  { type: "phone", noun: "Phone", read: (o) => o.billing?.phone },
+];
+
+function BlockActions({ order, onBlock, onUnblock }) {
+  const [open, setOpen] = useState(false);
+  const [pos, setPos] = useState({ top: 0, left: 0 });
+  const triggerRef = useRef(null);
+
+  const blocked = order.blocked || {};
+  const anyBlocked = blocked.ip || blocked.phone;
+
+  const handleTriggerClick = (e) => {
+    e.stopPropagation();
+    if (!open && triggerRef.current) {
+      const rect = triggerRef.current.getBoundingClientRect();
+      const spaceBelow = window.innerHeight - rect.bottom;
+      const top =
+        spaceBelow < 150
+          ? rect.top + window.scrollY - 150
+          : rect.bottom + window.scrollY + 6;
+      let left = rect.right + window.scrollX - 224; // align right edge (w-56)
+      if (left < 12) left = 12;
+      setPos({ top, left });
+    }
+    setOpen((v) => !v);
+  };
+
+  useEffect(() => {
+    if (!open) return;
+    const close = () => setOpen(false);
+    document.addEventListener("click", close);
+    return () => document.removeEventListener("click", close);
+  }, [open]);
+
+  // Already-blocked entries toggle back off; the rest block.
+  const handleItemClick = (type, value, isBlocked) => {
+    const message = isBlocked
+      ? `Unblock this ${type.toUpperCase()}?\n\n${value}\n\nOrders from this ${type} will be accepted again.`
+      : `Block this ${type.toUpperCase()}?\n\n${value}\n\nFuture orders from this ${type} will be rejected automatically.`;
+    if (!confirm(message)) return;
+
+    (isBlocked ? onUnblock : onBlock)(type, value);
+    setOpen(false);
+  };
+
+  return (
+    <>
+      <button
+        ref={triggerRef}
+        onClick={handleTriggerClick}
+        title={anyBlocked ? "Customer partially blocked" : "Block customer"}
+        className={`w-8 h-8 flex items-center justify-center rounded-lg transition-colors ${
+          anyBlocked
+            ? "text-red-500 hover:bg-red-50"
+            : "text-gray-400 hover:text-red-500 hover:bg-red-50"
+        }`}
+      >
+        <Ban className="w-4 h-4" />
+      </button>
+
+      {open &&
+        ReactDOM.createPortal(
+          <div
+            style={{ top: pos.top, left: pos.left }}
+            className="absolute z-[9999] w-56 bg-white border border-gray-200 rounded-xl shadow-2xl p-2"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest px-2 py-1">
+              Block Customer
+            </p>
+            {BLOCK_TYPES.map(({ type, noun, read }) => {
+              const value = read(order);
+              const isBlocked = !!blocked[type];
+              const disabled = !value;
+              return (
+                <button
+                  key={type}
+                  disabled={disabled}
+                  onClick={() =>
+                    !disabled && handleItemClick(type, value, isBlocked)
+                  }
+                  className={`w-full flex items-center justify-between gap-2 px-2 py-2 rounded-lg text-xs font-medium text-left transition ${
+                    isBlocked
+                      ? "text-red-500 bg-red-50 hover:bg-green-50 hover:text-green-700"
+                      : !value
+                        ? "text-gray-300 cursor-not-allowed"
+                        : "text-gray-700 hover:bg-red-50 hover:text-red-600"
+                  }`}
+                >
+                  <span className="flex items-center gap-1.5">
+                    {isBlocked ? (
+                      <ShieldCheck className="w-3 h-3" />
+                    ) : (
+                      <Ban className="w-3 h-3" />
+                    )}{" "}
+                    {isBlocked ? `Unblock ${noun}` : `Block ${noun}`}
+                  </span>
+                  {isBlocked ? (
+                    <span className="text-[10px] font-bold uppercase">
+                      Blocked
+                    </span>
+                  ) : value ? (
+                    <span className="text-[10px] text-gray-400 truncate max-w-[90px]">
+                      {value}
+                    </span>
+                  ) : (
+                    <span className="text-[10px] text-gray-300">N/A</span>
+                  )}
+                </button>
+              );
+            })}
+          </div>,
+          document.body,
+        )}
+    </>
+  );
+}
 
 function InlineStatusSelect({ orderId, currentStatus, axios, onStatusChange }) {
   const [status, setStatus] = useState(currentStatus);
@@ -193,6 +320,9 @@ function OrderDetailModal({ order, onClose, onStatusChange, axios }) {
               </div>
             </div>
           </div>
+
+          {/* Which ad drove this order — below the product details */}
+          <MarketingAttribution attribution={order.attribution} />
 
           {/* Billing */}
           <div>
@@ -323,6 +453,10 @@ function OrderCard({
   axios,
   onView,
   onDelete,
+  onBlock,
+  onUnblock,
+  onSteadfast,
+  sending,
   deleting,
   onStatusChange,
 }) {
@@ -398,6 +532,23 @@ function OrderCard({
             View
           </button>
           <button
+            onClick={() => onSteadfast(order._id)}
+            disabled={sending}
+            className={`flex h-9 w-9 items-center justify-center rounded-lg transition-colors disabled:opacity-50 ${
+              order.steadfast?.trackingCode
+                ? "bg-indigo-100 text-indigo-600 hover:bg-indigo-200"
+                : "bg-indigo-50 text-indigo-500 hover:bg-indigo-100"
+            }`}
+            title={
+              order.steadfast?.trackingCode
+                ? `Sent to Steadfast — ${order.steadfast.trackingCode} (tap to resend)`
+                : "Send to Steadfast"
+            }
+          >
+            <Truck className="w-4 h-4" />
+          </button>
+          <BlockActions order={order} onBlock={onBlock} onUnblock={onUnblock} />
+          <button
             onClick={() => onDelete(order._id)}
             disabled={deleting === order._id}
             className="flex h-9 w-9 items-center justify-center rounded-lg bg-red-50 text-red-500 transition-colors hover:bg-red-100 disabled:opacity-50"
@@ -407,6 +558,11 @@ function OrderCard({
           </button>
         </div>
       </div>
+      {order.steadfast?.trackingCode && (
+        <p className="mt-2 flex items-center gap-1 text-[11px] font-semibold text-indigo-600">
+          <Truck className="w-3 h-3" /> Steadfast: {order.steadfast.trackingCode}
+        </p>
+      )}
     </div>
   );
 }
@@ -421,6 +577,7 @@ export default function PluginAdmin() {
   const [pagination, setPagination] = useState({ total: 0, pages: 1 });
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [deleting, setDeleting] = useState(null);
+  const [sendingId, setSendingId] = useState(null); // order being sent to courier
 
   const fetchOrders = useCallback(async () => {
     setLoading(true);
@@ -461,6 +618,60 @@ export default function PluginAdmin() {
       prev && prev._id === id ? { ...prev, status } : prev,
     );
   };
+
+  // ── Steadfast courier ──
+  // Send one plugin order to Steadfast; patch it in place with the tracking code.
+  const handleSendSteadfast = async (id) => {
+    const order = orders.find((o) => o._id === id);
+    if (order?.steadfast?.trackingCode) {
+      if (
+        !confirm(
+          `This order was already sent (${order.steadfast.trackingCode}). Send again?`,
+        )
+      )
+        return;
+    }
+    setSendingId(id);
+    try {
+      const { data } = await axiosSecure.post(`${ENDPOINT}/${id}/steadfast`, {
+        force: !!order?.steadfast?.trackingCode,
+      });
+      toast.success(data?.message || "Sent to Steadfast");
+      setOrders((prev) =>
+        prev.map((o) =>
+          o._id === id ? { ...o, steadfast: data.steadfast } : o,
+        ),
+      );
+    } catch (err) {
+      toast.error(
+        err?.response?.data?.message || "Failed to send to Steadfast",
+      );
+    } finally {
+      setSendingId(null);
+    }
+  };
+
+  // Block / unblock an order's IP / phone, then flag every order sharing that
+  // value so the whole list updates immediately without a refetch.
+  const applyBlockChange = async (type, value, block) => {
+    try {
+      if (block) await axiosSecure.post("/admin/blocks", { type, value });
+      else await axiosSecure.delete("/admin/blocks", { data: { type, value } });
+
+      setOrders((prev) =>
+        prev.map((o) => {
+          const raw = type === "ip" ? o.ip : o.billing?.phone;
+          if (!raw || raw !== value) return o;
+          return { ...o, blocked: { ...(o.blocked || {}), [type]: block } };
+        }),
+      );
+    } catch {
+      alert(`Failed to ${block ? "block" : "unblock"}`);
+    }
+  };
+
+  const handleBlock = (type, value) => applyBlockChange(type, value, true);
+  const handleUnblock = (type, value) => applyBlockChange(type, value, false);
 
   const filtered = orders.filter(
     (o) =>
@@ -622,6 +833,10 @@ export default function PluginAdmin() {
                     axios={axiosSecure}
                     onView={setSelectedOrder}
                     onDelete={handleDelete}
+                    onBlock={handleBlock}
+                    onUnblock={handleUnblock}
+                    onSteadfast={handleSendSteadfast}
+                    sending={sendingId === order._id}
                     deleting={deleting}
                     onStatusChange={handleStatusChange}
                   />
@@ -721,6 +936,27 @@ export default function PluginAdmin() {
                           >
                             <Eye className="w-4 h-4" />
                           </button>
+                          <button
+                            onClick={() => handleSendSteadfast(order._id)}
+                            disabled={sendingId === order._id}
+                            className={`w-8 h-8 flex items-center justify-center rounded-lg transition-colors disabled:opacity-50 ${
+                              order.steadfast?.trackingCode
+                                ? "text-indigo-600 hover:bg-indigo-50"
+                                : "text-gray-400 hover:bg-indigo-50 hover:text-indigo-600"
+                            }`}
+                            title={
+                              order.steadfast?.trackingCode
+                                ? `Sent to Steadfast — ${order.steadfast.trackingCode} (click to resend)`
+                                : "Send to Steadfast"
+                            }
+                          >
+                            <Truck className="w-4 h-4" />
+                          </button>
+                          <BlockActions
+                            order={order}
+                            onBlock={handleBlock}
+                            onUnblock={handleUnblock}
+                          />
                           <button
                             onClick={() => handleDelete(order._id)}
                             disabled={deleting === order._id}

@@ -6,6 +6,7 @@ import {
   LayoutDashboard,
   Package,
   ShoppingBag,
+  ShoppingCart,
   Users,
   LogOut,
   Menu,
@@ -16,7 +17,11 @@ import {
   LifeBuoy,
 } from "lucide-react";
 import useAuth from "../../hooks/useAuth";
+import useAdminNotifications, {
+  AdminNotificationsProvider,
+} from "../../hooks/useAdminNotifications";
 
+// `badge` names the notification counter this link displays, if any.
 const LINKS = [
   {
     to: "/panel",
@@ -25,7 +30,18 @@ const LINKS = [
     end: true,
   },
   { to: "/panel/products", label: "Products", icon: <Package size={22} /> },
-  { to: "/panel/orders", label: "Orders", icon: <ShoppingBag size={22} /> },
+  {
+    to: "/panel/orders",
+    label: "Orders",
+    icon: <ShoppingBag size={22} />,
+    badge: "orders",
+  },
+  {
+    to: "/panel/incomplete-orders",
+    label: "Incomplete Orders",
+    icon: <ShoppingCart size={22} />,
+    badge: "incompleteOrders",
+  },
   { to: "/panel/users", label: "Users", icon: <Users size={22} /> },
   { to: "/panel/profit", label: "Profit", icon: <TrendingUp size={22} /> },
   { to: "/panel/gallery", label: "Gallery", icon: <Image size={22} /> },
@@ -34,6 +50,7 @@ const LINKS = [
     to: "/panel/pluginadmin",
     label: "Plugin Admin",
     icon: <BookOpen size={22} />,
+    badge: "pluginOrders",
   },
   {
     to: "/panel/competition",
@@ -47,10 +64,25 @@ const LINKS = [
   },
 ];
 
-const AdminLayout = () => {
+// Red pill showing how many new items are waiting. Caps at 99+ so a long
+// backlog can't stretch the sidebar.
+const NotificationBadge = ({ count }) => {
+  if (!count) return null;
+  return (
+    <span
+      className="ml-auto min-w-[22px] h-[22px] px-1.5 flex items-center justify-center rounded-full bg-red-500 text-white text-xs font-bold leading-none"
+      aria-label={`${count} new`}
+    >
+      {count > 99 ? "99+" : count}
+    </span>
+  );
+};
+
+const AdminPanel = () => {
   const { logOut } = useAuth();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
+  const { counts } = useAdminNotifications();
 
   const lStyle = ({ isActive }) =>
     `flex items-center gap-3.5 px-5 py-3.5 rounded-xl text-base font-medium transition ${
@@ -70,7 +102,7 @@ const AdminLayout = () => {
           <p className="text-sm text-gray-400 mt-1">Admin Panel</p>
         </div>
         <nav className="flex-1 p-4 space-y-1.5">
-          {LINKS.map(({ to, label, icon, end }) => (
+          {LINKS.map(({ to, label, icon, end, badge }) => (
             <NavLink
               key={to}
               to={to}
@@ -79,6 +111,7 @@ const AdminLayout = () => {
               onClick={() => setOpen(false)}
             >
               {icon} {label}
+              {badge && <NotificationBadge count={counts[badge]} />}
             </NavLink>
           ))}
         </nav>
@@ -104,8 +137,15 @@ const AdminLayout = () => {
 
       <div className="flex-1 flex flex-col min-w-0">
         <header className="bg-white border-b border-gray-200 px-6 py-4 flex items-center gap-3 lg:hidden">
-          <button onClick={() => setOpen(true)}>
+          <button onClick={() => setOpen(true)} className="relative">
             <Menu size={20} />
+            {/* The sidebar badges are hidden on mobile, so surface the combined
+                count on the menu button that opens it. */}
+            {counts.total > 0 && (
+              <span className="absolute -top-1.5 -right-1.5 min-w-[18px] h-[18px] px-1 flex items-center justify-center rounded-full bg-red-500 text-white text-[10px] font-bold leading-none">
+                {counts.total > 99 ? "99+" : counts.total}
+              </span>
+            )}
           </button>
           <p className="font-bold text-green-800">Admin Panel</p>
         </header>
@@ -118,5 +158,11 @@ const AdminLayout = () => {
     </div>
   );
 };
+
+const AdminLayout = () => (
+  <AdminNotificationsProvider>
+    <AdminPanel />
+  </AdminNotificationsProvider>
+);
 
 export default AdminLayout;

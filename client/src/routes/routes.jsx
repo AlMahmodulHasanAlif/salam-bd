@@ -32,6 +32,7 @@ const Register = lazy(() => import("../pages/Auth/Register"));
 const AdminDashboard = lazy(() => import("../pages/Admin/AdminDashboard"));
 const AdminProducts = lazy(() => import("../pages/Admin/AdminProducts"));
 const AdminOrders = lazy(() => import("../pages/Admin/AdminOrders"));
+const AdminIncompleteOrders = lazy(() => import("../pages/Admin/AdminIncompleteOrders"));
 const AdminUsers = lazy(() => import("../pages/Admin/AdminUsers"));
 const UserDashboard = lazy(() => import("../pages/Dashboard/UserDashboard"));
 const Gallery = lazy(() => import("../pages/gallery/GalleryPage"));
@@ -175,6 +176,7 @@ const router = createBrowserRouter([
       { index: true, Component: AdminDashboard },
       { path: "products", Component: AdminProducts },
       { path: "orders", Component: AdminOrders },
+      { path: "incomplete-orders", Component: AdminIncompleteOrders },
       { path: "users", Component: AdminUsers },
       { path: "profit", Component: ProfitAdmin },
       { path: "gallery", Component: AdminGallery },
