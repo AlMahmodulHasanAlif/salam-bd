@@ -2,6 +2,10 @@ import asyncHandler from "express-async-handler";
 import { getDB } from "../config/db.js"; // adjust path to your db.js
 import { ObjectId } from "mongodb";
 import { notifyNewOrder } from "../utils/telegram.js";
+import { getClientIp } from "../utils/request.js";
+import { findBlock, getBlockedSets } from "./blockController.js";
+import { sanitizeAttribution } from "../utils/attribution.js";
+import { clearDraftById } from "./incompleteOrderController.js";
 
 const COLLECTION = "pluginorders";
 const VALID_STATUSES = [
@@ -21,11 +25,23 @@ const PAID_SHIPPING = [80, 120];
 // POST /api/pluginorder
 export const createPluginOrder = asyncHandler(async (req, res) => {
   // NOTE: client-supplied `pricing`/`product.price` are intentionally ignored.
-  const { product, billing, shipping, payment, note } = req.body;
+  const { product, billing, shipping, payment, note, attribution, draftId } =
+    req.body;
 
   if (!product || !billing || !shipping || !payment) {
     res.status(400);
     throw new Error("Missing required order fields");
+  }
+
+  // ── Block-list gate — reject orders from a blocked IP / phone ──
+  const clientIp = getClientIp(req);
+  const userAgent = req.headers["user-agent"] || "";
+  const blockedType = await findBlock({ ip: clientIp, phone: billing?.phone });
+  if (blockedType) {
+    res.status(403);
+    throw new Error(
+      "Your order could not be processed. Please contact support.",
+    );
   }
 
   // Re-price server-side to prevent tampering (e.g. ordering for ৳1).
@@ -58,10 +74,16 @@ export const createPluginOrder = asyncHandler(async (req, res) => {
     payment,
     pricing,
     note: note || null,
+    attribution: sanitizeAttribution(attribution),
     status: "pending",
+    ip: clientIp,
+    userAgent,
     createdAt: new Date(),
     updatedAt: new Date(),
   });
+
+  // The lead converted — drop it from the incomplete-orders list.
+  await clearDraftById(draftId);
 
   // Telegram: instant new-order alert (non-blocking)
   notifyNewOrder(
@@ -92,9 +114,20 @@ export const getAllPluginOrders = asyncHandler(async (req, res) => {
     db.collection(COLLECTION).countDocuments(filter),
   ]);
 
+  // Annotate each order with which of its IP / phone are already blocked, so
+  // the admin UI can reflect state and disable the right buttons.
+  const blocked = await getBlockedSets();
+  const annotated = orders.map((o) => ({
+    ...o,
+    blocked: {
+      ip: !!(o.ip && blocked.ip.has(o.ip.trim())),
+      phone: !!(o.billing?.phone && blocked.phone.has(o.billing.phone.trim())),
+    },
+  }));
+
   res.json({
     success: true,
-    orders,
+    orders: annotated,
     pagination: {
       total,
       page: Number(page),

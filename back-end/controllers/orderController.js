@@ -3,6 +3,10 @@ import { collections } from "../config/db.js";
 import asyncHandler from "express-async-handler";
 import  {sendServerEvent}  from "../utils/facebookCAPI.js"; // ADD THIS
 import { notifyNewOrder } from "../utils/telegram.js";
+import { getClientIp } from "../utils/request.js";
+import { findBlock, getBlockedSets } from "./blockController.js";
+import { sanitizeAttribution } from "../utils/attribution.js";
+import { clearDraftById } from "./incompleteOrderController.js";
 
 // Resolve the authoritative price of an item from the DB product, mirroring the
 // frontend variant logic — NEVER trust a client-supplied price.
@@ -23,14 +27,50 @@ const resolveServerPrice = (product, variantLabel) => {
 const PAID_SHIPPING = [80, 120];
 
 export const createOrder = async (req, res) => {
-  const { fbEventId, isBuyNow, buyNowProductId, buyNowVariantLabel, ...orderBody } =
-    req.body;
+  // `attribution` is destructured out so the raw client value never reaches the
+  // ...orderBody spread below — only the sanitized version is stored.
+  // `draftId` is likewise destructured out — it belongs to the abandoned-cart
+  // draft this order converts, not to the order document.
+  const {
+    fbEventId,
+    isBuyNow,
+    buyNowProductId,
+    buyNowVariantLabel,
+    attribution,
+    draftId,
+    ...orderBody
+  } = req.body;
 
   const clientItems = Array.isArray(orderBody.items) ? orderBody.items : [];
   if (!clientItems.length) {
     return res
       .status(400)
       .send({ message: "Order must contain at least one item" });
+  }
+
+  // ── Block-list gate — reject orders from a blocked IP / phone / email ──
+  const clientIp = getClientIp(req);
+  const userAgent = req.headers["user-agent"] || "";
+  const blockedType = await findBlock({
+    ip: clientIp,
+    phone: orderBody.shippingInfo?.phone,
+    email: orderBody.userEmail,
+  });
+  if (blockedType) {
+    // Log which rule matched — the client-facing message is deliberately vague,
+    // so without this a legitimate customer blocked by a stale entry is
+    // undiagnosable from the browser.
+    const blockedValue = {
+      ip: clientIp,
+      phone: orderBody.shippingInfo?.phone,
+      email: orderBody.userEmail,
+    }[blockedType];
+    console.warn(
+      `[block] Order rejected — ${blockedType}="${blockedValue}" (ip=${clientIp})`,
+    );
+    return res.status(403).send({
+      message: "Your order could not be processed. Please contact support.",
+    });
   }
 
   // Load the real products in one query and re-price everything server-side.
@@ -81,10 +121,16 @@ export const createOrder = async (req, res) => {
     items,
     totalPrice: itemsSubtotal + shippingCharge, // authoritative total
     shippingInfo: { ...orderBody.shippingInfo, shippingCharge },
+    attribution: sanitizeAttribution(attribution),
     status: "Pending",
+    ip: clientIp,
+    userAgent,
     createdAt: new Date(),
   };
   const result = await collections.orders.insertOne(order);
+
+  // The lead converted — drop it from the incomplete-orders list.
+  await clearDraftById(draftId);
 
   // Cart cleanup:
   //  • Buy Now  → remove ONLY the purchased product, keep the rest of the cart
@@ -179,7 +225,23 @@ export const getAllOrders = async (req, res) => {
     .limit(limit ? parseInt(limit) : 0)
     .toArray();
 
-  res.send(orders);
+  // Annotate each order with which of its IP / phone / email are already
+  // blocked, so the admin UI can reflect state and disable the right buttons.
+  const blocked = await getBlockedSets();
+  const annotated = orders.map((o) => ({
+    ...o,
+    blocked: {
+      ip: !!(o.ip && blocked.ip.has(o.ip.trim())),
+      phone: !!(
+        o.shippingInfo?.phone && blocked.phone.has(o.shippingInfo.phone.trim())
+      ),
+      email: !!(
+        o.userEmail && blocked.email.has(o.userEmail.trim().toLowerCase())
+      ),
+    },
+  }));
+
+  res.send(annotated);
   // no pixel here — admin dashboard fetch only
 };
 

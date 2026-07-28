@@ -90,6 +90,25 @@ const createIndexes = async (database) => {
     database.collection("blogComments").createIndex({ blogId: 1 }),
     database.collection("blogComments").createIndex({ blogSlug: 1 }),
     database.collection("blogComments").createIndex({ parentId: 1 }),
+    // Incomplete (abandoned) orders — unique draftId so concurrent saves
+    // upsert the same lead, sorted by updatedAt in the admin list.
+    database
+      .collection("incompleteorders")
+      .createIndex({ draftId: 1 }, { unique: true }),
+    database.collection("incompleteorders").createIndex({ updatedAt: -1 }),
+    database.collection("incompleteorders").createIndex({ status: 1 }),
+    // Block-list — one entry per value per type.
+    database.collection("blockedips").createIndex({ value: 1 }, { unique: true }),
+    database
+      .collection("blockedphones")
+      .createIndex({ value: 1 }, { unique: true }),
+    database
+      .collection("blockedemails")
+      .createIndex({ value: 1 }, { unique: true }),
+    // Admin notification "last seen" markers — one doc per admin.
+    database
+      .collection("notificationseen")
+      .createIndex({ adminEmail: 1 }, { unique: true }),
   ];
 
   const results = await Promise.allSettled(jobs);
@@ -118,4 +137,14 @@ export const collections = {
   get reviews()      { return getDB().collection("reviews");      },
   get blogs()        { return getDB().collection("blogs");        },
   get blogComments() { return getDB().collection("blogComments"); },
+  // Landing-page plugin orders (same collection PluginOrderController uses).
+  get pluginOrders()     { return getDB().collection("pluginorders");     },
+  // Abandoned-cart leads.
+  get incompleteOrders() { return getDB().collection("incompleteorders"); },
+  // Block-list, one collection per type.
+  get blockedIps()       { return getDB().collection("blockedips");       },
+  get blockedPhones()    { return getDB().collection("blockedphones");    },
+  get blockedEmails()    { return getDB().collection("blockedemails");    },
+  // Admin notification "last seen" markers.
+  get notificationSeen() { return getDB().collection("notificationseen"); },
 };
