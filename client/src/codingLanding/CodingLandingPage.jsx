@@ -24,18 +24,18 @@ const CodingLandingPage = () => {
   return (
     <div className="bg-white text-slate-900">
       <CLHero />
+       <CLVideo />
       <CLProblem />
       <CLIntro />
       <CLSubjects />
       <CLBenefits />
       <CLCompare />
-      <CLVideo />
       <CLPrize />
       <CLPackage />
-      <CLReviews />
+      {/* <CLReviews /> */}
       <CLFAQ />
       <CLPrice />
-      <CLPhoneOrder />
+      {/* <CLPhoneOrder /> */}
       <CodingOrderForm />
       <Copyright />
     </div>

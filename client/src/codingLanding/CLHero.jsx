@@ -36,7 +36,7 @@ export default function CLHero() {
       </nav>
 
       {/* ── Content ── */}
-      <div className="relative max-w-6xl mx-auto px-6 pt-32 md:pt-36 pb-16 grid lg:grid-cols-2 gap-10 items-center">
+      <div className="relative max-w-6xl mx-auto px-6 min-h-screen grid lg:grid-cols-2 gap-10 items-center content-center pb-16 pt-24">
         {/* Left — copy */}
         <div className="text-center lg:text-left">
           <motion.span
@@ -112,9 +112,9 @@ export default function CLHero() {
               </span>
             </button>
             <div className="text-center">
-              <p className="text-slate-400 text-xs line-through">মূল্য ৳৩০০০</p>
+              <p className="text-slate-400 text-xs line-through">মূল্য ৳৩৫০০</p>
               <p className="text-slate-800 font-black text-2xl">
-                ৳১৫০০ <span className="text-sm font-semibold text-emerald-600">মাত্র</span>
+                ৳২৫০০ <span className="text-sm font-semibold text-emerald-600">মাত্র</span>
               </p>
             </div>
           </motion.div>

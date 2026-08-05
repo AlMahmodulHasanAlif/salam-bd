@@ -19,7 +19,7 @@ import { BD_LOCATIONS, DISTRICTS } from "../utils/bdLocations";
 // in ./assets for a real product image when ready.
 const PRODUCT = {
   name: "Salam Coding Book",
-  price: 1500,
+  price: 2500,
   image: productImg,
   freeDelivery: true,
 };

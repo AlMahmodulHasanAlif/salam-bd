@@ -32,7 +32,7 @@ export default function CLPrice() {
           <div className="flex items-center justify-center gap-5 mb-6 flex-wrap">
             <div className="text-center">
               <p className="text-slate-400 text-xl line-through font-semibold">
-                ৳৩০০০
+                ৳৩৫০০
               </p>
               <p className="text-slate-400 text-xs">মূল্য</p>
             </div>
@@ -43,7 +43,7 @@ export default function CLPrice() {
                 transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
                 className="text-5xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-500"
               >
-                ৳১৫০০
+                ৳২৫০০
               </motion.p>
               <p className="text-emerald-600 text-xs font-semibold">এখন মাত্র</p>
             </div>
