@@ -14,7 +14,7 @@ import {
 
 import logo from "../assets/SalamBDLogo.png";
 
-const WHATSAPP_LINK = "https://wa.me/8801886699883";
+const WHATSAPP_LINK = "https://wa.me/8801841141107";
 
 const WhatsAppIcon = ({ className = "w-4 h-4 fill-current" }) => (
   <svg viewBox="0 0 32 32" className={className}>
@@ -113,23 +113,45 @@ const CodingOrderSuccess = () => {
             )}
           </div>
 
-          <div className="max-w-2xl mx-auto text-justify space-y-3">
+          <div className="max-w-2xl mx-auto text-justify space-y-4">
             <p>
-              আল্লাহর রহমতে আপনার অর্ডারটি সফলভাবে গ্রহণ করা হয়েছে।
+              🎉 <span className="font-bold">আলহামদুলিল্লাহ!</span> আপনার
+              অর্ডারটি সফলভাবে গ্রহণ করা হয়েছে।
             </p>
             <p>
-              📞 কিছুক্ষণের মধ্যেই আমাদের প্রতিনিধি আপনার দেওয়া মোবাইল নম্বরে কল করবেন।
-              অনুগ্রহ করে ফোনটি সচল রাখুন।
+              📞 আমাদের প্রতিনিধি শীঘ্রই আপনার দেওয়া মোবাইল নম্বরে যোগাযোগ
+              করবেন। অনুগ্রহ করে ফোনটি সচল রাখুন।
+            </p>
+            <p className="font-bold text-gray-800">🤝 একটি আন্তরিক অনুরোধ</p>
+            <p>
+              অনুগ্রহ করে অর্ডারটি গ্রহণের ব্যাপারে নিশ্চিত থাকুন। এটি একটি দ্বীনি
+              উদ্যোগ, তাই অপ্রয়োজনীয় রিটার্ন আমাদের জন্য অতিরিক্ত ব্যয়ের কারণ
+              হয়।
             </p>
             <p>
-              <span className="font-bold">একটি আন্তরিক অনুরোধ:</span> অনুগ্রহ করে অর্ডারটি গ্রহণের ব্যাপারে নিশ্চিত থাকুন। কুরিয়ারে পাঠানোর পর বিনা কারণে অর্ডার বাতিল করলে আমাদের প্রতি অর্ডারে ১৫০ টাকা কুরিয়ার ও প্রসেসিং খরচ বহন করতে হয়। যেহেতু এটি একটি দ্বীনি উদ্যোগ, তাই অপ্রয়োজনীয় ক্ষতি থেকে আমাদের রক্ষা করতে আপনার আন্তরিক সহযোগিতা কামনা করছি। আল্লাহ তাআলা আপনাকে উত্তম প্রতিদান দান করুন। আমীন।
+              যদি কোনো কারণে নিজ থেকে অর্ডার বাতিল করতে চান, তাহলে কুরিয়ারে
+              পাঠানোর আগে অবশ্যই আমাদের WhatsApp-এ যোগাযোগ করুন।
             </p>
+            <p className="font-bold text-gray-800">
+              📦 কুরিয়ারে পাঠানোর পর অর্ডার বাতিল করলে রিটার্ন চার্জ প্রযোজ্য
+              হবে:
+            </p>
+            <div className="bg-orange-50 border border-orange-200 rounded-xl p-4 space-y-1.5 text-gray-800">
+              <p className="flex justify-between">
+                <span>ঢাকার মধ্যে</span>
+                <span className="font-bold">৮০ টাকা</span>
+              </p>
+              <p className="flex justify-between">
+                <span>ঢাকার বাইরে</span>
+                <span className="font-bold">১৫০ টাকা</span>
+              </p>
+            </div>
           </div>
 
           {/* Contact & Suggestions */}
           <div className="border-t border-gray-100 pt-4 space-y-3">
 
-            <div className="flex flex-col items-center gap-3 text-gray-700 border border-green-200 rounded-xl p-4 bg-green-50/40">
+            {/* <div className="flex flex-col items-center gap-3 text-gray-700 border border-green-200 rounded-xl p-4 bg-green-50/40">
               <div className="flex items-start justify-center gap-2">
                 <BookOpen size={18} className="mt-0.5 shrink-0 text-green-600" />
                 <span>
@@ -144,7 +166,7 @@ const CodingOrderSuccess = () => {
                 <BookOpen size={15} />
                 এখানে ক্লিক করুন
               </Link>
-            </div>
+            </div> */}
 
             <div className="flex flex-col items-center gap-3 text-gray-700 border border-green-200 rounded-xl p-4 bg-green-50/40">
               <div className="flex items-start justify-center gap-2">
@@ -171,7 +193,7 @@ const CodingOrderSuccess = () => {
               className="flex items-center justify-center gap-1.5 sm:gap-2 bg-[#25D366] hover:bg-[#1ebe5c] text-white px-2 sm:px-4 py-3 rounded-xl font-bold transition text-xs sm:text-sm"
             >
               <WhatsAppIcon className="w-4 h-4 fill-white" />
-              <span>WhatsApp</span>
+              <span>WhatsApp: 01841141107</span>
             </a>
           </div>
         </div>
