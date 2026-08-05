@@ -68,6 +68,9 @@ const mapPluginOrder = (order) => {
   };
 };
 
+// Coding-landing order (collection: codingorders) — same shape as plugin orders.
+const mapCodingOrder = mapPluginOrder;
+
 // ── Core: send one order to Steadfast and persist the result ─────────────────
 
 const createConsignment = async (order, { mapper, collection }) => {
@@ -219,3 +222,15 @@ export const sendPluginOrderToSteadfast = (req, res) =>
 
 export const bulkSendPluginToSteadfast = (req, res) =>
   handleBulk(req, res, pluginCfg());
+
+// ── Coding-landing orders ────────────────────────────────────────────────────
+const codingCfg = () => ({
+  collection: collections.codingOrders,
+  mapper: mapCodingOrder,
+});
+
+export const sendCodingOrderToSteadfast = (req, res) =>
+  handleSingle(req, res, codingCfg());
+
+export const bulkSendCodingToSteadfast = (req, res) =>
+  handleBulk(req, res, codingCfg());

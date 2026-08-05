@@ -71,6 +71,8 @@ const createIndexes = async (database) => {
     database.collection("reviews").createIndex({ productId: 1, userEmail: 1 }),
     database.collection("pluginorders").createIndex({ createdAt: -1 }),
     database.collection("pluginorders").createIndex({ status: 1 }),
+    database.collection("codingorders").createIndex({ createdAt: -1 }),
+    database.collection("codingorders").createIndex({ status: 1 }),
     database
       .collection("competitionregistrations")
       .createIndex({ createdAt: -1 }),
@@ -139,6 +141,8 @@ export const collections = {
   get blogComments() { return getDB().collection("blogComments"); },
   // Landing-page plugin orders (same collection PluginOrderController uses).
   get pluginOrders()     { return getDB().collection("pluginorders");     },
+  // Coding-landing orders (same collection CodingOrderController uses).
+  get codingOrders()     { return getDB().collection("codingorders");     },
   // Abandoned-cart leads.
   get incompleteOrders() { return getDB().collection("incompleteorders"); },
   // Block-list, one collection per type.

@@ -22,7 +22,7 @@ const POLL_MS = 30_000;
 
 // Sections the sidebar can badge. Keep in sync with SECTIONS in the backend's
 // notificationController.
-const SECTIONS = ["orders", "pluginOrders", "incompleteOrders"];
+const SECTIONS = ["orders", "pluginOrders", "incompleteOrders", "codingOrders"];
 const EMPTY = Object.fromEntries([...SECTIONS.map((s) => [s, 0]), ["total", 0]]);
 
 const AdminNotificationsContext = createContext({

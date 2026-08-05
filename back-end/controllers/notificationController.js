@@ -12,6 +12,7 @@ import { collections } from "../config/db.js";
 const SECTIONS = {
   orders: () => collections.orders,
   pluginOrders: () => collections.pluginOrders,
+  codingOrders: () => collections.codingOrders,
   incompleteOrders: () => collections.incompleteOrders,
 };
 

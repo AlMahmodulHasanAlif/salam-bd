@@ -53,6 +53,12 @@ const LINKS = [
     badge: "pluginOrders",
   },
   {
+    to: "/panel/codinglanding",
+    label: "Coding Landing",
+    icon: <BookOpen size={22} />,
+    badge: "codingOrders",
+  },
+  {
     to: "/panel/competition",
     label: "মেধা যাচাই",
     icon: <Trophy size={22} />,

@@ -57,6 +57,10 @@ const AdminCompetition = lazy(() => import("../pages/Admin/AdminCompetition"));
 const SupportPage = lazy(() => import("../pages/Support/SupportPage"));
 const SupportSuccess = lazy(() => import("../pages/Support/SupportSuccess"));
 const AdminSupport = lazy(() => import("../pages/Admin/AdminSupport"));
+const CodingLandingPage = lazy(() => import("../codingLanding/CodingLandingPage"));
+const CodingLandingAdmin = lazy(() => import("../pages/Admin/CodingLandingAdmin"));
+const PluginOrderSuccess = lazy(() => import("../landing/PluginOrderSuccess"));
+const CodingOrderSuccess = lazy(() => import("../codingLanding/CodingOrderSuccess"));
 
 const router = createBrowserRouter([
   {
@@ -182,6 +186,7 @@ const router = createBrowserRouter([
       { path: "gallery", Component: AdminGallery },
       { path: "blog", Component: AdminBlog },
       { path: "pluginadmin", Component: PluginAdmin },
+      { path: "codinglanding", Component: CodingLandingAdmin },
       { path: "competition", Component: AdminCompetition },
       { path: "support", Component: AdminSupport },
     ],
@@ -193,6 +198,36 @@ const router = createBrowserRouter([
     element: (
       <Suspense fallback={<RouteFallback />}>
         <LandingPage />
+      </Suspense>
+    ),
+  },
+  {
+    // Standalone route with no layout — needs its own Suspense boundary for the
+    // lazily-loaded chunk.
+    path: "/landing/success",
+    element: (
+      <Suspense fallback={<RouteFallback />}>
+        <PluginOrderSuccess />
+      </Suspense>
+    ),
+  },
+  {
+    // Standalone route with no layout — needs its own Suspense boundary for the
+    // lazily-loaded chunk.
+    path: "/codingLanding",
+    element: (
+      <Suspense fallback={<RouteFallback />}>
+        <CodingLandingPage />
+      </Suspense>
+    ),
+  },
+  {
+    // Standalone route with no layout — needs its own Suspense boundary for the
+    // lazily-loaded chunk.
+    path: "/codingLanding/success",
+    element: (
+      <Suspense fallback={<RouteFallback />}>
+        <CodingOrderSuccess />
       </Suspense>
     ),
   },
