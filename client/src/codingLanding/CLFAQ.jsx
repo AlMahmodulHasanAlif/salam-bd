@@ -46,7 +46,7 @@ export default function CLFAQ() {
     <section className="bg-white py-16 px-4">
       <div className="max-w-3xl mx-auto">
         <div className="text-center mb-10">
-          <span className="text-emerald-600 text-sm font-semibold uppercase tracking-widest">
+          <span className="text-[#7a1616] text-sm font-semibold uppercase tracking-widest">
             FAQ
           </span>
           <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mt-3 mb-4">
@@ -59,7 +59,7 @@ export default function CLFAQ() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-50px" }}
-          className="flex flex-col gap-3"
+          className="flex flex-col gap-4"
         >
           {FAQS.map((f, i) => {
             const isOpen = open === i;
@@ -67,21 +67,17 @@ export default function CLFAQ() {
               <motion.div
                 key={f.q}
                 variants={itemVariants}
-                className={`bg-white border rounded-2xl overflow-hidden transition-colors ${
-                  isOpen
-                    ? "border-emerald-300"
-                    : "border-slate-200 hover:border-emerald-200"
-                }`}
+                className="rounded-xl overflow-hidden shadow-sm border-2 border-[#e24b4a]"
               >
                 <button
                   onClick={() => setOpen(isOpen ? -1 : i)}
-                  className="w-full flex items-center justify-between gap-4 px-5 py-4 text-left"
+                  className="w-full flex items-center justify-between gap-4 px-6 py-5 text-left bg-[#7a1616]"
                 >
-                  <span className="text-slate-800 font-bold text-sm md:text-base">
+                  <span className="text-white font-bold text-sm md:text-base">
                     {f.q}
                   </span>
                   <ChevronDown
-                    className={`w-5 h-5 text-emerald-600 flex-shrink-0 transition-transform duration-300 ${
+                    className={`w-5 h-5 text-white flex-shrink-0 transition-transform duration-300 ${
                       isOpen ? "rotate-180" : ""
                     }`}
                   />
@@ -93,8 +89,9 @@ export default function CLFAQ() {
                       animate={{ height: "auto", opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
                       transition={{ duration: 0.25 }}
+                      className="bg-white"
                     >
-                      <p className="px-5 pb-5 text-slate-500 text-sm leading-relaxed">
+                      <p className="px-6 py-4 text-gray-600 text-sm leading-relaxed">
                         {f.a}
                       </p>
                     </motion.div>

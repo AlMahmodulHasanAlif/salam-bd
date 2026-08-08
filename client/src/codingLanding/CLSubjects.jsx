@@ -24,18 +24,14 @@ export default function CLSubjects() {
     <section className="bg-[#0d1b2a] py-16 px-4">
       <div className="max-w-5xl mx-auto">
         <div className="text-center mb-12">
-          <span className="text-sky-400 text-sm font-semibold uppercase tracking-widest">
-            একই ডিভাইসে
-          </span>
+        
           <h2 className="text-3xl md:text-5xl font-bold text-white mt-3 mb-4">
             একই ডিভাইসে শিখবে{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-amber-400">
               ৫টি বিষয়
             </span>
           </h2>
-          <p className="text-slate-400 max-w-xl mx-auto text-lg">
-            একটি ডিভাইসে — পাঁচটি গুরুত্বপূর্ণ বিষয়ের পূর্ণাঙ্গ শেখার অভিজ্ঞতা
-          </p>
+
         </div>
 
         <motion.div

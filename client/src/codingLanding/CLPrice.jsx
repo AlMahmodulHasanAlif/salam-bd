@@ -21,62 +21,90 @@ export default function CLPrice() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="bg-white border-2 border-emerald-200 rounded-3xl p-8 md:p-10 text-center shadow-xl shadow-emerald-900/10 relative overflow-hidden"
+          className="relative bg-gradient-to-br from-emerald-100 via-teal-50 to-amber-100 border-2 border-emerald-200 rounded-3xl p-8 md:p-10 text-center shadow-xl shadow-emerald-900/10 overflow-hidden"
         >
-          <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-emerald-500 via-teal-400 to-amber-400" />
-          <span className="inline-block bg-red-50 text-red-600 text-xs font-black px-3 py-1 rounded-full uppercase tracking-widest mb-5">
-            🔥 সীমিত সময়ের অফার
-          </span>
-
-          {/* Prices */}
-          <div className="flex items-center justify-center gap-5 mb-6 flex-wrap">
-            <div className="text-center">
-              <p className="text-slate-400 text-xl line-through font-semibold">
-                ৳৩৫০০
-              </p>
-              <p className="text-slate-400 text-xs">মূল্য</p>
-            </div>
-            <div className="text-3xl font-black text-emerald-500">→</div>
-            <div className="text-center">
-              <motion.p
-                animate={{ scale: [1, 1.06, 1] }}
-                transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-                className="text-5xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-500"
-              >
-                ৳২৫০০
-              </motion.p>
-              <p className="text-emerald-600 text-xs font-semibold">এখন মাত্র</p>
-            </div>
+          {/* glow layer — sits behind content, clipped to card */}
+          <div className="pointer-events-none absolute inset-0">
+            <motion.div
+              animate={{ opacity: [0.5, 0.9, 0.5], scale: [1, 1.2, 1] }}
+              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute -top-24 left-1/2 -translate-x-1/2 w-[26rem] h-[26rem] rounded-full bg-emerald-400/50 blur-3xl"
+            />
+            <motion.div
+              animate={{ opacity: [0.4, 0.8, 0.4], scale: [1, 1.1, 1] }}
+              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+              className="absolute -bottom-20 -right-16 w-80 h-80 rounded-full bg-amber-400/50 blur-3xl"
+            />
+            <motion.div
+              animate={{ opacity: [0.4, 0.75, 0.4], scale: [1, 1.15, 1] }}
+              transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+              className="absolute -bottom-16 -left-16 w-72 h-72 rounded-full bg-teal-400/50 blur-3xl"
+            />
+            <motion.div
+              animate={{ opacity: [0.3, 0.6, 0.3] }}
+              transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
+              className="absolute top-1/2 -translate-y-1/2 -right-10 w-56 h-56 rounded-full bg-rose-300/40 blur-3xl"
+            />
           </div>
 
-          <p className="text-amber-600 font-bold text-lg mb-8">
-            অফারে সাশ্রয় করুন ৳১০০০ 🎉
-          </p>
+          <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-emerald-500 via-teal-400 to-amber-400" />
 
-          {/* CTA */}
-          <button
-            onClick={scrollToOrder}
-            className="group relative inline-flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-white font-bold text-xl px-12 py-5 rounded-2xl shadow-xl shadow-emerald-900/30 hover:scale-105 transition-all duration-300 w-full sm:w-auto"
-          >
-            <span>🟢</span> এখনই অর্ডার করুন
-            <span className="absolute -top-2 -right-2 bg-amber-400 text-black text-xs font-bold px-2 py-0.5 rounded-full animate-pulse">
-              HOT
+          {/* content wrapper so it stays above the glow */}
+          <div className="relative z-10">
+            <span className="inline-block bg-red-50 text-red-600 text-xs font-black px-3 py-1 rounded-full uppercase tracking-widest mb-5">
+              🔥 সীমিত সময়ের অফার
             </span>
-          </button>
 
-          <div className="flex flex-wrap items-center justify-center gap-3 mt-8">
-            {[
-              { icon: "🛡️", text: "১ বছরের রিপ্লেসমেন্ট ওয়ারেন্টি" },
-              { icon: "🚚", text: "সারা বাংলাদেশে হোম ডেলিভারি" },
-              { icon: "💳", text: "ক্যাশ অন ডেলিভারি" },
-            ].map((b) => (
-              <span
-                key={b.text}
-                className="inline-flex items-center gap-1.5 bg-emerald-50 border border-emerald-100 text-emerald-700 text-sm px-3 py-1.5 rounded-full"
-              >
-                <span>{b.icon}</span> {b.text}
+            {/* Prices */}
+            <div className="flex items-center justify-center gap-5 mb-6 flex-wrap">
+              <div className="text-center">
+                <p className="text-slate-400 text-xl line-through font-semibold">
+                  ৳৩৫০০
+                </p>
+                <p className="text-slate-400 text-xs">মূল্য</p>
+              </div>
+              <div className="text-3xl font-black text-emerald-500">→</div>
+              <div className="text-center">
+                <motion.p
+                  animate={{ scale: [1, 1.06, 1] }}
+                  transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                  className="text-5xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-500"
+                >
+                  ৳২৫০০
+                </motion.p>
+                <p className="text-emerald-600 text-xs font-semibold">এখন মাত্র</p>
+              </div>
+            </div>
+
+            <p className="text-amber-600 font-bold text-lg mb-8">
+              অফারে সাশ্রয় করুন ৳১০০০ 🎉
+            </p>
+
+            {/* CTA */}
+            <button
+              onClick={scrollToOrder}
+              className="group relative inline-flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-white font-bold text-xl px-12 py-5 rounded-2xl shadow-xl shadow-emerald-900/30 hover:scale-105 transition-all duration-300 w-full sm:w-auto"
+            >
+              <span>🟢</span> এখনই অর্ডার করুন
+              <span className="absolute -top-2 -right-2 bg-amber-400 text-black text-xs font-bold px-2 py-0.5 rounded-full animate-pulse">
+                HOT
               </span>
-            ))}
+            </button>
+
+            <div className="flex flex-wrap items-center justify-center gap-3 mt-8">
+              {[
+                { icon: "🛡️", text: "১ বছরের রিপ্লেসমেন্ট ওয়ারেন্টি" },
+                { icon: "🚚", text: "সারা বাংলাদেশে হোম ডেলিভারি" },
+                { icon: "💳", text: "ক্যাশ অন ডেলিভারি" },
+              ].map((b) => (
+                <span
+                  key={b.text}
+                  className="inline-flex items-center gap-1.5 bg-emerald-50 border border-emerald-100 text-emerald-700 text-sm px-3 py-1.5 rounded-full"
+                >
+                  <span>{b.icon}</span> {b.text}
+                </span>
+              ))}
+            </div>
           </div>
         </motion.div>
       </div>

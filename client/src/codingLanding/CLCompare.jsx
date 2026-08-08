@@ -1,47 +1,47 @@
 import { motion } from "framer-motion";
+import kenoImg from "./assets/keno.jpg";
 
-const WHY_US = [
-  "Learning Pen থেকে বহুগুণ উন্নত",
-  "আরও মজবুত ও টেকসই",
-  "ব্যবহার করা অত্যন্ত সহজ",
-  "শিশুদের জন্য নিরাপদ এবং উপযোগী",
-  "শিক্ষার্থীদের জন্য বিভিন্ন ধরনের শেখার সুবিধা",
-  "ইন্টারঅ্যাক্টিভ ভয়েস সাপোর্ট",
-  "দামও ১০০০ টাকা কম",
-];
+// const WHY_US = [
+//   "Learning Pen থেকে বহুগুণ উন্নত",
+//   "আরও মজবুত ও টেকসই",
+//   "ব্যবহার করা অত্যন্ত সহজ",
+//   "শিশুদের জন্য নিরাপদ এবং উপযোগী",
+//   "শিক্ষার্থীদের জন্য বিভিন্ন ধরনের শেখার সুবিধা",
+//   "ইন্টারঅ্যাক্টিভ ভয়েস সাপোর্ট",
+//   "দামও ১০০০ টাকা কম",
+// ];
 
-const NORMAL_PEN = [
-  "কম ফিচার",
-  "মজবুত নয়",
-  "ব্যবহার কঠিন",
-  "দাম বেশি",
-];
+// const NORMAL_PEN = [
+//   "কম ফিচার",
+//   "মজবুত নয়",
+//   "ব্যবহার কঠিন",
+//   "দাম বেশি",
+// ];
 
-const containerVariants = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.08 } },
-};
+// const containerVariants = {
+//   hidden: {},
+//   visible: { transition: { staggerChildren: 0.08 } },
+// };
 
-const itemVariants = {
-  hidden: { opacity: 0, x: 24 },
-  visible: { opacity: 1, x: 0, transition: { duration: 0.4 } },
-};
+// const itemVariants = {
+//   hidden: { opacity: 0, x: 24 },
+//   visible: { opacity: 1, x: 0, transition: { duration: 0.4 } },
+// };
 
 export default function CLCompare() {
   return (
     <section className="bg-gradient-to-b from-emerald-50/70 to-white py-16 px-4">
       <div className="max-w-5xl mx-auto">
-        <div className="text-center mb-12">
+        {/* <div className="text-center mb-12">
           <h2 className="text-3xl md:text-5xl font-bold text-slate-900 mt-3 mb-4">
             কেন{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-500">
               Salam Coding Book?
             </span>
           </h2>
-        </div>
+        </div> */}
 
-        <div className="grid md:grid-cols-2 gap-6 items-stretch">
-          {/* Why us */}
+        {/* <div className="grid md:grid-cols-2 gap-6 items-stretch">
           <motion.div
             variants={containerVariants}
             initial="hidden"
@@ -69,7 +69,6 @@ export default function CLCompare() {
             </div>
           </motion.div>
 
-          {/* Normal pen */}
           <motion.div
             variants={containerVariants}
             initial="hidden"
@@ -100,7 +99,21 @@ export default function CLCompare() {
               অথচ Salam Coding Book-এর দাম ১০০০ টাকা কম! 🎉
             </div>
           </motion.div>
-        </div>
+        </div> */}
+
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.6 }}
+          className="w-full overflow-hidden rounded-3xl shadow-xl shadow-emerald-900/10"
+        >
+          <img
+            src={kenoImg}
+            alt="কেন Salam Coding Book"
+            className="w-full h-auto object-cover"
+          />
+        </motion.div>
       </div>
     </section>
   );

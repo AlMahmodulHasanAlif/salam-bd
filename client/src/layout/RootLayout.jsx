@@ -39,11 +39,8 @@ const RootLayout = () => {
     <CartProvider>
       <div className="min-h-screen flex flex-col bg-gray-50">
 
-        {/* Sticky header — Topbar + Navbar move together so the PC cart/account
-            strip stays visible on scroll instead of being covered by the navbar.
-            In the native app the desktop Navbar row is dropped (the Topbar already
-            carries search/cart/menu on mobile widths). */}
-        <div className="sticky top-0 z-50">
+        {/* Header — Topbar + Navbar scroll away with the page content. */}
+        <div>
           <Topbar />
           {!isNative && <Navbar />}
         </div>

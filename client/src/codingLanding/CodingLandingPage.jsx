@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { Link } from "react-router";
 import { GTM } from "../utils/gtm";
 import CLHero from "./CLHero";
 import CLProblem from "./CLProblem";
@@ -15,6 +16,11 @@ import CLPrice from "./CLPrice";
 import CLPhoneOrder from "./CLPhoneOrder";
 import CodingOrderForm from "./CodingOrderForm";
 import Copyright from "./Copyright";
+import coverImg from "./assets/landingcover.webp";
+import logo from "../assets/SalamBDLogo.png";
+
+const scrollToOrder = () =>
+  document.getElementById("order-section")?.scrollIntoView({ behavior: "smooth" });
 
 const CodingLandingPage = () => {
   useEffect(() => {
@@ -23,7 +29,27 @@ const CodingLandingPage = () => {
 
   return (
     <div className="bg-white text-slate-900">
-      <CLHero />
+      <nav className="sticky top-0 z-50 bg-[#5CAE5A]/10 border-b border-emerald-900/40">
+        <div className="mx-auto max-w-6xl px-6 h-20 flex items-center justify-between">
+          <Link to="/" className="flex items-center gap-2 select-none">
+            <img src={logo} alt="Salam BD Logo" className="h-10 md:h-14 w-auto" />
+          </Link>
+          <button
+            onClick={scrollToOrder}
+            className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm md:text-base px-5 py-2 md:px-6 md:py-2.5 rounded-xl transition-all duration-300 shadow-md shadow-emerald-900/20 hover:scale-105"
+          >
+            অর্ডার করুন
+          </button>
+        </div>
+      </nav>
+      <div className="w-full overflow-hidden">
+        <img
+          src={coverImg}
+          alt="Salam Coding Book Cover"
+          className="w-full h-auto object-cover"
+        />
+      </div>
+      {/* <CLHero /> */}
        <CLVideo />
       <CLProblem />
       <CLIntro />

@@ -32,9 +32,7 @@ export default function CLProblem() {
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12">
-          <span className="text-emerald-600 text-sm font-semibold uppercase tracking-widest">
-            সন্তান কী শিখছে?
-          </span>
+         
           <h2 className="text-3xl md:text-5xl font-bold text-slate-900 mt-3 mb-4">
             সন্তান বড় হচ্ছে...{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-orange-500">
@@ -73,9 +71,9 @@ export default function CLProblem() {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-60px" }}
-            className="bg-red-50/70 border border-red-100 rounded-3xl p-6 md:p-8"
+            className="bg-red-500 border border-red-600 rounded-3xl p-6 md:p-8"
           >
-            <h3 className="text-xl font-bold text-red-600 mb-5">
+            <h3 className="text-xl font-bold text-white mb-5">
               ফল যা হচ্ছে ⚠️
             </h3>
             <div className="flex flex-col gap-3">
@@ -100,9 +98,9 @@ export default function CLProblem() {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-60px" }}
-            className="bg-emerald-50/70 border border-emerald-100 rounded-3xl p-6 md:p-8"
+            className="bg-[#154C28] border border-emerald-900/40 rounded-3xl p-6 md:p-8"
           >
-            <h3 className="text-xl font-bold text-emerald-600 mb-5">
+            <h3 className="text-xl font-bold text-white mb-5">
               আমরা চাই 💚
             </h3>
             <div className="flex flex-col gap-3">
@@ -112,7 +110,7 @@ export default function CLProblem() {
                   variants={itemVariants}
                   className="flex items-center gap-3 bg-white rounded-2xl px-5 py-4 border border-emerald-100 shadow-sm"
                 >
-                  <span className="w-7 h-7 rounded-full bg-emerald-500 text-white flex items-center justify-center text-sm font-black flex-shrink-0">
+                  <span className="w-7 h-7 rounded-full bg-[#154C28] text-white flex items-center justify-center text-sm font-black flex-shrink-0">
                     ✓
                   </span>
                   <span className="text-slate-700 font-medium">{g}</span>

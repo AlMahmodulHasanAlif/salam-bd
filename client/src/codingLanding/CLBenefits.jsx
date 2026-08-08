@@ -1,14 +1,14 @@
 import { motion } from "framer-motion";
 
 const CHANGES = [
-  { icon: "🎯", title: "মনোযোগ বৃদ্ধি" },
-  { icon: "🧠", title: "স্মৃতিশক্তি বৃদ্ধি" },
-  { icon: "📖", title: "জ্ঞান শেখার আগ্রহ" },
-  { icon: "🗣️", title: "উচ্চারণে দক্ষতা" },
-  { icon: "🔢", title: "সংখ্যা শেখার সহজতা" },
-  { icon: "💪", title: "আত্মবিশ্বাস বৃদ্ধি" },
-  { icon: "🎨", title: "সৃজনশীলতা বৃদ্ধি" },
-  { icon: "🏫", title: "শিক্ষার প্রতি আগ্রহ" },
+  { icon: "🎯", title: "মনোযোগ বৃদ্ধি", bg: "bg-emerald-400", glow: "shadow-[0_0_25px_rgba(52,211,153,0.7)]" },
+  { icon: "🧠", title: "স্মৃতিশক্তি বৃদ্ধি", bg: "bg-sky-400", glow: "shadow-[0_0_25px_rgba(56,189,248,0.7)]" },
+  { icon: "📖", title: "জ্ঞান শেখার আগ্রহ", bg: "bg-violet-500", glow: "shadow-[0_0_25px_rgba(167,139,250,0.7)]" },
+  { icon: "🗣️", title: "উচ্চারণে দক্ষতা", bg: "bg-rose-400", glow: "shadow-[0_0_25px_rgba(251,113,133,0.7)]" },
+  { icon: "🔢", title: "সংখ্যা শেখার সহজতা", bg: "bg-amber-400", glow: "shadow-[0_0_25px_rgba(251,191,36,0.7)]" },
+  { icon: "💪", title: "আত্মবিশ্বাস বৃদ্ধি", bg: "bg-cyan-400", glow: "shadow-[0_0_25px_rgba(34,211,238,0.7)]" },
+  { icon: "🎨", title: "সৃজনশীলতা বৃদ্ধি", bg: "bg-fuchsia-500", glow: "shadow-[0_0_25px_rgba(217,70,239,0.7)]" },
+  { icon: "🏫", title: "শিক্ষার প্রতি আগ্রহ", bg: "bg-lime-400", glow: "shadow-[0_0_25px_rgba(163,230,53,0.7)]" },
 ];
 
 const containerVariants = {
@@ -45,12 +45,12 @@ export default function CLBenefits() {
             <motion.div
               key={c.title}
               variants={itemVariants}
-              className="group flex flex-col items-center gap-3 bg-gradient-to-b from-emerald-50 to-transparent border border-emerald-100 hover:border-emerald-300 rounded-2xl p-6 text-center transition-all duration-300 hover:shadow-md hover:shadow-emerald-900/10"
+              className={`group flex flex-col items-center gap-3 ${c.bg} ${c.glow} rounded-2xl p-6 text-center transition-all duration-300 hover:scale-105`}
             >
-              <div className="w-14 h-14 rounded-2xl bg-white border border-emerald-100 shadow-sm flex items-center justify-center text-3xl group-hover:scale-110 transition-transform duration-300">
+              <div className="w-14 h-14 rounded-2xl bg-white/20 border border-white/30 shadow-sm flex items-center justify-center text-3xl group-hover:scale-110 transition-transform duration-300">
                 {c.icon}
               </div>
-              <h3 className="text-slate-800 font-bold text-base">{c.title}</h3>
+              <h3 className="text-white font-bold text-base">{c.title}</h3>
             </motion.div>
           ))}
         </motion.div>
