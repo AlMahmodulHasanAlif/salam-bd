@@ -63,7 +63,7 @@ export default function CLPrize() {
           ))}
         </motion.div>
 
-        <motion.div
+        {/* <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           whileInView={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5 }}
@@ -77,7 +77,7 @@ export default function CLPrize() {
             <Trophy className="w-5 h-5 text-black shrink-0" />
             <span className="text-white">মেধা যাচাই প্রতিযোগিতায় অংশ নিন</span>
           </Link>
-        </motion.div>
+        </motion.div> */}
       </div>
     </section>
   );

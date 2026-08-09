@@ -15,15 +15,13 @@ export default function CLVideo() {
     <section id="video" className="bg-[#0d1b2a] py-16 px-4">
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-10">
-          <span className="text-sky-400 text-sm font-semibold uppercase tracking-widest">
-            পণ্যের ভিডিও
-          </span>
+
           <h2 className="text-3xl md:text-4xl font-bold text-white mt-2 leading-snug">
-            মাত্র ৩ মিনিটে দেখুন কেন হাজারো অভিভাবক{" "}
+          কিভাবে আপনার সন্তানকে {" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-amber-400">
               Salam Coding Book
             </span>{" "}
-            পছন্দ করছেন
+            শিখাবেন ব্যবহারের সঠিক পদ্ধতি জেনে নিন
           </h2>
           <p className="text-slate-400 mt-3 max-w-xl mx-auto">
             পণ্যটির সমস্ত ফিচার ও শিশুদের জন্য উপযোগিতা সরাসরি দেখুন

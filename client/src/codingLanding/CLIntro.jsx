@@ -29,7 +29,7 @@ const itemVariants = {
 
 export default function CLIntro() {
   return (
-    <section className="bg-gradient-to-b from-white to-emerald-50/60 py-16 px-4">
+    <section className="bg-gradient-to-b from-white to-emerald-50/60 pb-10 px-4">
       <div className="max-w-6xl mx-auto">
         <div className="grid lg:grid-cols-2 gap-10 items-center">
           {/* Product visual */}
@@ -54,7 +54,7 @@ export default function CLIntro() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5 }}
-              className="inline-block bg-emerald-100 text-emerald-700 text-sm font-bold px-4 py-1.5 rounded-full mb-4"
+              className="inline-block bg-emerald-100 text-emerald-700 text-[20px] font-bold px-4 py-1.5 rounded-full mb-4"
             >
               📘 Salam Coding Book
             </motion.span>
