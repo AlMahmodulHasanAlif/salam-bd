@@ -1,5 +1,21 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
+import CLSlider from "./CLSlider";
+import img1 from "../assets/01.webp";
+import img2 from "../assets/02.webp";
+import img3 from "../assets/03.webp";
+import img4 from "../assets/04.webp";
+import img5 from "../assets/05.webp";
+import img6 from "../assets/06.webp";
+
+const SLIDER_IMAGES = [
+  { src: img1, alt: "Salam Coding Book ১" },
+  { src: img2, alt: "Salam Coding Book ২" },
+  { src: img3, alt: "Salam Coding Book ৩" },
+  { src: img4, alt: "Salam Coding Book ৪" },
+  { src: img5, alt: "Salam Coding Book ৫" },
+  { src: img6, alt: "Salam Coding Book ৬" },
+];
 
 const scrollToOrder = () =>
   document.getElementById("order-section")?.scrollIntoView({ behavior: "smooth" });
@@ -100,6 +116,30 @@ export default function CLVideo() {
         </motion.div>
 
         {/* CTA — order now under the video */}
+        <div className="text-center mt-10">
+          <button
+            onClick={scrollToOrder}
+            className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-white font-bold text-xl px-12 py-5 rounded-2xl shadow-xl shadow-emerald-900/40 hover:scale-105 transition-all duration-300"
+          >
+            🛒 অর্ডার করুন
+          </button>
+        </div>
+
+        {/* Slideshow — how to use */}
+        <div className="mt-16 text-center">
+          <h2 className="text-3xl md:text-4xl font-bold text-white leading-snug">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-amber-400">
+              Salam Coding Book
+            </span>{" "} <br />
+            এর সাথে যে ৬টি বই পাবেন
+          </h2>
+         
+          <div className="mt-5 flex justify-center">
+            <CLSlider images={SLIDER_IMAGES} aspectClass="aspect-[4/5]" />
+          </div>
+        </div>
+
+        {/* CTA — order now after the slideshow */}
         <div className="text-center mt-10">
           <button
             onClick={scrollToOrder}

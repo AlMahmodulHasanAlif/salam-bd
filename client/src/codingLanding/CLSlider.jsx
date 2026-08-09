@@ -8,7 +8,7 @@ const variants = {
   exit: (dir) => ({ x: dir > 0 ? "-100%" : "100%", opacity: 0 }),
 };
 
-export default function CLSlider({ images, interval = 4000 }) {
+export default function CLSlider({ images, interval = 4000, aspectClass = "aspect-square" }) {
   const [[index, dir], setIndex] = useState([0, 0]);
   const count = images.length;
 
@@ -23,7 +23,7 @@ export default function CLSlider({ images, interval = 4000 }) {
   }, [count, interval, index]);
 
   return (
-    <div className="relative rounded-3xl overflow-hidden border border-white shadow-2xl shadow-slate-300/50 w-full max-w-md aspect-square bg-white">
+    <div className={`relative rounded-3xl overflow-hidden border border-white shadow-2xl shadow-slate-300/50 w-full max-w-md ${aspectClass} bg-white`}>
       <AnimatePresence initial={false} custom={dir}>
         <motion.img
           key={index}
@@ -35,7 +35,7 @@ export default function CLSlider({ images, interval = 4000 }) {
           animate="center"
           exit="exit"
           transition={{ duration: 0.5, ease: "easeInOut" }}
-          className="absolute inset-0 w-full h-full object-cover"
+          className="absolute inset-0 w-full h-full object-contain"
           onError={(e) => {
             e.currentTarget.style.display = "none";
           }}
