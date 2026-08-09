@@ -29,7 +29,7 @@ const CodingLandingPage = () => {
 
   return (
     <div className="bg-white text-slate-900">
-      <nav className="sticky top-0 z-50 bg-[#5CAE5A]/10 border-b border-emerald-900/40">
+      <nav className="sticky top-0 z-50 bg-white/70 backdrop-blur-xl border-b border-emerald-900/10 shadow-lg shadow-emerald-900/5">
         <div className="mx-auto max-w-6xl px-6 h-20 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2 select-none">
             <img src={logo} alt="Salam BD Logo" className="h-10 md:h-14 w-auto" />
