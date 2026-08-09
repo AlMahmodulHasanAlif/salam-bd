@@ -20,7 +20,7 @@ const itemVariants = {
 
 export default function CLPrize() {
   return (
-    <section className="bg-gradient-to-b from-amber-50 to-white py-16 px-4">
+    <section className="bg-gradient-to-b from-slate-900 to-slate-950 py-16 px-4">
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-12">
           <motion.span
@@ -32,7 +32,7 @@ export default function CLPrize() {
           >
             🏆 পুরস্কার / Achievement
           </motion.span>
-          <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-3 leading-snug">
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-3 leading-snug">
             শেখার সাথে থাকছে{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-500 to-orange-500">
               পুরস্কারের সুযোগ!
@@ -55,10 +55,10 @@ export default function CLPrize() {
             <motion.div
               key={p.title}
               variants={itemVariants}
-              className="relative bg-white border border-amber-200 rounded-2xl p-6 text-center shadow-sm hover:shadow-md transition-shadow"
+              className="relative flex flex-row md:flex-col items-center justify-center gap-4 md:gap-0 w-fit md:w-auto mx-auto md:mx-0 bg-gradient-to-br from-amber-500 to-orange-500 border border-amber-200 rounded-2xl px-5 py-3 md:p-6 text-center shadow-sm hover:shadow-md transition-shadow"
             >
-              <div className="text-5xl mb-4">{p.icon}</div>
-              <h3 className="text-slate-800 font-bold text-lg">{p.title}</h3>
+              <div className="text-3xl md:text-5xl md:mb-4">{p.icon}</div>
+              <h3 className="text-white font-bold text-base md:text-lg">{p.title}</h3>
             </motion.div>
           ))}
         </motion.div>
@@ -72,10 +72,10 @@ export default function CLPrize() {
         >
           <Link
             to="/competition"
-            className="inline-flex items-center gap-2 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-bold px-8 py-4 rounded-2xl shadow-lg shadow-amber-900/20 transition-all duration-300 hover:scale-105"
+            className="inline-flex flex-row items-center gap-2 bg-gradient-to-r from-green-500 to-teal-500 hover:from-amber-600 hover:to-orange-600 font-bold px-8 py-4 rounded-2xl shadow-lg shadow-amber-900/20 transition-all duration-300 hover:scale-105"
           >
-            <Trophy className="w-5 h-5" />
-            মেধা যাচাই প্রতিযোগিতায় অংশ নিন
+            <Trophy className="w-5 h-5 text-black shrink-0" />
+            <span className="text-white">মেধা যাচাই প্রতিযোগিতায় অংশ নিন</span>
           </Link>
         </motion.div>
       </div>

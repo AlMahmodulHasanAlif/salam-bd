@@ -22,9 +22,9 @@ const VALID_STATUSES = [
 const CODING_PRODUCT = {
   name: "Salam Coding Book",
   price: 1500,
-  freeDelivery: true,
+  freeDelivery: false,
 };
-const PAID_SHIPPING = [80, 120];
+const PAID_SHIPPING = [80, 130];
 
 // POST /api/codingorder
 export const createCodingOrder = asyncHandler(async (req, res) => {

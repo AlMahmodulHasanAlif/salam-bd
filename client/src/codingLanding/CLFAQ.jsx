@@ -46,7 +46,7 @@ export default function CLFAQ() {
     <section className="bg-white py-16 px-4">
       <div className="max-w-3xl mx-auto">
         <div className="text-center mb-10">
-          <span className="text-[#7a1616] text-sm font-semibold uppercase tracking-widest">
+          <span className="text-[#0f5132] text-sm font-semibold uppercase tracking-widest">
             FAQ
           </span>
           <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mt-3 mb-4">
@@ -67,11 +67,11 @@ export default function CLFAQ() {
               <motion.div
                 key={f.q}
                 variants={itemVariants}
-                className="rounded-xl overflow-hidden shadow-sm border-2 border-[#e24b4a]"
+                className="rounded-xl overflow-hidden shadow-sm border-2 border-[#2e9e5b]"
               >
                 <button
                   onClick={() => setOpen(isOpen ? -1 : i)}
-                  className="w-full flex items-center justify-between gap-4 px-6 py-5 text-left bg-[#7a1616]"
+                  className="w-full flex items-center justify-between gap-4 px-6 py-5 text-left bg-[#0f5132]"
                 >
                   <span className="text-white font-bold text-sm md:text-base">
                     {f.q}

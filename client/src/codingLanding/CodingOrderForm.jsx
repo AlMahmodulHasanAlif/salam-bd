@@ -25,11 +25,11 @@ const PRODUCT = {
   name: "Salam Coding Book",
   price: 2500,
   image: productImg,
-  freeDelivery: true,
+  freeDelivery: false,
 };
 
 const SHIPPING_ZONES = [
-  { id: "outside_dhaka", label: "ঢাকা সিটির বাইরে", charge: 120 },
+  { id: "outside_dhaka", label: "ঢাকা সিটির বাইরে", charge: 130 },
   { id: "inside_dhaka", label: "ঢাকা সিটি", charge: 80 },
 ];
 
@@ -293,7 +293,8 @@ export default function CodingOrderForm() {
             freeDelivery:
               PRODUCT.freeDelivery,
 
-            shippingCharge: 0,
+            shippingCharge:
+              PRODUCT.freeDelivery ? 0 : shipping.charge,
 
             billing: {
               name: form.name,

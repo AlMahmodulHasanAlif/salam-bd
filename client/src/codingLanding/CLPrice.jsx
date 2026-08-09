@@ -21,29 +21,29 @@ export default function CLPrice() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="relative bg-gradient-to-br from-emerald-100 via-teal-50 to-amber-100 border-2 border-emerald-200 rounded-3xl p-8 md:p-10 text-center shadow-xl shadow-emerald-900/10 overflow-hidden"
+          className="relative bg-gradient-to-br from-emerald-800 via-green-900 to-teal-900 border-2 border-emerald-700/50 rounded-3xl p-8 md:p-10 text-center shadow-xl shadow-emerald-900/30 overflow-hidden"
         >
           {/* glow layer — sits behind content, clipped to card */}
           <div className="pointer-events-none absolute inset-0">
             <motion.div
               animate={{ opacity: [0.5, 0.9, 0.5], scale: [1, 1.2, 1] }}
               transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute -top-24 left-1/2 -translate-x-1/2 w-[26rem] h-[26rem] rounded-full bg-emerald-400/50 blur-3xl"
+              className="absolute -top-24 left-1/2 -translate-x-1/2 w-[26rem] h-[26rem] rounded-full bg-emerald-400/30 blur-3xl"
             />
             <motion.div
               animate={{ opacity: [0.4, 0.8, 0.4], scale: [1, 1.1, 1] }}
               transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-              className="absolute -bottom-20 -right-16 w-80 h-80 rounded-full bg-amber-400/50 blur-3xl"
+              className="absolute -bottom-20 -right-16 w-80 h-80 rounded-full bg-amber-400/20 blur-3xl"
             />
             <motion.div
               animate={{ opacity: [0.4, 0.75, 0.4], scale: [1, 1.15, 1] }}
               transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-              className="absolute -bottom-16 -left-16 w-72 h-72 rounded-full bg-teal-400/50 blur-3xl"
+              className="absolute -bottom-16 -left-16 w-72 h-72 rounded-full bg-teal-400/25 blur-3xl"
             />
             <motion.div
               animate={{ opacity: [0.3, 0.6, 0.3] }}
               transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
-              className="absolute top-1/2 -translate-y-1/2 -right-10 w-56 h-56 rounded-full bg-rose-300/40 blur-3xl"
+              className="absolute top-1/2 -translate-y-1/2 -right-10 w-56 h-56 rounded-full bg-rose-300/20 blur-3xl"
             />
           </div>
 
@@ -58,25 +58,25 @@ export default function CLPrice() {
             {/* Prices */}
             <div className="flex items-center justify-center gap-5 mb-6 flex-wrap">
               <div className="text-center">
-                <p className="text-slate-400 text-xl line-through font-semibold">
+                <p className="text-white/50 text-xl line-through font-semibold">
                   ৳৩৫০০
                 </p>
-                <p className="text-slate-400 text-xs">মূল্য</p>
+                <p className="text-white/50 text-xs">মূল্য</p>
               </div>
-              <div className="text-3xl font-black text-emerald-500">→</div>
+              <div className="text-3xl font-black text-emerald-300">→</div>
               <div className="text-center">
                 <motion.p
                   animate={{ scale: [1, 1.06, 1] }}
                   transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-                  className="text-5xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-500"
+                  className="text-5xl md:text-6xl font-black text-white"
                 >
                   ৳২৫০০
                 </motion.p>
-                <p className="text-emerald-600 text-xs font-semibold">এখন মাত্র</p>
+                <p className="text-emerald-200 text-xs font-semibold">এখন মাত্র</p>
               </div>
             </div>
 
-            <p className="text-amber-600 font-bold text-lg mb-8">
+            <p className="text-amber-300 font-bold text-lg mb-8">
               অফারে সাশ্রয় করুন ৳১০০০ 🎉
             </p>
 
@@ -99,7 +99,7 @@ export default function CLPrice() {
               ].map((b) => (
                 <span
                   key={b.text}
-                  className="inline-flex items-center gap-1.5 bg-emerald-50 border border-emerald-100 text-emerald-700 text-sm px-3 py-1.5 rounded-full"
+                  className="inline-flex items-center gap-1.5 bg-white/10 border border-white/20 text-white text-sm px-3 py-1.5 rounded-full"
                 >
                   <span>{b.icon}</span> {b.text}
                 </span>

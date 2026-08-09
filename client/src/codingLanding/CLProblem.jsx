@@ -45,23 +45,26 @@ export default function CLProblem() {
         </div>
 
         {/* What kids spend time on */}
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-60px" }}
-          className="flex flex-wrap justify-center gap-4 mb-12"
-        >
-          {BAD_HABITS.map((h) => (
-            <motion.span
-              key={h}
-              variants={itemVariants}
-              className="inline-flex items-center gap-2 bg-red-50 border border-red-200 text-red-600 font-bold text-lg px-6 py-3 rounded-2xl"
+            <motion.div
+              variants={containerVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-60px" }}
+              className="flex flex-wrap justify-center gap-2 md:gap-4 mb-12"
             >
-              ❌ {h}
-            </motion.span>
-          ))}
-        </motion.div>
+              {BAD_HABITS.map((h) => (
+                <motion.span
+                  key={h}
+                  variants={itemVariants}
+                  className="inline-flex items-center gap-3 bg-gradient-to-br from-red-500 to-red-600 text-white font-bold text-lg pl-2 pr-6 py-2 rounded-full shadow-lg shadow-red-500/30"
+                >
+                  <span className="flex items-center justify-center w-9 h-9 rounded-full bg-white text-red-600 text-xl font-black shrink-0">
+                    ✕
+                  </span>
+                  {h}
+                </motion.span>
+              ))}
+            </motion.div>
 
         {/* Bad vs Good */}
         <div className="grid lg:grid-cols-2 gap-6 items-stretch">

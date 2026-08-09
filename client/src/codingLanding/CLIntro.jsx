@@ -80,25 +80,25 @@ export default function CLIntro() {
               viewport={{ once: true, margin: "-60px" }}
               className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8"
             >
-              {BENEFITS.map((b) => (
-                <motion.div
-                  key={b.title}
-                  variants={itemVariants}
-                  className={`group flex gap-4 items-start ${b.bg} ${b.glow} rounded-2xl p-4 transition-all duration-300 hover:scale-[1.03]`}
-                >
-                  <div className="shrink-0 w-12 h-12 rounded-xl bg-white/20 border border-white/30 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform duration-300">
-                    {b.icon}
-                  </div>
-                  <div>
-                    <h3 className="text-white font-bold text-base mb-1">
-                      {b.title}
-                    </h3>
-                    <p className="text-white/90 text-sm leading-relaxed">
-                      {b.desc}
-                    </p>
-                  </div>
-                </motion.div>
-              ))}
+             {BENEFITS.map((b) => (
+            <motion.div
+              key={b.title}
+              variants={itemVariants}
+              className="group flex flex-col items-center text-center gap-3 bg-gradient-to-br from-emerald-600 to-green-900 rounded-2xl p-6 shadow-lg shadow-green-900/30 transition-all duration-300 hover:scale-[1.03]"
+            >
+              <div className="shrink-0 w-12 h-12 rounded-xl bg-white/90 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform duration-300">
+                {b.icon}
+              </div>
+              <div>
+                <h3 className="text-white font-bold text-base mb-1">
+                  {b.title}
+                </h3>
+                <p className="text-white/90 text-sm leading-relaxed">
+                  {b.desc}
+                </p>
+              </div>
+            </motion.div>
+          ))}
             </motion.div>
           </div>
         </div>
