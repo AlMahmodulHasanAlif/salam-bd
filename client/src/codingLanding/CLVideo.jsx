@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 
+const scrollToOrder = () =>
+  document.getElementById("order-section")?.scrollIntoView({ behavior: "smooth" });
+
 // Drop in a real YouTube ID here when the product video is ready.
 // e.g. const VIDEO_ID = "cUOJE5w1cS8";
 const VIDEO_ID = null;
@@ -97,6 +100,16 @@ export default function CLVideo() {
             </div>
           )}
         </motion.div>
+
+        {/* CTA — order now under the video */}
+        <div className="text-center mt-10">
+          <button
+            onClick={scrollToOrder}
+            className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-white font-bold text-xl px-12 py-5 rounded-2xl shadow-xl shadow-emerald-900/40 hover:scale-105 transition-all duration-300"
+          >
+            🛒 অর্ডার করুন
+          </button>
+        </div>
       </div>
     </section>
   );

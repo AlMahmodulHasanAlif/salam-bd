@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import kenoImg from "./assets/keno.jpg";
+import kenoMobileImg from "./assets/kenomobile.jpg";
 
 // const WHY_US = [
 //   "Learning Pen থেকে বহুগুণ উন্নত",
@@ -30,7 +31,7 @@ import kenoImg from "./assets/keno.jpg";
 
 export default function CLCompare() {
   return (
-    <section className="bg-gradient-to-b from-emerald-50/70 to-white py-16 px-4">
+    <section className="bg-gradient-to-b from-emerald-50/70 to-white pb-10 px-4">
       <div className="max-w-5xl mx-auto">
         {/* <div className="text-center mb-12">
           <h2 className="text-3xl md:text-5xl font-bold text-slate-900 mt-3 mb-4">
@@ -111,7 +112,12 @@ export default function CLCompare() {
           <img
             src={kenoImg}
             alt="কেন Salam Coding Book"
-            className="w-full h-auto object-cover"
+            className="w-full h-auto object-cover hidden md:block"
+          />
+          <img
+            src={kenoMobileImg}
+            alt="কেন Salam Coding Book"
+            className="w-full h-auto object-cover md:hidden"
           />
         </motion.div>
       </div>

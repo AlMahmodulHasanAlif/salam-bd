@@ -78,7 +78,7 @@ export default function CLIntro() {
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, margin: "-60px" }}
-              className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8"
+              className="grid grid-cols-2 gap-4 mt-8"
             >
              {BENEFITS.map((b) => (
             <motion.div

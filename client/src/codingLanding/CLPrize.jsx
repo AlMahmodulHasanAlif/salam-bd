@@ -49,16 +49,16 @@ export default function CLPrize() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-50px" }}
-          className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-10"
+          className="grid grid-cols-1 gap-3 md:gap-5 mb-10"
         >
           {PRIZES.map((p) => (
             <motion.div
               key={p.title}
               variants={itemVariants}
-              className="relative flex flex-row md:flex-col items-center justify-center gap-4 md:gap-0 w-fit md:w-auto mx-auto md:mx-0 bg-gradient-to-br from-amber-500 to-orange-500 border border-amber-200 rounded-2xl px-5 py-3 md:p-6 text-center shadow-sm hover:shadow-md transition-shadow"
+              className="relative flex flex-row items-center justify-center md:justify-start gap-2 md:gap-4 p-3 md:p-6 text-left bg-white border border-slate-200 rounded-2xl shadow-sm hover:shadow-md transition-shadow"
             >
-              <div className="text-3xl md:text-5xl md:mb-4">{p.icon}</div>
-              <h3 className="text-white font-bold text-base md:text-lg">{p.title}</h3>
+              <div className="text-2xl md:text-5xl shrink-0">{p.icon}</div>
+              <h3 className="text-slate-900 font-bold text-xs md:text-lg leading-snug">{p.title}</h3>
             </motion.div>
           ))}
         </motion.div>

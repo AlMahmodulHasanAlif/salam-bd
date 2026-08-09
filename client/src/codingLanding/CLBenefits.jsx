@@ -119,7 +119,7 @@ export default function CLBenefits() {
                 className="
                   w-14 h-14
                   rounded-2xl
-                  bg-white/20
+                  bg-white
                   backdrop-blur-sm
                   border border-white/30
                   shadow-lg

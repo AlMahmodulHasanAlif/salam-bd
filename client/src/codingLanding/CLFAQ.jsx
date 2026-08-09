@@ -19,14 +19,15 @@ const FAQS = [
     q: "ইন্টারনেট লাগবে?",
     a: "না, ইন্টারনেটের প্রয়োজন নেই।",
   },
-  {
-    q: "ওয়ারেন্টি আছে?",
-    a: "১০০ দিনের রিপ্লেসমেন্ট ওয়ারেন্টি।",
+    {
+    q: "গ্যারান্টি ও ওয়ারেন্টি কি আছে?",
+    a: "১০০ দিনের গ্যারান্টি ও ১ বছরের ওয়ারেন্টি",
   },
   {
     q: "দাম কত?",
     a: "ছবিতে প্রদর্শিত বর্তমান অফার অনুযায়ী — এখন মাত্র ৳২৫০০।",
   },
+
 ];
 
 const containerVariants = {
@@ -43,7 +44,7 @@ export default function CLFAQ() {
   const [open, setOpen] = useState(0);
 
   return (
-    <section className="bg-white py-16 px-4">
+    <section className="bg-white  md:py-16 px-4">
       <div className="max-w-3xl mx-auto">
         <div className="text-center mb-10">
           <span className="text-[#0f5132] text-sm font-semibold uppercase tracking-widest">
