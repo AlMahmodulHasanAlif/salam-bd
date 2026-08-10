@@ -20,9 +20,7 @@ const SLIDER_IMAGES = [
 const scrollToOrder = () =>
   document.getElementById("order-section")?.scrollIntoView({ behavior: "smooth" });
 
-// Drop in a real YouTube ID here when the product video is ready.
-// e.g. const VIDEO_ID = "cUOJE5w1cS8";
-const VIDEO_ID = null;
+const VIDEO_ID = "hSDrCy3WLj8";
 
 export default function CLVideo() {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -53,7 +51,7 @@ export default function CLVideo() {
         >
           {VIDEO_ID ? (
             isPlaying ? (
-              <div className="aspect-video">
+              <div className="aspect-square max-w-[1000px] mx-auto">
                 <iframe
                   className="w-full h-full"
                   src={`https://www.youtube.com/embed/${VIDEO_ID}?autoplay=1&rel=0`}
@@ -64,7 +62,7 @@ export default function CLVideo() {
               </div>
             ) : (
               <div
-                className="relative aspect-video bg-black group cursor-pointer"
+                className="relative aspect-square max-w-[1000px] mx-auto bg-black group cursor-pointer"
                 onClick={() => setIsPlaying(true)}
               >
                 <img
@@ -93,7 +91,7 @@ export default function CLVideo() {
           ) : (
             // Placeholder — swap in a VIDEO_ID above or an <img>/<video> here.
             <div
-              className="relative aspect-video bg-gradient-to-br from-slate-800 via-slate-900 to-emerald-950 flex flex-col items-center justify-center gap-5 cursor-pointer"
+              className="relative aspect-square max-w-[1000px] mx-auto bg-gradient-to-br from-slate-800 via-slate-900 to-emerald-950 flex flex-col items-center justify-center gap-5 cursor-pointer"
               onClick={() => alert("ভিডিওটি শীঘ্রই যুক্ত হচ্ছে — পরে আবার দেখুন।")}
             >
               <div className="w-20 h-20 rounded-full bg-emerald-600/80 flex items-center justify-center shadow-2xl animate-pulse">

@@ -66,9 +66,9 @@ export default function CLIntro() {
               transition={{ duration: 0.6, delay: 0.1 }}
               className="text-3xl md:text-4xl font-bold text-slate-900 mb-4 leading-snug"
             >
-              এটি শুধু একটি ডিজিটাল ডিভাইস নয়,{" "}
+              সন্তানকে শেখাতে কি বারবার মোবাইলের সাহায্য নিতে হচ্ছে?{" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-500">
-                এটি আপনার সন্তানের প্রথম Learning Partner.
+                এবার মোবাইল নয়—খেলতে খেলতেই শেখার আনন্দে গড়ে উঠুক তার প্রথম শিক্ষার অভ্যাস।
               </span>
             </motion.h2>
 
