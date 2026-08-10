@@ -38,23 +38,23 @@ export default function CLIntro() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-60px" }}
             transition={{ duration: 0.7 }}
-            className="relative flex justify-center order-2 lg:order-1"
+            className="relative flex justify-center order-2 lg:order-1 w-full"
           >
             <div className="absolute inset-0 rounded-3xl bg-violet-200/40 blur-3xl scale-90" />
-            <CLSlider images={IMAGES} />
+            <CLSlider images={IMAGES} maxWidthClass="max-w-[85%] sm:max-w-lg" />
             <div className="absolute -top-4 -right-4 bg-amber-400 text-black text-xs font-black px-3 py-2 rounded-xl shadow-lg rotate-3">
               New Arrival ✓
             </div>
           </motion.div>
 
           {/* Copy */}
-          <div className="order-1 lg:order-2">
+          <div className="order-1 lg:order-2 text-center lg:text-left">
             <motion.span
               initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5 }}
-              className="inline-block bg-emerald-100 text-emerald-700 text-[20px] font-bold px-4 py-1.5 rounded-full mb-4"
+              className="inline-block bg-emerald-100 text-emerald-700 text-2xl font-bold px-4 py-1.5 rounded-full mb-4"
             >
               📘 Salam Coding Book
             </motion.span>
@@ -64,7 +64,7 @@ export default function CLIntro() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              className="text-3xl md:text-4xl font-bold text-slate-900 mb-4 leading-snug"
+              className="text-[16px] md:text-4xl font-bold text-slate-900 mb-4 leading-snug"
             >
               সন্তানকে শেখাতে কি বারবার মোবাইলের সাহায্য নিতে হচ্ছে?{" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-500">

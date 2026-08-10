@@ -5,15 +5,24 @@ const scrollToOrder = () =>
 
 export default function CLPrice() {
   return (
-    <section className="bg-gradient-to-b from-white to-emerald-50/70 py-16 px-4">
+    <section className="bg-gradient-to-b from-white to-emerald-50/70 py-5 px-4">
       <div className="max-w-3xl mx-auto">
-        <div className="text-center mb-10">
-          <span className="text-emerald-600 text-sm font-semibold uppercase tracking-widest">
-            অফার
+        <div className="text-center mb-8">
+          <span className="inline-flex items-center gap-1.5 bg-emerald-100 text-emerald-700 text-xs font-bold uppercase tracking-widest px-4 py-1.5 rounded-full mb-4">
+            ✨ আমাদের আবিষ্কার
           </span>
-          <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mt-3 mb-4">
-            আমাদের <span className="text-emerald-600">মূল্য</span>
+          <p className="text-sm md:text-base text-slate-500 font-medium mb-2">
+            জাফর সাদেক ও গাজী আনাস রোশনের আবিষ্কৃত
+          </p>
+          <h2 className="text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-700 via-teal-600 to-emerald-500 leading-tight mb-3">
+            Salam Coding Book
           </h2>
+          <p className="text-base md:text-xl font-semibold text-slate-700 max-w-2xl mx-auto mb-5">
+            দুই থেকে ছয় বছরের শিশুদের চমৎকার শিক্ষনীয় ডিভাইস
+          </p>
+          <div className="inline-flex items-center gap-2 bg-amber-100 text-amber-800 text-sm md:text-base font-bold px-5 py-2 rounded-full shadow-md shadow-amber-200/60">
+            🔥 এখন অফার মূল্যে সাশ্রয়ী দামে
+          </div>
         </div>
 
         <motion.div
@@ -87,7 +96,7 @@ export default function CLPrice() {
             >
               <span>🟢</span> এখনই অর্ডার করুন
               <span className="absolute -top-2 -right-2 bg-amber-400 text-black text-xs font-bold px-2 py-0.5 rounded-full animate-pulse">
-                HOT
+                Special Offer
               </span>
             </button>
 
