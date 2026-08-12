@@ -34,7 +34,7 @@ export default function CLPhoneOrder() {
           <div className="flex items-baseline gap-2">
             <span className="text-slate-400 text-sm whitespace-nowrap">মূল্য</span>
             <span className="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-500 whitespace-nowrap">
-              ৳১৫০০/=
+              ৳২৫০০/=
             </span>
             <span className="text-slate-400 text-sm whitespace-nowrap">
               টাকা মাত্র

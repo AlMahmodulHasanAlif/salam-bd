@@ -31,7 +31,7 @@ export default function CLSubjects() {
               ৫টি বিষয়
             </span>
           </h2>
-
+    
         </div>
 
         <motion.div

@@ -7,21 +7,32 @@ export default function CLPrice() {
   return (
     <section className="bg-gradient-to-b from-white to-emerald-50/70 py-5 px-4">
       <div className="max-w-3xl mx-auto">
-        <div className="text-center mb-8">
-          <span className="inline-flex items-center gap-1.5 bg-emerald-100 text-emerald-700 text-xs font-bold uppercase tracking-widest px-4 py-1.5 rounded-full mb-4">
-            ✨ আমাদের আবিষ্কার
-          </span>
-          <p className="text-sm md:text-base text-slate-500 font-medium mb-2">
-            জাফর সাদেক ও গাজী আনাস রোশনের আবিষ্কৃত
-          </p>
-          <h2 className="text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-700 via-teal-600 to-emerald-500 leading-tight mb-3">
-            Salam Coding Book
-          </h2>
-          <p className="text-base md:text-xl font-semibold text-slate-700 max-w-2xl mx-auto mb-5">
-            দুই থেকে ছয় বছরের শিশুদের চমৎকার শিক্ষনীয় ডিভাইস
-          </p>
-          <div className="inline-flex items-center gap-2 bg-amber-100 text-amber-800 text-sm md:text-base font-bold px-5 py-2 rounded-full shadow-md shadow-amber-200/60">
-            🔥 এখন অফার মূল্যে সাশ্রয়ী দামে
+        <div className="text-center mb-8 bg-gradient-to-br from-emerald-900 via-green-900 to-teal-900 border border-emerald-700/50 rounded-3xl px-6 py-10 md:px-10 md:py-12 shadow-xl shadow-emerald-900/30 relative overflow-hidden">
+          <div className="pointer-events-none absolute -top-16 -left-16 w-48 h-48 rounded-full bg-emerald-400/20 blur-2xl" />
+          <div className="pointer-events-none absolute -bottom-16 -right-16 w-48 h-48 rounded-full bg-amber-400/20 blur-2xl" />
+
+          <div className="relative">
+            <p className="text-xl md:text-3xl font-black text-emerald-100 tracking-wide mb-4">
+              জাফর সাদেক ও গাজী আনাস রোশনের আবিষ্কৃত
+            </p>
+            <motion.button
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.97 }}
+              className="inline-flex items-center gap-3 bg-gradient-to-r from-emerald-600 via-teal-500 to-emerald-400 text-white text-3xl md:text-5xl font-black px-10 md:px-14 py-4 md:py-6 rounded-full shadow-xl shadow-emerald-900/50 border-2 border-emerald-300/50 mb-3 cursor-pointer"
+            >
+              <span className="text-2xl md:text-4xl">📘</span>
+              Salam Coding Book
+            </motion.button>
+            <p className="text-xl md:text-3xl font-extrabold text-emerald-50 max-w-3xl mx-auto mb-5">
+              দুই থেকে ছয় বছরের শিশুদের চমৎকার শিক্ষনীয় ডিভাইস
+            </p>
+            <div className="inline-flex items-center gap-2 bg-amber-100 text-amber-800 text-sm md:text-base font-bold px-5 py-2 rounded-full shadow-md shadow-amber-200/60">
+              🔥 এখন অফার মূল্যে সাশ্রয়ী দামে
+            </div>
           </div>
         </div>
 

@@ -10,10 +10,12 @@ import CLCompare from "./CLCompare";
 import CLVideo from "./CLVideo";
 import CLPrize from "./CLPrize";
 import CLPackage from "./CLPackage";
+
 import CLReviews from "./CLReviews";
 import CLFAQ from "./CLFAQ";
 import CLPrice from "./CLPrice";
 import CLPhoneOrder from "./CLPhoneOrder";
+
 import CodingOrderForm from "./CodingOrderForm";
 import Copyright from "./Copyright";
 import coverImg from "./assets/landingcover.webp";
@@ -50,15 +52,18 @@ const CodingLandingPage = () => {
         />
       </div>
      
-       <CLPrice />
-       <CLVideo />
+      <CLPrice />
+      <CLVideo />
+      <CLPackage />
       <CLProblem />
       <CLIntro />
       <CLSubjects />
       <CLBenefits />
       <CLCompare />
       <CLPrize />
-      <CLPackage />
+
+      
+      
       {/* <CLReviews /> */}
       <CLFAQ />
      
