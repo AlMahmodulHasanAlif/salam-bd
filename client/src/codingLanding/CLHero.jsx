@@ -436,30 +436,30 @@ export default function CLHero() {
       </div>
 
       {/* ── Main Content ── */}
-      <div className="relative max-w-5xl mx-auto px-4 pt-5 pb-8 text-center items-center">
+      <div className="relative w-full max-w-5xl mx-auto px-4 pt-5 pb-8 text-center">
         {/* Heading — single emerald gradient treatment, matching Plug In Quran */}
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.1 }}
-          className="text-4xl md:text-4xl font-extrabold text-white leading-tight mb-4"
+          className="text-3xl sm:text-4xl font-extrabold text-white leading-tight mb-4"
         >
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-emerald-300">
             Salam Coding Book
           </span>
-          <div className="text-2xl md:text-3xl font-semibold text-gray-300">
+          <div className="text-lg sm:text-2xl md:text-3xl font-semibold text-gray-300 mt-1 leading-snug px-2">
            জাফর সাদেক ও গাজী আনাস রোশনের আবিষ্কৃত
           </div>
         </motion.h1>
 
         {/* Animated guarantee box */}
         <motion.div
-          className="w-full sm:w-auto bg-emerald-950/40 border border-emerald-500/30 backdrop-blur-sm rounded-2xl px-8 py-4 text-center flex items-center justify-center min-w-[260px] shadow-lg shadow-emerald-950/50"
+          className="w-full sm:w-auto bg-emerald-950/40 border border-emerald-500/30 backdrop-blur-sm rounded-2xl px-4 sm:px-8 py-3 sm:py-4 text-center flex items-center justify-center sm:min-w-[260px] shadow-lg shadow-emerald-950/50 mx-auto"
           animate={{ scale: [1, 1.05, 1] }}
           transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
         >
-          <span className="text-2xl md:text-4xl font-black text-amber-400 whitespace-nowrap">
-            দুই থেকে ছয় বছরের শিশুদের চমৎকার <br/> শিক্ষনীয় ডিভাইস
+          <span className="text-lg sm:text-2xl md:text-4xl font-black text-amber-400 mb-3 leading-snug">
+            দুই থেকে ছয় বছরের শিশুদের চমৎকার <br /> শিক্ষনীয় ডিভাইস
           </span>
         </motion.div>
 
@@ -468,20 +468,11 @@ export default function CLHero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.2 }}
-          className="text-gray-200 text-md md:text-lg md:text-xl mx-auto mb-8 mt-4 md:hidden"
+          className="text-gray-200 text-base sm:text-lg md:text-xl mx-auto mb-8 mt-4"
         >
-          এখন থেকে খেলতে খেলতেই শিখুক, <br /> বাংলা, ইংরেজি, অঙ্ক, আরবি,
-          <br /> ওয়ার্ড মিনিং ও ছড়া-কবিতা
-        </motion.p> */}
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.2 }}
-          className="text-gray-200 text-md md:text-lg md:text-xl mx-auto mb-8 mt-4 hidden md:block"
-        >
-          এখন থেকে খেলতে খেলতেই শিখুক, <br /> বাংলা, ইংরেজি, অঙ্ক, আরবি, ওয়ার্ড
+          এখন থেকে খেলতে খেলতেই শিখুক, বাংলা, ইংরেজি, অঙ্ক, আরবি, ওয়ার্ড
           মিনিং ও ছড়া-কবিতা
-        </motion.p>
+        </motion.p> */}
 
         {/* ── Custom Video Player (fixed 1000x1000 square) ── */}
         <motion.div
@@ -489,7 +480,7 @@ export default function CLHero() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.3 }}
-          className="w-full mb-10"
+          className="w-full mb-10 mt-8 sm:mt-10 flex justify-center"
         >
           <CustomVideoPlayer />
         </motion.div>
@@ -501,17 +492,17 @@ export default function CLHero() {
           transition={{ duration: 0.6, delay: 0.4 }}
           className="flex flex-col sm:flex-row gap-4 justify-center items-center max-w-2xl mx-auto mb-10"
         >
-          <div className="w-full sm:w-auto bg-white/5 border border-white/10 backdrop-blur-sm rounded-2xl px-6 py-4 text-center flex items-center justify-center min-w-[220px]">
-            <span className="text-white text-2xl md:text-3xl font-semibold line-through whitespace-nowrap">
+          <div className="w-full sm:w-auto bg-white/5 border border-white/10 backdrop-blur-sm rounded-2xl px-4 sm:px-6 py-3 sm:py-4 text-center flex items-center justify-center sm:min-w-[220px]">
+            <span className="text-white text-lg sm:text-2xl md:text-3xl font-semibold line-through">
               পূর্বের মূল্য ৩৫০০৳
             </span>
           </div>
           <motion.div
-            className="w-full sm:w-auto bg-emerald-950/40 border border-emerald-500/30 backdrop-blur-sm rounded-2xl px-8 py-4 text-center flex items-center justify-center min-w-[260px] shadow-lg shadow-emerald-950/50"
+            className="w-full sm:w-auto bg-emerald-950/40 border border-emerald-500/30 backdrop-blur-sm rounded-2xl px-4 sm:px-8 py-3 sm:py-4 text-center flex items-center justify-center sm:min-w-[260px] shadow-lg shadow-emerald-950/50"
             animate={{ scale: [1, 1.05, 1] }}
             transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
           >
-            <span className="text-3xl md:text-4xl font-black text-amber-400 whitespace-nowrap">
+            <span className="text-xl sm:text-3xl md:text-4xl font-black text-amber-400">
               অফার মূল্য ২৫০০৳
             </span>
           </motion.div>
@@ -522,12 +513,12 @@ export default function CLHero() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.5 }}
-          className="flex flex-wrap items-center justify-center gap-3 mb-10"
+          className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-10 px-2"
         >
           {TRUST_BADGES.map((badge) => (
             <span
               key={badge.text}
-              className="inline-flex items-center gap-1.5 bg-white/5 border border-white/10 text-gray-200 text-sm px-3 py-1.5 rounded-full"
+              className="inline-flex items-center gap-1.5 bg-white/5 border border-white/10 text-gray-200 text-xs sm:text-sm px-3 py-1.5 rounded-full"
             >
               <span>{badge.icon}</span> {badge.text}
             </span>
@@ -543,10 +534,10 @@ export default function CLHero() {
         >
           <button
             onClick={scrollToOrder}
-            className="group relative inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xl px-12 py-5 rounded-xl transition-all duration-300 shadow-xl shadow-emerald-900/50 hover:shadow-emerald-700/60 hover:scale-105 w-full sm:w-auto"
+            className="group relative inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-base sm:text-xl px-8 sm:px-12 py-4 sm:py-5 rounded-xl transition-all duration-300 shadow-xl shadow-emerald-900/50 hover:shadow-emerald-700/60 hover:scale-105 w-full sm:w-auto"
           >
             <span>🛒</span> এখনই অর্ডার করুন
-            <span className="absolute -top-2 -right-2 bg-amber-400 text-black text-xs font-bold px-2 py-0.5 rounded-full">
+            <span className="absolute -top-2 -right-1 sm:-right-2 bg-amber-400 text-black text-[10px] sm:text-xs font-bold px-2 py-0.5 rounded-full whitespace-nowrap">
               special offer
             </span>
           </button>
