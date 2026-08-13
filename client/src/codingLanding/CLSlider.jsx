@@ -35,7 +35,7 @@ export default function CLSlider({ images, interval = 4000, aspectClass = "aspec
           animate="center"
           exit="exit"
           transition={{ duration: 0.5, ease: "easeInOut" }}
-          className="absolute inset-0 w-full h-full object-contain"
+          className="absolute inset-0 w-full h-full py-15 object-contain"
           onError={(e) => {
             e.currentTarget.style.display = "none";
           }}
