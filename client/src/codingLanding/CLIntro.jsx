@@ -23,11 +23,8 @@ export default function CLIntro() {
     <section className="bg-gradient-to-b from-white to-emerald-50/60 pb-10 px-4">
       <div className="max-w-6xl mx-auto">
         <div className="grid lg:grid-cols-2 gap-10 items-center">
-          {/* Product visual */}
-          
-
-          {/* Copy */}
-          <div className="order-2 text-center lg:text-left">
+          {/* Copy top */}
+          <div className="text-center lg:text-left lg:col-start-2 lg:row-start-1">
             <motion.span
               initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -50,13 +47,15 @@ export default function CLIntro() {
                 এবার মোবাইল নয়—খেলতে খেলতেই শেখার আনন্দে গড়ে উঠুক তার প্রথম শিক্ষার অভ্যাস।
               </span>
             </motion.h2>
+          </div>
 
-            <motion.div
+          {/* Product visual */}
+          <motion.div
             initial={{ opacity: 0, x: -40 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-60px" }}
             transition={{ duration: 0.7 }}
-            className="relative flex justify-center py-3 order-1 w-full"
+            className="relative flex justify-center w-full lg:col-start-1 lg:row-start-1 lg:row-span-2"
           >
             <div className="absolute inset-0 rounded-3xl bg-violet-200/40 blur-3xl scale-90" />
             <img
@@ -69,13 +68,13 @@ export default function CLIntro() {
             </div>
           </motion.div>
 
-            {/* Benefits list */}
+          {/* Benefits list */}
             <motion.div
               variants={containerVariants}
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, margin: "-60px" }}
-              className="grid grid-cols-2 gap-4 mt-8"
+              className="grid grid-cols-2 gap-4 lg:col-start-2 lg:row-start-2"
             >
              {BENEFITS.map((b) => (
             <motion.div
@@ -97,7 +96,6 @@ export default function CLIntro() {
             </motion.div>
           ))}
             </motion.div>
-          </div>
         </div>
       </div>
     </section>
