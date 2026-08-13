@@ -52,7 +52,7 @@ const FLASH_CARDS = [
 
 const BOOK_SECTIONS = [
   {
-    title: "আরবি",
+    title: "ছোটদের আরবি শিক্ষা",
     images: [
       { src: arabic1, alt: "আরবি ১" },
       { src: arabic2, alt: "আরবি ২" },
@@ -62,7 +62,7 @@ const BOOK_SECTIONS = [
     ],
   },
   {
-    title: "বাংলা",
+    title: "ছোটদের বাংলা পড়া",
     images: [
       { src: bangla1, alt: "বাংলা ১" },
       { src: bangla2, alt: "বাংলা ২" },
@@ -72,7 +72,7 @@ const BOOK_SECTIONS = [
     ],
   },
   {
-    title: "ছড়া",
+    title: "ছোটদের মজার ছড়া",
     images: [
       { src: chora1, alt: "ছড়া ১" },
       { src: chora2, alt: "ছড়া ২" },
@@ -82,7 +82,7 @@ const BOOK_SECTIONS = [
     ],
   },
   {
-    title: "ইংরেজি",
+    title: "ছোটদের ইংলিশ",
     images: [
       { src: eng1, alt: "ইংরেজি ১" },
       { src: eng2, alt: "ইংরেজি ২" },
@@ -92,7 +92,7 @@ const BOOK_SECTIONS = [
     ],
   },
   {
-    title: "গণিত",
+    title: "ছোটদের গণিত শিক্ষা",
     images: [
       { src: math1, alt: "গণিত ১" },
       { src: math2, alt: "গণিত ২" },
@@ -102,7 +102,7 @@ const BOOK_SECTIONS = [
     ],
   },
   {
-    title: "শব্দার্থ",
+    title: "ছোটদের ওয়ার্ড মিনিং",
     images: [
       { src: word1, alt: "শব্দার্থ ১" },
       { src: word2, alt: "শব্দার্থ ২" },
