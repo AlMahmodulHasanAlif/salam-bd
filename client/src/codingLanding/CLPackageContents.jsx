@@ -80,7 +80,7 @@ export default function CLPackageContents() {
           transition={{ duration: 0.7 }}
           className="mb-10"
         >
-          <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-emerald-600 via-teal-500 to-emerald-600 p-8 md:p-12 text-center shadow-2xl shadow-emerald-900/30">
+          <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-emerald-950 via-green-900 to-emerald-950 p-8 md:p-12 text-center shadow-2xl shadow-emerald-900/30">
             <div className="absolute -top-10 -left-10 w-40 h-40 bg-white/10 rounded-full blur-2xl" />
             <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-amber-300/20 rounded-full blur-2xl" />
             <motion.span
@@ -91,8 +91,8 @@ export default function CLPackageContents() {
               🏆 পুরস্কার 
             </motion.span>
             <p className="text-white text-2xl md:text-5xl font-black leading-snug">
-              মেধা যাচাইয়ে থাকছে{" "}
-              <span className="inline-block bg-white text-emerald-900 text-4xl md:text-7xl font-black px-8 md:px-12 py-3 md:py-4 rounded-3xl shadow-2xl shadow-emerald-900/30 mt-2 md:mt-0 md:ml-3">
+              মেধা যাচাইয়ে থাকছে{" "} <br />
+              <span className="inline-block bg-white text-emerald-900 text-2xl md:text-7xl font-black px-8 md:px-12 py-3 md:py-4 rounded-3xl shadow-2xl shadow-emerald-900/30 mt-2 md:mt-0 md:ml-3">
                 "২ লক্ষ টাকা"
               </span>{" "}
               <span className="block md:inline">পুরস্কার</span>
@@ -107,7 +107,7 @@ export default function CLPackageContents() {
           transition={{ duration: 0.6 }}
           className="text-center mb-8"
         >
-          <span className="inline-block bg-gradient-to-r from-emerald-600 to-teal-500 text-gray-700 text-2xl md:text-3xl font-bold px-10 py-4 rounded-2xl shadow-lg shadow-emerald-900/20">
+          <span className="inline-block bg-emerald-950 text-white text-2xl md:text-3xl font-bold px-10 py-4 rounded-2xl shadow-lg shadow-emerald-900/20">
             সম্পূর্ণ প্যাকেজে যা পাচ্ছেন
           </span>
         </motion.div>
