@@ -71,26 +71,7 @@ export default function CLPackageContents() {
   return (
     <section className="bg-white  px-4">
       <div className="max-w-4xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center "
-        >
-          {/* <span className="text-emerald-600 text-sm font-semibold uppercase tracking-widest">
-            প্যাকেজ কনটেন্ট
-          </span>
-          <h2 className="text-3xl md:text-5xl font-bold text-slate-900 mt-3 mb-4">
-            "কোডিং বুক" প্যাকেজে{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-500">
-              যা যা পাচ্ছেন
-            </span>
-          </h2>
-          <p className="text-slate-500 max-w-xl mx-auto text-lg">
-            এক অর্ডারেই — সম্পূর্ণ প্যাকেজ
-          </p> */}
-        </motion.div>
+       
 
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
@@ -111,12 +92,24 @@ export default function CLPackageContents() {
             </motion.span>
             <p className="text-white text-2xl md:text-5xl font-black leading-snug">
               মেধা যাচাইয়ে থাকছে{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-200 to-yellow-400 text-4xl md:text-7xl block md:inline-block mt-2 md:mt-0 md:ml-3">
-                "২ লাখ টাকা"
+              <span className="inline-block bg-white text-emerald-900 text-4xl md:text-7xl font-black px-8 md:px-12 py-3 md:py-4 rounded-3xl shadow-2xl shadow-emerald-900/30 mt-2 md:mt-0 md:ml-3">
+                "২ লক্ষ টাকা"
               </span>{" "}
               <span className="block md:inline">পুরস্কার</span>
             </p>
           </div>
+        </motion.div>
+
+         <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-8"
+        >
+          <span className="inline-block bg-gradient-to-r from-emerald-600 to-teal-500 text-gray-700 text-2xl md:text-3xl font-bold px-10 py-4 rounded-2xl shadow-lg shadow-emerald-900/20">
+            সম্পূর্ণ প্যাকেজে যা পাচ্ছেন
+          </span>
         </motion.div>
 
         <motion.div

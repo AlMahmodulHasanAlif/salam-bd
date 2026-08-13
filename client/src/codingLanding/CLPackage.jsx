@@ -135,7 +135,7 @@ export default function CLPackage() {
           </p>
         </div>
 
-        <div className="mt-10 text-center">
+        <div className="mt-2 text-center">
           <h2 className="text-3xl md:text-4xl font-bold text-white leading-snug">
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-amber-400">
               Salam Coding Book
@@ -147,7 +147,7 @@ export default function CLPackage() {
             <img
               src={codingbookImg}
               alt="Salam Coding Book"
-              className="w-full max-w-sm rounded-2xl shadow-2xl shadow-emerald-900/20"
+              className="w-full max-w-sm rounded-2xl shadow-[0_-12px_50px_-10px_rgba(6,78,59,0.25)]"
             />
           </div>
         </div>
@@ -167,7 +167,9 @@ export default function CLPackage() {
 
         {/* Flashcards — 40 cards on 4 topics */}
         <div className="mt-10 text-center">
-          <p className="text-xl md:text-2xl font-bold text-amber-300 mt-3">চারটি বিষয়ে ৪০ টি ফ্লাশকার্ড</p>
+          <div className="inline-block bg-gradient-to-r from-emerald-600 to-teal-500 text-white text-xl md:text-2xl font-bold px-8 py-3 rounded-2xl shadow-lg shadow-emerald-900/20 mt-3">
+            চারটি বিষয়ে ৪০ টি ফ্লাশকার্ড
+          </div>
 
           <div className="mt-5 flex justify-center">
             <CLSlider images={FLASH_CARDS} aspectClass="aspect-[5/4]" maxWidthClass="max-w-md md:max-w-lg" />

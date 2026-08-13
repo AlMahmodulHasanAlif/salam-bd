@@ -28,12 +28,12 @@ const itemVariants = {
 
 export default function CLProblem() {
   return (
-    <section className="bg-white py-16 px-4">
+    <section className="bg-white pb-10 px-4">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-12">
+        <div className="text-center mb-7">
          
-          <h2 className="text-3xl md:text-5xl font-bold text-slate-900 mt-3 mb-4">
+          <h2 className="text-3xl md:text-5xl font-bold text-slate-900 mb-4">
             সন্তান বড় হচ্ছে...{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-orange-500">
               কিন্তু সে কী শিখছে?

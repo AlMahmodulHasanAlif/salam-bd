@@ -1,14 +1,5 @@
 import { motion } from "framer-motion";
-import CLSlider from "./CLSlider";
-import productImg from "./assets/placeholder-product.svg";
-import bookImg from "./assets/placeholder-book.svg";
-import cardImg from "./assets/placeholder-card.svg";
-
-const IMAGES = [
-  { src: productImg, alt: "Salam Coding Book ডিভাইস" },
-  { src: bookImg, alt: "Salam Coding Book ২" },
-  { src: cardImg, alt: "Salam Coding Book ৩" },
-];
+import codingBookImg from "./assets/p2-codingbook.webp";
 
 const BENEFITS = [
   { icon: "🧑‍🏫", title: "নিজে নিজে শিখতে পারে", desc: "বাবা-মায়ের সাহায্য ছাড়াই খেলতে খেলতে শেখা", bg: "bg-emerald-400", glow: "shadow-[0_0_25px_rgba(52,211,153,0.7)]" },
@@ -33,28 +24,16 @@ export default function CLIntro() {
       <div className="max-w-6xl mx-auto">
         <div className="grid lg:grid-cols-2 gap-10 items-center">
           {/* Product visual */}
-          <motion.div
-            initial={{ opacity: 0, x: -40 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-60px" }}
-            transition={{ duration: 0.7 }}
-            className="relative flex justify-center order-2 lg:order-1 w-full"
-          >
-            <div className="absolute inset-0 rounded-3xl bg-violet-200/40 blur-3xl scale-90" />
-            <CLSlider images={IMAGES} maxWidthClass="max-w-[85%] sm:max-w-lg" />
-            <div className="absolute -top-4 -right-4 bg-amber-400 text-black text-xs font-black px-3 py-2 rounded-xl shadow-lg rotate-3">
-              New Arrival ✓
-            </div>
-          </motion.div>
+          
 
           {/* Copy */}
-          <div className="order-1 lg:order-2 text-center lg:text-left">
+          <div className="order-2 text-center lg:text-left">
             <motion.span
               initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5 }}
-              className="inline-block bg-emerald-100 text-emerald-700 text-2xl font-bold px-4 py-1.5 rounded-full mb-4"
+              className="inline-block bg-emerald-100 text-emerald-700 text-xl md:text-2xl font-bold px-4 py-1.5 rounded-full mb-4"
             >
               📘 Salam Coding Book
             </motion.span>
@@ -71,6 +50,24 @@ export default function CLIntro() {
                 এবার মোবাইল নয়—খেলতে খেলতেই শেখার আনন্দে গড়ে উঠুক তার প্রথম শিক্ষার অভ্যাস।
               </span>
             </motion.h2>
+
+            <motion.div
+            initial={{ opacity: 0, x: -40 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.7 }}
+            className="relative flex justify-center py-3 order-1 w-full"
+          >
+            <div className="absolute inset-0 rounded-3xl bg-violet-200/40 blur-3xl scale-90" />
+            <img
+              src={codingBookImg}
+              alt="Salam Coding Book"
+              className="relative w-full max-w-[85%] sm:max-w-lg rounded-2xl shadow-2xl shadow-emerald-900/20"
+            />
+            <div className="absolute -top-4 -right-4 bg-amber-400 text-black text-xs font-black px-3 py-2 rounded-xl shadow-lg rotate-3">
+              New Arrival ✓
+            </div>
+          </motion.div>
 
             {/* Benefits list */}
             <motion.div

@@ -23,7 +23,7 @@ export default function CLSlider({ images, interval = 4000, aspectClass = "aspec
   }, [count, interval, index]);
 
   return (
-    <div className={`relative rounded-3xl overflow-hidden border border-white shadow-2xl shadow-slate-300/50 w-full ${maxWidthClass} ${aspectClass} bg-white`}>
+    <div className={`relative rounded-3xl overflow-hidden border border-white shadow-[0_-10px_40px_-8px_rgba(15,118,110,0.3),0_24px_50px_-12px_rgba(15,118,110,0.25)] w-full ${maxWidthClass} ${aspectClass} bg-white`}>
       <AnimatePresence initial={false} custom={dir}>
         <motion.img
           key={index}
