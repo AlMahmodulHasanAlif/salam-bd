@@ -51,9 +51,9 @@ const CodingLandingPage = () => {
           className="w-full h-auto object-cover"
         />
       </div>
-     
-      <CLPrice />
-      <CLVideo />
+     <CLHero/>
+
+      {/* <CLVideo /> */}
       <CLPackage />
       <CLProblem />
       <CLIntro />
